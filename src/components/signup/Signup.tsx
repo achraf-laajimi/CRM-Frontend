@@ -7,7 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import './signup.css';
 import { signupUser } from '../../api/auth';
 import addUserSchema from '../validation/SignupShema';
-
+import img1 from '../../assets/Signup.svg'
+import img2 from '../../assets/google.png'
 const Signup: React.FC = () => {
   const navigate = useNavigate();
 
@@ -41,7 +42,7 @@ const Signup: React.FC = () => {
       <h1 className="heading">Sign up Form</h1>
       <div className="form_container">
         <div className="left">
-          <img className="img" src="src/assets/Signup.svg" alt="signup" />
+          <img className="img1" src={img1} alt="signup" />
         </div>
         <div className="right">
           <h2 className="form_heading">Create Account</h2>
@@ -152,6 +153,7 @@ const Signup: React.FC = () => {
                     <div className="text-red-500 text-sm mt-1">{errors.password}</div>
                   )}
                 </div>
+                <div className="input_group">
                 <div className="mb-4">
                   <label htmlFor="adresse" className="block text-sm font-medium text-gray-700">Adresse</label>
                   <Field
@@ -183,7 +185,7 @@ const Signup: React.FC = () => {
                   {touched.telephone && errors.telephone && (
                     <div className="text-red-500 text-sm mt-1">{errors.telephone}</div>
                   )}
-                </div>
+                </div></div>
                 <div className="mb-4">
                   <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
                   <Field as="select" id="role" name="role" className="w-full p-2 border border-gray-300 rounded">
@@ -216,11 +218,11 @@ const Signup: React.FC = () => {
           </Formik>
           <p className="text">or</p>
           <button className="google_btn" onClick={googleAuth}>
-            <img src="src/assets/google.png" alt="google icon" />
+            <img src={img2} alt="google icon" />
             <span>Sign up with Google</span>
           </button>
-          <p className="text">
-            Already Have Account? <Link to="/login">Log In</Link>
+          <p className="text1">
+            Already Have Account? <Link to="/login" className='log'>Log In</Link>
           </p>
         </div>
       </div>

@@ -11,7 +11,7 @@ interface ErrorResponse {
   message?: string;
 }
 
-export const signup = async (name: string, email: string, password: string) => {
+/* export const signup = async (name: string, email: string, password: string) => {
   try {
     const response = await api.post('/signup', { name, email, password });
     return response.data;
@@ -19,8 +19,8 @@ export const signup = async (name: string, email: string, password: string) => {
     throw new Error('Error signing up. Please try again.');
   }
 };
-
-export const loginUser = async (email: string, password: string) => {
+ */
+/* export const loginUser = async (email: string, password: string) => {
   try {
     const response = await api.post('/login', { email, password });
     if (response.data.status === 'ok') {
@@ -38,7 +38,7 @@ export const loginUser = async (email: string, password: string) => {
       throw new Error('An unexpected error occurred. Please try again.');
     }
   }
-};
+}; */
 
 export const getUsers = async () => {
   try {

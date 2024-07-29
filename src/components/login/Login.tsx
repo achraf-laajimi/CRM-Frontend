@@ -2,16 +2,17 @@ import React, { useState, useContext } from 'react';
 import { Formik, Form } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import loginSchema from "../validation/loginSchema";
 import { loginUser } from "../../api/auth";
 import { UserContext } from "../../App";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import loginSchema from '../validation/loginShema';
 
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const { setUser } = useContext(UserContext);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  useContext(UserContext);
   const [error, setError] = useState<string>('');
   const initialValues = {
     email: '',

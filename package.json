@@ -7,13 +7,17 @@
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
     "cra-template-typescript": "1.2.0",
+    "formik": "^2.4.6",
+    "js-cookie": "^3.0.5",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
     "react-icons": "^5.2.1",
     "react-router-dom": "^6.25.1",
     "react-scripts": "5.0.1",
-    "web-vitals": "^4.2.1"
+    "react-toastify": "^10.0.5",
+    "web-vitals": "^4.2.1",
+    "yup": "^1.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -43,9 +47,11 @@
     "@testing-library/jest-dom": "^6.4.6",
     "@types/axios": "^0.14.0",
     "@types/jest": "^29.5.12",
+    "@types/js-cookie": "^3.0.6",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/testing-library__jest-dom": "^6.0.0",
+    "@types/yup": "^0.32.0",
     "sass-loader": "^14.2.1"
   }
 }

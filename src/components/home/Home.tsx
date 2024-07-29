@@ -1,11 +1,17 @@
 import React from 'react'
 import "./Home.css"
-import Navbar from '../navbar/navbar';
+import { User } from '../../App';
+interface HomeProps {
+  user: User;
+}
 
-const home = () => {
+const home = ({ user }: HomeProps) => {
   return (
     <div className='Home'>
-          <Navbar />
+          
+      <h1>Welcome, {user.username}</h1>
+      
+    
      
     </div>
   )

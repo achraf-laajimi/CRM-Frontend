@@ -60,7 +60,6 @@ body {
     margin-left: 45px;
 }
 
-.nav-link:hover,
 .nav-link.active {
     background-color: #fc410c2e;
     width: 188px;
@@ -71,14 +70,12 @@ body {
     color: #FC410C;
     font-weight: bold;
     padding-left: 64px;
-  
 }
+
 .nav-link:hover svg,
 .nav-link.active svg {
     fill: #FC410C; /* Pour changer la couleur de remplissage des SVG */
- /*    stroke: #FC410C; /* Pour changer la couleur du contour des SVG */ 
 }
-
 
 .nav-link i {
     margin-right: 10px;
@@ -90,7 +87,8 @@ body {
     display: flex;
     gap: 15px;
 }
-.a{
+
+.a {
     display: inline-block;
     margin-top: 8px;
     margin-left: -13px;
@@ -105,12 +103,10 @@ body {
 }
 
 .profilee span {
-  /*   display: block; */
     font-weight: bold;
     color: #333;
     margin-left: -44px;
     font-size: 13px;
-    font-weight: bold;
 }
 
 .profilee p {
@@ -119,47 +115,135 @@ body {
     margin-top: 2px;
     margin-left: -4px;
 }
-.b{
+
+.b {
     color: #FC410C;
     font-weight: bolder;
     font-size: 27px;
     font-family: sans-serif;
 }
-.bi{
+
+.bi {
     color: #000000c2;
     position: absolute;
-    top: 649px;
+    top: 642px;
     left: 197px;
 }
-.bii{
+
+.bii, .biii, .biiii, .biiiii, .biiiiii, .b6 {
     position: absolute;
-    top: 141px;
-    left: 31px;
-}
-.biii{
-    position: absolute;
-    top: 192px;
-    left: 31px;
-}
-.biiii{
-    position: absolute;
-    top: 244px;
-    left: 31px;
-}
-.biiiii{
- 
-        position: absolute;
-        top: 297px;
-        left: 31px;
-}
-.biiiiii{
- 
-    position: absolute;
-    top: 347px;
-    left: 31px;
-}
-.b6{
-    position: absolute;
-    top: 398px;
     left: 28px;
+}
+
+.bii { top: 130px; }
+.biii { top: 180px; }
+.biiii { top: 234px; }
+.biiiii { top: 290px; }
+.biiiiii { top: 342px; }
+.b6 { top: 391px; }
+
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+        padding: 10px;
+    }
+
+    .logo {
+        flex-direction: column;
+        margin-left: 0;
+    }
+
+    .logo img {
+        margin: 0 auto;
+    }
+
+    .logo h1 {
+        font-size: 18px;
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .nav-link {
+        margin-left: 25px;
+    }
+
+    .nav-link.active {
+        width: 150px;
+        padding-left: 40px;
+    }
+
+    .profilee {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .profilee img {
+        margin: 0 auto;
+    }
+
+    .profilee span, .profilee p {
+        margin-left: 0;
+    }
+
+    .bi, .bii, .biii, .biiii, .biiiii, .biiiiii, .b6 {
+        left: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 10px 5px;
+    }
+
+    .logo {
+        flex-direction: column;
+        margin-left: 0;
+        align-items: center;
+    }
+
+    .logo img {
+        margin: 0 auto;
+    }
+
+    .logo h1 {
+        font-size: 16px;
+        margin-left: 0;
+        margin-top: 5px;
+    }
+
+    .nav-links {
+        width: 100%;
+    }
+
+    .nav-link {
+        margin-left: 0;
+        justify-content: center;
+    }
+
+    .nav-link.active {
+        width: 100%;
+        padding-left: 0;
+    }
+
+    .profilee {
+        flex-direction: column;
+        gap: 5px;
+        margin-top: 20px;
+    }
+
+    .profilee img {
+        margin: 0 auto;
+    }
+
+    .profilee span, .profilee p {
+        margin-left: 0;
+        text-align: center;
+    }
+
+    .bi, .bii, .biii, .biiii, .biiiii, .biiiiii, .b6 {
+        left: 15px;
+    }
 }

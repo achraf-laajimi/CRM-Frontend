@@ -35,7 +35,7 @@
     padding: 10px;
     text-align: left;
     border-bottom: 1px solid #ddd;
-    text-align: center;
+   /*  text-align: center; */
 
   }
   
@@ -419,107 +419,4 @@
     left: 29px;
     cursor: pointer;
   }
-  @media (max-width: 768px) {
-    .customers, .history {
-        padding: 20px;
-        margin-top: 20px;
-    }
-  
-    .customers-table, .transactions-table {
-      width: 429px;
-      display: block;
-      overflow-x: auto;
-    }
-  
-    .customers-table th, .customers-table td, .transactions-table th, .transactions-table td {
-        padding: 8px;
-        font-size: 12px;
-    }
-  
-    .view-button, .view-more-button {
-      padding: 0px 6px;
-      font-size: 7px;
-    }
-  
-    .avatar {
-        width: 25px;
-        height: 25px;
-    }
-  
-    .user-info {
-        height: auto;
-    }
-  
-    .user-avatar {
-        width: 60px;
-        height: 60px;
-    }
-  
-    .stat-icon {
-        width: 180px;
-        height: 65px;
-    }
-  
-    .stat-value {
-        font-size: 10px;
-    }
-  
-    .footer {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .ooo {
-      left: 14px;
-    width: calc(100% - 60px);
-    gap: 7px;
-  }
-  .footer span{
-    color: #0000007a;
-    font-weight: bolder;
-    font-size: 11px;
-    margin-bottom: 4px;
-  }
-  }
-  
-  @media (max-width: 480px) {
-    .customers, .history {
-        padding: 15px;
-    }
-  
-    .customers-table th, .customers-table td, .transactions-table th, .transactions-table td {
-        padding: 6px;
-        font-size: 10px;
-    }
-  
-    .view-button, .view-more-button {
-        padding: 3px 10px;
-        font-size: 10px;
-    }
-    .ooo {
-      left: 20px;
-      width: calc(100% - 40px);
-  }
-  
-    .avatar {
-        width: 20px;
-        height: 20px;
-    }
-  
-    .user-avatar {
-        width: 50px;
-        height: 50px;
-    }
-  
-    .stat-icon {
-        width: 150px;
-        height: 55px;
-    }
-  
-    .stat-value {
-        font-size: 9px;
-    }
-  
-    .footer {
-        align-items: center;
-    }
-  }
+ 

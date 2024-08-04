@@ -1,0 +1,4 @@
+#root {
+    width: 97vw; /* Ensure root takes full viewport width */
+    height: 100vh; /* Ensure root takes full viewport height */
+  }

@@ -7,6 +7,9 @@ import { UserContext } from "../../App";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import loginSchema from '../validation/loginShema';
+import img3 from '../../assets/login.svg'
+import img2 from '../../assets/google.png'
+import './login.css';
 
 
 const Login: React.FC = () => {
@@ -50,14 +53,14 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="w-screen h-screen bg-[#FBFBFB] flex flex-col justify-center items-center">
+    <div className="bhy">
       <h1 className="text-4xl font-semibold text-[#2c444e] relative flex items-center justify-center m-5">
         Log in Form
         <span className="absolute bottom-[-10px] w-full h-1 bg-[#2c444e] rounded-sm"></span>
       </h1>
-      <div className="flex border border-double border-black rounded-2xl shadow-lg overflow-hidden">
+      <div className="dora">
         <div className="w-1/2 bg-white flex justify-center items-center">
-          <img className="w-[90%] h-auto object-cover" src='src/assets/login.svg' alt="login" />
+          <img className="imm" src={img3} alt="login" />
         </div>
         <div className="relative w-1/2 p-8 backdrop-saturate-200">
           <h2 className="text-2xl font-medium text-[#2c444e] mb-5">Members Log in</h2>
@@ -78,7 +81,7 @@ const Login: React.FC = () => {
                     id="email"
                     name="email"
                     placeholder="Email"
-                    className="w-full max-w-md h-10 p-2 border border-[#2c444e] rounded mt-1"
+                    className="input w-full max-w-md h-10 p-2 border border-[#2c444e] rounded mt-1"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.email}
@@ -98,7 +101,7 @@ const Login: React.FC = () => {
                     id="password"
                     name="password"
                     placeholder="Password"
-                    className="w-full max-w-md h-10 p-2 border border-[#2c444e] rounded mt-1"
+                    className="input w-full max-w-md h-10 p-2 border border-[#2c444e] rounded mt-1"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.password}
@@ -109,20 +112,20 @@ const Login: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <button type="submit" className="text-lg font-medium py-3 px-6 text-white bg-[#FD693F] rounded-lg border-none cursor-pointer my-2" disabled={isSubmitting}>
+                <button type="submit" className="poi" disabled={isSubmitting}>
                   Log In
                 </button>
                 {error && <p className="text-red-500 mt-4">{error}</p>}
               </Form>
             )}
           </Formik>
-          <p className="text-sm text-[#2c444e] my-2">or</p>
-          <button className="w-full max-w-xs h-10 rounded-md bg-white shadow-md text-lg font-medium my-2 text-[#2c444e] flex items-center justify-center cursor-pointer" onClick={googleAuth}>
-            <img src='src/assets/google.png' alt="google icon" className="w-6 h-6 object-cover mr-2" />
+          <p className="or text-sm text-[#2c444e] my-2">or</p>
+          <button className="google_btn w-full max-w-xs h-10 rounded-md bg-white shadow-md text-lg font-medium my-2 text-[#2c444e] flex items-center justify-center cursor-pointer" onClick={googleAuth}>
+            <img src={img2} alt="google icon" className="kiki w-2 h-2 object-cover mr-2" />
             <span>Sign in with Google</span>
           </button>
-          <p className="text-sm text-[#2c444e] my-2">
-            New Here? <Link to="/signup" className="text-lg font-medium text-[#FD693F]">Sign Up</Link>
+          <p className="new text-sm text-[#2c444e] my-2">
+            New Here? <Link to="/signup" className="log">Sign Up</Link>
           </p>
         </div>
       </div>

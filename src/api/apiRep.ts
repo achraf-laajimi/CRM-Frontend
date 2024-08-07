@@ -11,7 +11,7 @@ interface ErrorResponse {
   message?: string;
 }
 
-/* export const signup = async (name: string, email: string, password: string) => {
+export const signup = async (name: string, email: string, password: string) => {
   try {
     const response = await api.post('/signup', { name, email, password });
     return response.data;
@@ -19,8 +19,8 @@ interface ErrorResponse {
     throw new Error('Error signing up. Please try again.');
   }
 };
- */
-/* export const loginUser = async (email: string, password: string) => {
+
+export const loginUser = async (email: string, password: string) => {
   try {
     const response = await api.post('/login', { email, password });
     if (response.data.status === 'ok') {
@@ -38,11 +38,11 @@ interface ErrorResponse {
       throw new Error('An unexpected error occurred. Please try again.');
     }
   }
-}; */
+}; 
 
 export const getUsers = async () => {
   try {
-    const response = await api.get('/users'); // Utiliser le point de terminaison correct
+    const response = await api.get('/getUsers'); // Utiliser le point de terminaison correct
     console.log('API Response:', response.data); // Affichez les données pour déboguer
     return response.data;
   } catch (error) {
@@ -59,7 +59,7 @@ export const getUsers = async () => {
 
 export const getUser = async (id: string) => {
   try {
-    const response = await api.get(`/users/${id}`); // Utiliser le point de terminaison correct
+    const response = await api.get(`/getUser/${id}`); // Utiliser le point de terminaison correct
     if (response.data) {
       return response.data;
     } else {
@@ -95,7 +95,7 @@ export const createUser = async (name: string, email: string, password: string) 
 
 export const updateUser = async (id: string, data: { name: string; email: string; password: string }) => {
   try {
-    const response = await api.put(`/:id`, data); // Utiliser le point de terminaison correct
+    const response = await api.put(`/updateUser/${id}`, data); // Utiliser le point de terminaison correct
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -111,7 +111,7 @@ export const updateUser = async (id: string, data: { name: string; email: string
 
 export const deleteUser = async (id: string) => {
   try {
-    const response = await api.delete(`/:id`); // Utiliser le point de terminaison correct
+    const response = await api.delete(`/deleteUser/${id}`); // Utiliser le point de terminaison correct
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -124,10 +124,13 @@ export const deleteUser = async (id: string) => {
     }
   }
 };
+export const blockUser = async (userId: string) => {
+  return await axios.put(`${API_URL}/blockUser/${userId}`);
+};
 
 export const getTransactions = async () => {
   try {
-    const response = await api.get('/transactions');
+    const response = await api.get('/getTransactions'); // Assurez-vous que ce point de terminaison est correct
     return response.data;
   } catch (error) {
     console.error('Error fetching transactions:', error);

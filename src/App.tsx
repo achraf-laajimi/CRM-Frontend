@@ -61,9 +61,9 @@ const App: React.FC = () => {
           <Route path="/customers" element={<Customers />} />
           <Route path="/order" element={<Order />} />
           <Route path="/review" element={<Review />} />
-      {/*     <Route path="/" element={user ? <Home user={user} /> : <Navigate to="/login" />} />
+  {/*    <Route path="/" element={user ? <Home user={user} /> : <Navigate to="/login" />} />
           <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
-          <Route path="/signup" element={user ? <Navigate to="/" /> : <Signup />} /> */}
+          <Route path="/signup" element={user ? <Navigate to="/" /> : <Signup />} />  */}
         </Routes>
         <ToastContainer
           position='top-center'

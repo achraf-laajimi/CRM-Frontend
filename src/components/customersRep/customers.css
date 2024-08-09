@@ -3,8 +3,8 @@
     padding: 33px;
     position: absolute;
     top: 12px;
-    left: 289px;
-    width: 1128px;
+    left: 260px;
+    width: 1140px;
     border-radius: 24px;
     background-color: #EEEEEE;
     border-radius: 15px;
@@ -15,7 +15,7 @@
   }
   .customers h2 {
     color: #ff6600;
-    MARGIN-LEFT: -30px;
+    MARGIN-LEFT: -7px;
     margin-bottom: 35px;
   }
   

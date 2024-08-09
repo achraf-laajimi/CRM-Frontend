@@ -5,14 +5,14 @@ import img from './téléchargement.jpg';
 import { ReactComponent as TrashIcon } from './trash.svg';
 import './customers.css';
 import { ReactComponent as EditIcon } from './pencil.svg';
-import { getUsers } from '../../api/apiRep';
-import { blockUser } from '../../api/apiRep'; 
+import { getUsers, blockUser, updateUser, deleteUser, getUser } from '../../api/apiRep';
 
 interface Customer {
   _id: string;
   username: string;
   email: string;
   avatar: string;
+  isBlocked?: boolean; // Add this field if you have it in your data model
 }
 
 const transactions = [
@@ -62,16 +62,34 @@ const Customers: React.FC = () => {
     setSelectedCustomer(customer);
     setShowHistory(true);
   };
+
   const handleBlockUser = async (userId: string) => {
     try {
       const response = await blockUser(userId);
       console.log('User blocked successfully:', response.data);
-      // Optionally, update UI or state to reflect the change
+      setCustomers((prev) =>
+        prev.map((customer) =>
+          customer._id === userId ? { ...customer, isBlocked: true } : customer
+        )
+      );
     } catch (error) {
       console.error('Error blocking user:', error);
     }
   };
-  
+
+  const handleEditUser = (userId: string) => {
+    navigate(`/edit-user/${userId}`);
+  };
+
+  const handleDeleteUser = async (userId: string) => {
+    try {
+      await deleteUser(userId);
+      setCustomers((prev) => prev.filter((customer) => customer._id !== userId));
+      console.log('User deleted successfully');
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
 
   return (
     <div className='customer'>
@@ -107,19 +125,21 @@ const Customers: React.FC = () => {
                   <td>
                     {selectedCustomerIds[customer._id] ? (
                       <div className="action-icons">
-                        <TrashIcon className="trash" />
-                        <EditIcon className="trash" />
+                        <TrashIcon className="trash" onClick={() => handleDeleteUser(customer._id)} />
+                        <EditIcon className="trash" onClick={() => handleEditUser(customer._id)} />
                       </div>
                     ) : (
                       <div className="action-menu">
-                      <button className="action-button" onClick={() => handleMenuToggle(customer._id)}>...</button>
-                      {menuOpenId === customer._id && (
-                        <div className="dropdown-menu">
-                          <button className="dropdown-item" onClick={() => handleViewClick(customer)}>View</button>
-                          <button className="dropdown-item" onClick={() => handleBlockUser(customer._id)}>Block User</button>
-                        </div>
-                      )}
-                    </div>
+                        <button className="action-button" onClick={() => handleMenuToggle(customer._id)}>...</button>
+                        {menuOpenId === customer._id && (
+                          <div className="dropdown-menu">
+                            <button className="dropdown-item" onClick={() => handleViewClick(customer)}>View</button>
+                            <button className="dropdown-item" onClick={() => handleBlockUser(customer._id)}>Block User</button>
+                            <button className="dropdown-item" onClick={() => handleEditUser(customer._id)}>Edit User</button>
+                            <button className="dropdown-item" onClick={() => handleDeleteUser(customer._id)}>Delete User</button>
+                          </div>
+                        )}
+                      </div>
                     )}
                   </td>
                 </tr>
@@ -142,7 +162,7 @@ const Customers: React.FC = () => {
                 <p>{selectedCustomer.email}</p>
                 <div className="user-actions">
                   <button className="down-buttons">Down</button>
-                  <button className="block-buttons">Block User</button>
+                  <button className="block-buttons" onClick={() => handleBlockUser(selectedCustomer._id)}>Block User</button>
                 </div>
                 <div className="user-stats">
                   <div className="stat">
@@ -163,60 +183,28 @@ const Customers: React.FC = () => {
                       </svg>
                     </div>
                     <div className="stat-value">#2300</div>
-                    <p className='rr1'>Total Amount <br /> Earned</p>
-                  </div>
-                  <div className="stat">
-                    <div className="stat-icon">
-                      <svg width="55" height="55" viewBox="0 0 100 100" className='dora'>
-                        <circle cx="50" cy="50" r="40" fill="none" stroke="#00B8D9" strokeWidth="10" />
-                        <circle cx="50" cy="50" r="40" fill="none" stroke="#281AC8" strokeWidth="10" strokeDasharray="251.2" strokeDashoffset="100" />
-                      </svg>
-                    </div>
-                    <div className="stat-value">#0</div>
-                    <p className='rr2'>Total number of <br /> canceled Orders</p>
+                    <p className='rr1'>Total Amount <br /> Spent</p>
                   </div>
                 </div>
               </div>
-              <table className="transactions-table">
+              <table className="transaction-table">
                 <thead>
                   <tr>
-                    <th>Transaction ID</th>
-                    <th>Date livr</th>
-                    <th>Products</th>
-                    <th>Amounts</th>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Product</th>
+                    <th>Amount</th>
                     <th>Status</th>
-                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {transactions.map(transaction => (
+                  {transactions.map((transaction) => (
                     <tr key={transaction.id}>
                       <td>{transaction.transactionId}</td>
                       <td>{transaction.date}</td>
                       <td>{transaction.product}</td>
                       <td>{transaction.amount}</td>
-                      <td>
-                        <div className={transaction.status === 'Successful' ? 'status-success-bg' : 'status-decline-bg'}>
-                          <span className={transaction.status === 'Successful' ? 'status-success' : 'status-decline'}>
-                            {transaction.status}
-                          </span>
-                        </div>
-                      </td>
-                      <td>
-                      <div className="action-menus">
-                        <button className="action-buttons">...</button>
-                        <div className="dropdown-menus">
-                          {transaction.status === 'Successful' ? (
-                            <>
-                              <button className="dropdown-items">Payment Details</button>
-                              <button className="dropdown-item" onClick={() => handleBlockUser(selectedCustomer._id)}>Block User</button>
-                            </>
-                          ) : (
-                            <button className="dropdown-items">Block User</button>
-                          )}
-                        </div>
-                      </div>
-                      </td>
+                      <td>{transaction.status}</td>
                     </tr>
                   ))}
                 </tbody>

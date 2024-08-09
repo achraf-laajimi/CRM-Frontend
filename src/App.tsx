@@ -8,12 +8,16 @@ import Order from './components/orderRep/order';
 import Review from './components/review/review';
 import Login from './components/login/Login';
 import Signup from './components/signup/Signup';
+import Produit from './components/produitRep/produit'
 import  { createContext, useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Assurez-vous d'inclure les styles de Toastify
-
+import ProductList from './components/produitRep/produit';
+import EditProductForm from './components/produitRep/EditProductForm';
+import AddProductForm from './components/produitRep/ajoutProduct';
+import EditUser from './components/customersRep/edituser';
 export interface User {
   firstName: string;
   lastName: string;
@@ -61,6 +65,10 @@ const App: React.FC = () => {
           <Route path="/customers" element={<Customers />} />
           <Route path="/order" element={<Order />} />
           <Route path="/review" element={<Review />} />
+          <Route path="/produit" element={<ProductList />} />
+          <Route path="/add-product" element={<AddProductForm />} />
+          <Route path="/edit-product" element={<EditProductForm />} />
+          <Route path="/edit-user/:userId" element={<EditUser />} />
   {/*    <Route path="/" element={user ? <Home user={user} /> : <Navigate to="/login" />} />
           <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
           <Route path="/signup" element={user ? <Navigate to="/" /> : <Signup />} />  */}

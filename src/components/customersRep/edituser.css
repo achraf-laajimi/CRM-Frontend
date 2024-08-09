@@ -1,0 +1,48 @@
+/* edituser.css */
+
+/* Container for the form */
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 60px;
+    border-radius: 8px;
+    box-shadow: 0 65px 98px rgba(7, 17, 23, 0.1);
+    background-color: #edeaea;
+    margin-top: 180px;
+    margin-left: 428px;
+  }
+  
+  /* Form labels */
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #FC410C;
+  }
+  
+  /* Form inputs */
+  input[type="text"],
+  input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    
+  }
+  
+  /* Submit button */
+  button[type="submit"] {
+    background-color: #FC410C;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #FC410C;
+  }
+  

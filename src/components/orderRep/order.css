@@ -19,6 +19,10 @@
     align-items: center;
     margin-bottom: 20px;
   }
+  .mt{
+    margin-top: 372px;
+    margin-left: 1038px;
+  }
   
   .orders-header h2 {
     color: #f66a0a;
@@ -63,10 +67,10 @@
     left: 1112px;
     margin-top: -8px;
   }
-  .td {
+/*   .td {
     display: flex;
     gap: 26px;
-  }
+  } */
   .tablou{
     width: 100%;
     background-color:#fff;

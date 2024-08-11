@@ -1,8 +1,8 @@
-.container {
+.container1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 15px;
 }
 
 .heading {
@@ -76,7 +76,7 @@
   margin: 10px 0;
   margin-left: 37%;
 }
-.container {
+.container1 {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -92,7 +92,7 @@
   margin-top: -3px;
 }
 
-.form_container {
+.form_container1 {
   display: flex;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -101,6 +101,7 @@
   width: 1000px;
   height: 626px;
   margin-top: -3px;
+  margin-left: 10px;
 }
 
 .left, .right {

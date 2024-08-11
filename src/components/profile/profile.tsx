@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./profile.css";
 import Navbar from '../navbar/navbar';
 import img from './téléchargement.jpg';
@@ -32,13 +32,44 @@ const UserProfile: React.FC = () => {
     confirmNewPassword: false,
   });
 
+  useEffect(() => {
+    // Fetch the user profile data from API
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch('/api/profile');
+        const data = await response.json();
+        setProfile(data);
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setProfile({ ...profile, [name]: value });
   };
 
-  const handleSaveChanges = () => {
-    console.log('Profile saved', profile);
+  const handleSaveChanges = async () => {
+    try {
+      const response = await fetch('/api/updateProfile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(profile),
+      });
+
+      if (response.ok) {
+        console.log('Profile saved successfully');
+      } else {
+        console.error('Failed to save profile');
+      }
+    } catch (error) {
+      console.error('Error saving profile:', error);
+    }
   };
 
   const handleDelete = () => {
@@ -65,8 +96,8 @@ const UserProfile: React.FC = () => {
         <div className="profile-header">
           <img src={img} alt="Profile" className="profile-pic" />
           <div className="profile-info">
-            <h3>Alaa Mohamed</h3>
-            <p>Rep Commerciale</p>
+            <h3>{profile.userName}</h3>
+            <p>{profile.email}</p>
             <p>Eastern European Time (EET), Cairo UTC +3</p>
           </div>
           <div className="profile-actions">
@@ -160,14 +191,11 @@ const UserProfile: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="form-actions">
-            <button type="button" className="cancel" onClick={() => console.log('Canceled')}>Cancel</button>
-            <button type="button" className="save-changes" onClick={handleSaveChanges}>Save Changes</button>
-          </div>
+          <button type="button" onClick={handleSaveChanges} className="save-changes">Save Changes</button>
         </form>
       </div>
     </div>
   );
-}
+};
 
 export default UserProfile;

@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect , useState } from 'react';
 import './sidebar.css';
 import { Link, useLocation } from 'react-router-dom';
 import logo from './images.png';
 
 const Sidebar: React.FC = () => {
     const location = useLocation();
+    const [userName, setUserName] = useState('');
 
     useEffect(() => {
         const navLinks = document.querySelectorAll('.nav-link');
@@ -18,6 +19,7 @@ const Sidebar: React.FC = () => {
                 (event.currentTarget as HTMLElement).classList.add('active');
             });
         });
+      
 
         // Set active class based on current page
         const path = location.pathname;
@@ -27,6 +29,8 @@ const Sidebar: React.FC = () => {
             }
         });
     }, [location.pathname]);
+    
+    
 
     return (
         <div className="sidebar">
@@ -75,7 +79,7 @@ const Sidebar: React.FC = () => {
             <div className="profilee">
                 <img src={logo} alt="Profile Picture" />
                 <div className='a'>
-                    <span>Evano</span>
+                <h2>Welcome, {userName}</h2>
                     <p>Product Owner</p>
                 </div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi" viewBox="0 0 16 16">

@@ -115,6 +115,17 @@
     background-color: #FD693F;
     color: white;
   }
+  .go-back-button {
+    background-color: #ff5722;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 17px;
+    cursor: pointer;
+    position: relative;
+    top: -50px;
+    left: 955px;
+}
   
   .footer {
     margin-top: 20px;
@@ -248,9 +259,11 @@
   
   .user-stats {
     display: flex;
-    gap: 14px;
-    margin-top: 10px;
-    margin-left: 224px;
+    gap: 62px;
+    margin-top: 27px;
+    margin-left: 266px;
+    color: #ff5722;
+    font-weight: bold;
   }
   
   .stat {
@@ -302,9 +315,29 @@
   .transactions-table {
     width: 1100px;
     border-collapse: collapse;
-    margin-top: 94px;
+    margin-top: 9px;
     margin-left: 4px;
+    text-align: center;
   }
+  .status.successful {
+    background-color: #F8D8FD;
+    color: #529FF9;
+    cursor: pointer;
+    width: 41px;
+    height: 7px;
+    text-align: center;
+  }
+  
+  
+  .status.decline {
+    background-color: #FFE4DD;
+    color: #FC410C;
+    cursor: pointer;
+    width: 42px;
+    height: 7px;
+    text-align: center;
+  }
+  
   .transactions-table td {
     padding: 6px;
     font-size: 8px;
@@ -314,6 +347,10 @@
     position: relative;
 }
   
+.user-transactions h3{
+color: #ff5722;
+    margin-top: 37px;
+    margin-left: 29px;}
   .transactions-table th, .transactions-table td {
     border-bottom: 1px solid #ddd;
   }

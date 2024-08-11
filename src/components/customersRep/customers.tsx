@@ -3,18 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../navbar/navbar';
 import img from './téléchargement.jpg';
 import { ReactComponent as TrashIcon } from './trash.svg';
-import './customers.css';
 import { ReactComponent as EditIcon } from './pencil.svg';
-import { getUsers, blockUser, updateUser, deleteUser, getUser } from '../../api/apiRep';
-import { toast } from 'react-toastify'; // Import toast
-import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
+import './customers.css';
+import { getUsers, blockUser, deleteUser } from '../../api/apiRep';
+import { getOrderStatistics } from '../../api/orderRep';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Customer {
   _id: string;
   username: string;
   email: string;
   avatar: string;
-  isBlocked?: boolean; // Add this field if you have it in your data model
+  isBlocked?: boolean;
 }
 
 const transactions = [
@@ -25,20 +26,24 @@ const transactions = [
   { id: 5, transactionId: '289272304', date: '22/12/2019', product: '$134- Google Play Giftcard', amount: '#39,000.00', status: 'Successful' },
   { id: 6, transactionId: '289272304', date: '22/12/2019', product: '26Btc- Bitcoin', amount: '#39,000.00', status: 'Decline' },
 ];
+
 const Customers: React.FC = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
-  const [visibleCount, setVisibleCount] = useState(8); // State to keep track of visible customers
+  const [visibleCount, setVisibleCount] = useState(8);
   const [selectedCustomerIds, setSelectedCustomerIds] = useState<{ [key: string]: boolean }>({});
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
   const [showHistory, setShowHistory] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  const [stats, setStats] = useState<any | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showValue, setShowValue] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
         const data = await getUsers();
-        console.log('Fetched Data:', data);
         setCustomers(data);
       } catch (error) {
         console.error('Error fetching customers:', error);
@@ -48,8 +53,27 @@ const Customers: React.FC = () => {
     fetchCustomers();
   }, []);
 
+  useEffect(() => {
+    const fetchStatistics = async () => {
+      try {
+        const data = await getOrderStatistics();
+        setStats(data);
+        setLoading(false);
+      } catch (err) {
+        setError('Failed to load statistics');
+        setLoading(false);
+      }
+    };
+
+    fetchStatistics();
+  }, []);
+
+  const handleShowValueChange = () => {
+    setShowValue(true);
+  };
+
   const handleLoadMore = () => {
-    setVisibleCount(prev => prev + 5); // Increase visible count by 5
+    setVisibleCount(prev => prev + 5);
   };
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, customerId: string) => {
@@ -64,7 +88,6 @@ const Customers: React.FC = () => {
   };
 
   const handleViewClick = (customer: Customer) => {
-    console.log('Selected Customer:', customer);
     setSelectedCustomer(customer);
     setShowHistory(true);
   };
@@ -172,82 +195,84 @@ const Customers: React.FC = () => {
                 </div>
                 <div className="user-stats">
                   <div className="stat">
-                    <div className="stat-icon">
+                   {/*  <div className="stat-icon">
                       <svg width="55" height="55" viewBox="0 0 100 100" className='dora'>
                         <circle cx="50" cy="50" r="40" fill="none" stroke="#00B8D9" strokeWidth="10" />
-                        <circle cx="50" cy="50" r="40" fill="none" stroke="#281AC8" strokeWidth="10" strokeDasharray="251.2" strokeDashoffset="50" />
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#00B8D9" strokeWidth="10" strokeDasharray="251.2" strokeDashoffset="25.12" />
                       </svg>
+                    </div> */}
+                    <div className="stat-info">
+                      <p>Total Orders</p>
+                      {loading ? <p>Loading...</p> : error ? <p>{error}</p> : stats && <p>{stats.totalOrders}</p>}
                     </div>
-                    <div className="stat-value">1000</div>
-                    <p className='rr'>Total Number Of <br/> Orders</p>
                   </div>
                   <div className="stat">
-                    <div className="stat-icon">
-                      <svg width="55" height="55" viewBox="0 0 100 100"  className='dora'>
-                        <circle cx="50" cy="50" r="40" fill="none" stroke="#00B8D9" strokeWidth="10" className='c1'/>
-                        <circle cx="50" cy="50" r="40" fill="none" stroke="#281AC8" strokeWidth="10" strokeDasharray="251.2" strokeDashoffset="80" />
-                      </svg>
-                    </div>
-                    <div className="stat-value">#2300</div>
-                    <p className='rr1'>Total Amount <br/> Earned</p>
-                  </div>
-                  <div className="stat">
-                    <div className="stat-icon">
+                 {/*    <div className="stat-icon">
                       <svg width="55" height="55" viewBox="0 0 100 100" className='dora'>
                         <circle cx="50" cy="50" r="40" fill="none" stroke="#00B8D9" strokeWidth="10" />
-                        <circle cx="50" cy="50" r="40" fill="none" stroke="#281AC8" strokeWidth="10" strokeDasharray="251.2" strokeDashoffset="100" />
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#00B8D9" strokeWidth="10" strokeDasharray="251.2" strokeDashoffset="50.24" />
                       </svg>
+                    </div> */}
+                    <div className="stat-info">
+                      <p>Orders Delivered</p>
+                      {loading ? <p>Loading...</p> : error ? <p>{error}</p> : stats && <p>{stats.totalDelivered}</p>}
                     </div>
-                    <div className="stat-value">#0</div>
-                    <p className='rr2'>Total number of <br/> canceled Orders</p>
+                  </div>
+                  <div className="stat">
+                   {/*  <div className="stat-icon">
+                      <svg width="55" height="55" viewBox="0 0 100 100" className='dora'>
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#00B8D9" strokeWidth="10" />
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#00B8D9" strokeWidth="10" strokeDasharray="251.2" strokeDashoffset="75.36" />
+                      </svg>
+                    </div> */}
+                    <div className="stat-info">
+                      <p>Orders Canceled</p>
+                      {loading ? <p>Loading...</p> : error ? <p>{error}</p> : stats && <p>{stats.totalCanceled}</p>}
+                    </div>
+                  </div>
+                  <div className="stat">
+                   {/*  <div className="stat-icon">
+                      <svg width="55" height="55" viewBox="0 0 100 100" className='dora'>
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#00B8D9" strokeWidth="10" />
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#00B8D9" strokeWidth="10" strokeDasharray="251.2" strokeDashoffset="125.6" />
+                      </svg>
+                    </div> */}
+                    <div className="stat-info">
+                      <p>Total Revenue</p>
+                      {loading ? <p>Loading...</p> : error ? <p>{error}</p> : stats && <p>{stats.totalRevenue}</p>}
+                    </div>
                   </div>
                 </div>
               </div>
-              <table className="transactions-table">
-                <thead>
-                  <tr>
-                    <th>Transaction ID</th>
-                    <th>Date livr</th>
-                    <th>Products</th>
-                    <th>Amounts</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {transactions.map(transaction => (
-                    <tr key={transaction.id}>
-                      <td>{transaction.transactionId}</td>
-                      <td>{transaction.date}</td>
-                      <td>{transaction.product}</td>
-                      <td>{transaction.amount}</td>
-                      <td>
-                        <div className={transaction.status === 'Successful' ? 'status-success-bg' : 'status-decline-bg'}>
-                          <span className={transaction.status === 'Successful' ? 'status-success' : 'status-decline'}>
-                            {transaction.status}
-                          </span>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="action-menus">
-                          <button className="action-buttons">...</button>
-                          <div className="dropdown-menus">
-                            {transaction.status === 'Successful' ? (
-                              <>
-                                <button className="dropdown-items">Payment Details</button>
-                                <button className="dropdown-item" onClick={() => handleBlockUser(selectedCustomer._id)}>Block User</button>
-                              </>
-                            ) : (
-                              <button className="dropdown-items">Block User</button>
-                            )}
-                          </div>
-                        </div>
-                      </td>
+              <div className="user-transactions">
+                <h3>Transactions</h3>
+                <table className="transactions-table">
+                  <thead>
+                    <tr>
+                      <th>Transaction ID</th>
+                      <th>Date</th>
+                      <th>Product</th>
+                      <th>Amount</th>
+                      <th>Status</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {transactions.map((transaction) => (
+                      <tr key={transaction.id}>
+                        <td>{transaction.transactionId}</td>
+                        <td>{transaction.date}</td>
+                        <td>{transaction.product}</td>
+                        <td>{transaction.amount}</td>
+                        <td className={`status ${transaction.status.toLowerCase()}`}>
+            {transaction.status}
+          </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
+            <button className="go-back-button" onClick={() => setShowHistory(false)}>Back to Customers</button>
           </div>
         )
       )}

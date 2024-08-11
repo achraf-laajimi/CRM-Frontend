@@ -1,14 +1,14 @@
-import React, { useState, useContext } from 'react';
-import { Formik, Form } from 'formik';
-import { Link, useNavigate } from 'react-router-dom';
+import { Form, Formik } from 'formik';
 import Cookies from 'js-cookie';
-import { loginUser } from "../../api/auth";
-import { UserContext } from "../../App";
+import React, { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { loginUser } from "../../api/auth";
+import { UserContext } from "../../App";
+import img2 from '../../assets/google.png';
+import img3 from '../../assets/login.svg';
 import loginSchema from '../validation/loginShema';
-import img3 from '../../assets/login.svg'
-import img2 from '../../assets/google.png'
 import './login.css';
 
 
@@ -36,7 +36,7 @@ const Login: React.FC = () => {
       Cookies.set('token', token, { expires: 7 });
       Cookies.set('role', role);
       toast.success('Connexion réussie !');
-      navigate('/');
+      navigate('/dashbord');
     } catch (error: any) {
       if (error.response) {
         console.error("Server response data:", error.response.data);

@@ -12,7 +12,15 @@ export const getOrders = async () => {
         throw err;
     }
 };
-
+export const getOrderStatistics = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/statistics`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching order statistics:', error);
+      throw error;
+    }
+  };
 // Fonction pour récupérer les détails d'une commande par ID
 export const getOrder = async (id: string) => {
     try {

@@ -172,7 +172,7 @@ export const createUser = async (name: string, email: string, password: string) 
   }
 };
 
-export const updateUser = async (id: string, data: { name: string; email: string}) => {
+export const updateUser = async (id: string, data: { username: string; email: string}) => {
   try {
     const response = await api.put(`/updateUser/${id}`, data); // Utiliser le point de terminaison correct
     return response.data;

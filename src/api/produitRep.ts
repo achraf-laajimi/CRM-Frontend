@@ -21,7 +21,8 @@ export const getProduct = async (id : string) => {
         throw err;
     }
 };
-export const createProduct = async (productData: {
+
+  export const addProduct = async (productData: {
     name: string;
     description: string;
     price: number;
@@ -30,13 +31,23 @@ export const createProduct = async (productData: {
     imageBase64?: string;
     gender?: 'men' | 'women' | 'kids';
     colors?: string[];
+    ownerId: string;
   }) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/add}`, productData);
+      const response = await axios.post(`${API_BASE_URL}/add`, productData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
       return response.data;
-    } catch (error: any) { // Use 'any' to handle errors with TypeScript
-      console.error('Error creating product:', error);
-      throw new Error(error.response ? error.response.data.error : 'Error creating product. Please try again.');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error creating product:', error.response?.data);
+      } else {
+        console.error('Unexpected error:', error);
+      }
+      throw new Error('Failed to create product');
     }
   };
   export const updateProduct = async (id: string, data: {

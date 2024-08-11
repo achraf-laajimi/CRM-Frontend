@@ -6,6 +6,8 @@ import { ReactComponent as TrashIcon } from './trash.svg';
 import './customers.css';
 import { ReactComponent as EditIcon } from './pencil.svg';
 import { getUsers, blockUser, updateUser, deleteUser, getUser } from '../../api/apiRep';
+import { toast } from 'react-toastify'; // Import toast
+import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
 
 interface Customer {
   _id: string;
@@ -23,9 +25,9 @@ const transactions = [
   { id: 5, transactionId: '289272304', date: '22/12/2019', product: '$134- Google Play Giftcard', amount: '#39,000.00', status: 'Successful' },
   { id: 6, transactionId: '289272304', date: '22/12/2019', product: '26Btc- Bitcoin', amount: '#39,000.00', status: 'Decline' },
 ];
-
 const Customers: React.FC = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
+  const [visibleCount, setVisibleCount] = useState(8); // State to keep track of visible customers
   const [selectedCustomerIds, setSelectedCustomerIds] = useState<{ [key: string]: boolean }>({});
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
   const [showHistory, setShowHistory] = useState(false);
@@ -46,6 +48,10 @@ const Customers: React.FC = () => {
     fetchCustomers();
   }, []);
 
+  const handleLoadMore = () => {
+    setVisibleCount(prev => prev + 5); // Increase visible count by 5
+  };
+
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, customerId: string) => {
     setSelectedCustomerIds((prev) => ({
       ...prev,
@@ -63,32 +69,30 @@ const Customers: React.FC = () => {
     setShowHistory(true);
   };
 
+  const handleDeleteUser = async (userId: string) => {
+    try {
+      await deleteUser(userId);
+      setCustomers(customers.filter(customer => customer._id !== userId));
+      toast.success('User deleted successfully');
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      toast.error('Error deleting user');
+    }
+  };
+
   const handleBlockUser = async (userId: string) => {
     try {
-      const response = await blockUser(userId);
-      console.log('User blocked successfully:', response.data);
-      setCustomers((prev) =>
-        prev.map((customer) =>
-          customer._id === userId ? { ...customer, isBlocked: true } : customer
-        )
-      );
+      await blockUser(userId);
+      setCustomers(customers.map(customer => customer._id === userId ? { ...customer, isBlocked: true } : customer));
+      toast.success('User blocked successfully');
     } catch (error) {
       console.error('Error blocking user:', error);
+      toast.error('Error blocking user');
     }
   };
 
   const handleEditUser = (userId: string) => {
     navigate(`/edit-user/${userId}`);
-  };
-
-  const handleDeleteUser = async (userId: string) => {
-    try {
-      await deleteUser(userId);
-      setCustomers((prev) => prev.filter((customer) => customer._id !== userId));
-      console.log('User deleted successfully');
-    } catch (error) {
-      console.error('Error deleting user:', error);
-    }
   };
 
   return (
@@ -107,7 +111,7 @@ const Customers: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {customers.map(customer => (
+              {customers.slice(0, visibleCount).map(customer => (
                 <tr key={customer._id} className={selectedCustomerIds[customer._id] ? 'selected' : ''}>
                   <td className='ooo'>
                     <input
@@ -148,7 +152,9 @@ const Customers: React.FC = () => {
           </table>
           <div className="footer">
             <span>{customers.length} Users</span>
-            <button className="view-more-button">View More</button>
+            {visibleCount < customers.length && (
+              <button className="view-more-button" onClick={handleLoadMore}>View More</button>
+            )}
           </div>
         </div>
       ) : (
@@ -173,38 +179,70 @@ const Customers: React.FC = () => {
                       </svg>
                     </div>
                     <div className="stat-value">1000</div>
-                    <p className='rr'>Total Number Of <br /> Orders</p>
+                    <p className='rr'>Total Number Of <br/> Orders</p>
                   </div>
                   <div className="stat">
                     <div className="stat-icon">
-                      <svg width="55" height="55" viewBox="0 0 100 100" className='dora'>
-                        <circle cx="50" cy="50" r="40" fill="none" stroke="#00B8D9" strokeWidth="10" className='c1' />
+                      <svg width="55" height="55" viewBox="0 0 100 100"  className='dora'>
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#00B8D9" strokeWidth="10" className='c1'/>
                         <circle cx="50" cy="50" r="40" fill="none" stroke="#281AC8" strokeWidth="10" strokeDasharray="251.2" strokeDashoffset="80" />
                       </svg>
                     </div>
                     <div className="stat-value">#2300</div>
-                    <p className='rr1'>Total Amount <br /> Spent</p>
+                    <p className='rr1'>Total Amount <br/> Earned</p>
+                  </div>
+                  <div className="stat">
+                    <div className="stat-icon">
+                      <svg width="55" height="55" viewBox="0 0 100 100" className='dora'>
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#00B8D9" strokeWidth="10" />
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#281AC8" strokeWidth="10" strokeDasharray="251.2" strokeDashoffset="100" />
+                      </svg>
+                    </div>
+                    <div className="stat-value">#0</div>
+                    <p className='rr2'>Total number of <br/> canceled Orders</p>
                   </div>
                 </div>
               </div>
-              <table className="transaction-table">
+              <table className="transactions-table">
                 <thead>
                   <tr>
-                    <th>Order ID</th>
-                    <th>Date</th>
-                    <th>Product</th>
-                    <th>Amount</th>
+                    <th>Transaction ID</th>
+                    <th>Date livr</th>
+                    <th>Products</th>
+                    <th>Amounts</th>
                     <th>Status</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {transactions.map((transaction) => (
+                  {transactions.map(transaction => (
                     <tr key={transaction.id}>
                       <td>{transaction.transactionId}</td>
                       <td>{transaction.date}</td>
                       <td>{transaction.product}</td>
                       <td>{transaction.amount}</td>
-                      <td>{transaction.status}</td>
+                      <td>
+                        <div className={transaction.status === 'Successful' ? 'status-success-bg' : 'status-decline-bg'}>
+                          <span className={transaction.status === 'Successful' ? 'status-success' : 'status-decline'}>
+                            {transaction.status}
+                          </span>
+                        </div>
+                      </td>
+                      <td>
+                        <div className="action-menus">
+                          <button className="action-buttons">...</button>
+                          <div className="dropdown-menus">
+                            {transaction.status === 'Successful' ? (
+                              <>
+                                <button className="dropdown-items">Payment Details</button>
+                                <button className="dropdown-item" onClick={() => handleBlockUser(selectedCustomer._id)}>Block User</button>
+                              </>
+                            ) : (
+                              <button className="dropdown-items">Block User</button>
+                            )}
+                          </div>
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

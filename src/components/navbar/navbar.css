@@ -31,12 +31,12 @@
 .search-bar {
     display: flex;
     align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 20px;
+    /* border: 1px solid #ddd; */
+    /* border-radius: 20px; */
     padding: 5px 10px;
-    margin-left: -2600px;
+    margin-left: -1995px;
     margin-top: -629px;
-    border: 1px solid #FC410C;
+    /* border: 1px solid #FC410C; */
     z-index: 2;
 }
 
@@ -50,9 +50,10 @@
 }
 
 .bb {
-    width: 16px;
+    width: 20px;
     height: 16px;
     z-index: 2;
+    margin-top: -14px;
 }
 
 .icons {

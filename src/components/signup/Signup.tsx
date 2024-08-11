@@ -1,14 +1,14 @@
+import { Field, Form, Formik } from 'formik';
+import Cookies from 'js-cookie';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Formik, Form, Field} from 'formik';
-import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './signup.css';
 import { signupUser } from '../../api/auth';
+import img1 from '../../assets/Signup.svg';
+import img2 from '../../assets/google.png';
 import addUserSchema from '../validation/SignupShema';
-import img1 from '../../assets/Signup.svg'
-import img2 from '../../assets/google.png'
+import './signup.css';
 const Signup: React.FC = () => {
   const navigate = useNavigate();
 
@@ -38,9 +38,9 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container1">
       <h1 className="heading">Sign up Form</h1>
-      <div className="form_container">
+      <div className="form_container1">
         <div className="left">
           <img className="img1" src={img1} alt="signup" />
         </div>

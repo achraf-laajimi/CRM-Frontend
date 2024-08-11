@@ -1,23 +1,23 @@
-import React from 'react';
-import Dashbord from './components/dashbordRep/dashbord';
-import Analytics from './components/analyticsRep/analytics';
-import Home from './components/home/Home';
-import Profile from './components/profile/profile';
-import Customers from './components/customersRep/customers';
-import Order from './components/orderRep/order';
-import Review from './components/review/review';
-import Login from './components/login/Login';
-import Signup from './components/signup/Signup';
-import Produit from './components/produitRep/produit'
-import  { createContext, useState, useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
+import React, { createContext, useEffect, useState } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Assurez-vous d'inclure les styles de Toastify
-import ProductList from './components/produitRep/produit';
+import Analytics from './components/analyticsRep/analytics';
+import Customers from './components/customersRep/customers';
+import EditUser from './components/customersRep/edituser';
+import Dashbord from './components/dashbordRep/dashbord';
+import Home from './components/home/Home';
+import Login from './components/login/Login';
+import Order from './components/orderRep/order';
 import EditProductForm from './components/produitRep/EditProductForm';
 import AddProductForm from './components/produitRep/ajoutProduct';
-import EditUser from './components/customersRep/edituser';
+import ProductList from './components/produitRep/produit';
+import Profile from './components/profile/profile';
+import Review from './components/review/review';
+import Signup from './components/signup/Signup';
+
+
 export interface User {
   firstName: string;
   lastName: string;
@@ -69,9 +69,10 @@ const App: React.FC = () => {
           <Route path="/add-product" element={<AddProductForm />} />
           <Route path="/edit-product" element={<EditProductForm />} />
           <Route path="/edit-user/:userId" element={<EditUser />} />
-  {/*    <Route path="/" element={user ? <Home user={user} /> : <Navigate to="/login" />} />
-          <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
-          <Route path="/signup" element={user ? <Navigate to="/" /> : <Signup />} />  */}
+         {/*  <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
+          <Route path="/signup" element={user ? <Navigate to="/" /> : <Signup />} />
+          <Route path="/" element={user ? <Home user={user} /> : <Navigate to="/login" />} /> */}
+ 
         </Routes>
         <ToastContainer
           position='top-center'

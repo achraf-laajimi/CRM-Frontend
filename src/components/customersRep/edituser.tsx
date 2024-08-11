@@ -2,22 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getUser, updateUser } from '../../api/apiRep';
 import './edituser.css';
+import { toast, ToastContainer } from 'react-toastify';
 
-// Définir l'interface pour les données de mise à jour
+// Define interface for update data
 interface UserUpdateData {
-  name: string;   // Utiliser name
+  username: string; // Use 'username' as the key
   email: string;
 }
 
-// Définir l'interface pour l'utilisateur
+// Define interface for user data
 interface User {
-  username: string; // Utiliser username pour correspondre à l'interface User
+  username: string; // Use 'username' to match frontend usage
   email: string;
 }
 
 const EditUser: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [name, setName] = useState(''); // Renommer username en name
+  const [username, setUsername] = useState(''); // Use 'username' for the state
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
   const { userId } = useParams<{ userId: string }>();
@@ -28,7 +29,7 @@ const EditUser: React.FC = () => {
         try {
           const data = await getUser(userId);
           setUser(data);
-          setName(data.username); // Remplacer username par name
+          setUsername(data.username); // Store the username in state
           setEmail(data.email);
         } catch (error) {
           console.error('Error fetching user:', error);
@@ -44,11 +45,12 @@ const EditUser: React.FC = () => {
     try {
       if (userId) {
         const updateData: UserUpdateData = {
-          name: name, // Utiliser name
-          email: email,
+          username, // Use 'username' as key and value
+          email,
         };
 
-        await updateUser(userId, updateData); // Assurez-vous que updateUser attend ce type
+        await updateUser(userId, updateData); // Send 'username' to the backend
+        toast.success('User updated successfully!');
         navigate('/customers');
       }
     } catch (error) {
@@ -62,11 +64,11 @@ const EditUser: React.FC = () => {
     <div className="form-container">
       <form onSubmit={handleSubmit}>
         <label>
-          Name:
+          Username:
           <input
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={username} // Bind input to 'username'
+            onChange={(e) => setUsername(e.target.value)}
           />
         </label>
         <label>

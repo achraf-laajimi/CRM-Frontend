@@ -12,7 +12,34 @@
   .order{
     position: relative;
   }
-  
+  /* Order status colors */
+.status.pending {
+  background-color: #F8D8FD;
+  color: #D550EB; /* You can adjust the text color as needed */
+  cursor: pointer;
+}
+
+.status.canceled {
+  background-color: #FFE4DD;
+  color: #FC410C; /* You can adjust the text color as needed */
+  cursor: pointer;
+}
+
+.status.delivered {
+  background-color: #529FF9;
+  color: #FFF; /* You can adjust the text color as needed */
+  cursor: pointer;
+}
+
+/* Additional styling if necessary */
+.status {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  display: inline-block;
+  text-align: center;
+}
+
   .orders-header {
     display: flex;
     justify-content: space-between;
@@ -20,8 +47,8 @@
     margin-bottom: 20px;
   }
   .mt{
-    margin-top: 372px;
-    margin-left: 1038px;
+    margin-top: 29px;
+    margin-left: 971px;
   }
   
   .orders-header h2 {

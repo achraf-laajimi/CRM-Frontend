@@ -21,6 +21,21 @@ export const getOrderStatistics = async () => {
       throw error;
     }
   };
+
+  export const createOrder = async (orderData: {
+    userId: string;
+    products: { productId: string; quantity: number }[];
+    paymentMethod: string;
+    shippingAddress: string;
+  }) => {
+    try {
+      const res = await axios.post(`${API_BASE_URL}/passer`, orderData);
+      return res.data;
+    } catch (err) {
+      console.error('Error placing order:', err);
+      throw err;
+    }
+  };
 // Fonction pour récupérer les détails d'une commande par ID
 export const getOrder = async (id: string) => {
     try {

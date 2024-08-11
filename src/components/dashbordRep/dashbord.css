@@ -154,17 +154,11 @@ width: 260px;
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background: conic-gradient(
-      #4a90e2 var(--percentage),
-      #e0e0e0 var(--percentage) 100%
-    );
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
-    margin: 10px;
-  }
-  
-  .pie-chart p {
-    margin-top: 5px;
-    text-align: center;
   }
   
   .pie::before {

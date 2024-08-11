@@ -4,18 +4,17 @@ import './order.css';
 import Navbar from '../navbar/navbar';
 import { getOrders } from '../../api/orderRep';
 
-// Définir l'interface pour le type Order
 interface Order {
-  id: string;
+  _id: string;
   createdAt: string;
-  customer: string;
+  paymentMethod: string;
   shippingAddress: string;
   totalAmount: string;
   status: string;
 }
 
 const OrdersTable: React.FC = () => {
-  const [orders, setOrders] = useState<Order[]>([]); // Typage du state avec Order[]
+  const [orders, setOrders] = useState<Order[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const ordersPerPage = 15;
   const navigate = useNavigate();
@@ -23,7 +22,7 @@ const OrdersTable: React.FC = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const fetchedOrders = await getOrders(); // Assurez-vous que getOrders renvoie des données de type Order[]
+        const fetchedOrders = await getOrders();
         setOrders(fetchedOrders);
       } catch (error) {
         console.error('Error fetching orders:', error);
@@ -32,30 +31,22 @@ const OrdersTable: React.FC = () => {
     fetchOrders();
   }, []);
 
-
-  
   const currentOrders = orders.slice(
     (currentPage - 1) * ordersPerPage,
     currentPage * ordersPerPage
   );
 
-  // Handle previous page
-  const handlePreviousPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-  };
-
-  // Handle next page
   const formatDate = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   const handlePlaceOrder = () => {
-    navigate('/place-order'); // Redirection vers la page pour passer une nouvelle commande
+    navigate('/passer');
   };
 
   return (
@@ -65,9 +56,6 @@ const OrdersTable: React.FC = () => {
         <div className="orders-header">
           <h2>Orders</h2>
           <p>Here is your order list data</p>
-          <button className="filter-button">
-            <span className='span'>Filter Order</span>
-          </button>
         </div>
         <div className='tablou'>
           <table className="orders-table">
@@ -75,7 +63,7 @@ const OrdersTable: React.FC = () => {
               <tr>
                 <th>Order ID</th>
                 <th>Date</th>
-                <th>Customer Name</th>
+                <th>Payment Method</th>
                 <th>Location</th>
                 <th>Amount</th>
                 <th>Status Order</th>
@@ -83,16 +71,16 @@ const OrdersTable: React.FC = () => {
             </thead>
             <tbody>
               {currentOrders.map((order) => (
-                <tr key={order.id}>
-                  <td>{order.id}</td>
+                <tr key={order._id}>
+                  <td>{order._id}</td>
                   <td>{formatDate(order.createdAt)}</td>
-                  <td>{order.customer}</td>
+                  <td>{order.paymentMethod}</td>
                   <td>{order.shippingAddress}</td>
                   <td>{order.totalAmount}</td>
                   <td className='td'>
-                  <span className={`status ${order.status.toLowerCase().replace(' ', '-')}`}>
-                        {order.status}
-                      </span>
+                    <span className={`status ${order.status.toLowerCase().replace(' ', '-')}`}>
+                      {order.status}
+                    </span>
                   </td>
                 </tr>
               ))}

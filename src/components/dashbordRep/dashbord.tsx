@@ -43,8 +43,8 @@ const Dashboard: React.FC = () => {
     setShowValue(false);
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p style={{ color: 'red' }}>{error}</p>;
+/*   if (loading) return <p>Loading...</p>;
+  if (error) return <p style={{ color: 'red' }}>{error}</p>; */
 
   return (
     <div className='dash'>

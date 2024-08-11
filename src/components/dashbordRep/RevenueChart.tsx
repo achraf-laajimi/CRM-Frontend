@@ -65,8 +65,8 @@ const RevenueChart: React.FC = () => {
     },
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p style={{ color: 'red' }}>{error}</p>;
+/*   if (loading) return <p>Loading...</p>;
+  if (error) return <p style={{ color: 'red' }}>{error}</p>; */
 
   return (
     <div className="revenue-chart-container">

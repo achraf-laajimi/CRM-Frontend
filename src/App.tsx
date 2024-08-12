@@ -10,13 +10,13 @@ import Dashbord from './components/dashbordRep/dashbord';
 import Home from './components/home/Home';
 import Login from './components/login/Login';
 import Order from './components/orderRep/order';
-import EditProductForm from './components/produitRep/EditProductForm';
+import PlaceOrder from './components/orderRep/placeorder';
 import AddProductForm from './components/produitRep/ajoutProduct';
+import EditProductForm from './components/produitRep/EditProductForm';
 import ProductList from './components/produitRep/produit';
 import Profile from './components/profile/profile';
 import Review from './components/review/review';
 import Signup from './components/signup/Signup';
-import PlaceOrder from './components/orderRep/placeorder';
 
 
 export interface User {
@@ -59,6 +59,7 @@ const App: React.FC = () => {
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <div>
+        
         <Routes>
           <Route path="/dashbord" element={<Dashbord />} />
           <Route path="/analytics" element={<Analytics />} />
@@ -70,10 +71,11 @@ const App: React.FC = () => {
           <Route path="/add-product" element={<AddProductForm />} />
           <Route path="/edit-product" element={<EditProductForm />} />
           <Route path="/edit-user/:userId" element={<EditUser />} />
+          <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
+          <Route path="/signup" element={user ? <Navigate to="/" /> : <Signup />} />
+          <Route path="/" element={user ? <Home user={user} /> : <Navigate to="/login" />} />
           <Route path="/passer" element={<PlaceOrder />} />
-      <Route path="/login" element={user ? <Navigate to="/dashbord" /> : <Login />} />
- {/*        <Route path="/signup" element={user ? <Navigate to="/" /> : <Signup />} /> */}  
-          <Route path="/" element={user ? <Home user={user} /> : <Navigate to="/login" />} /> 
+
         </Routes>
         <ToastContainer
           position='top-center'

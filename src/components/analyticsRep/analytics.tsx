@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getProducts, getReviews } from '../../api/apiRep'; // Import the getReviews function
+import { getProducts, getReviews } from '../../api/apiRep';
 import Navbar from '../navbar/navbar';
 import './analytics.css';
 import img from './Bland_Cosmetic_Product_Packaging_Unit_500x400.jpg';
@@ -13,7 +13,7 @@ interface Product {
   likes?: number;
   inStock?: boolean;
   ordered?: number;
-  reviewIds?: string[]; // Add reviewIds to track reviews
+  reviewIds?: string[];
 }
 
 interface Review {
@@ -31,36 +31,44 @@ const Analytics: React.FC = () => {
     const fetchProducts = async () => {
       try {
         const products: Product[] = await getProducts();
-        console.log('Fetched products:', products);
-  
-        // Sort or filter products based on likes for most favorite products
-        const favoriteProducts = products
-          .filter((product: Product) => product.likes !== undefined)
-          .sort((a: Product, b: Product) => (b.likes || 0) - (a.likes || 0));
-  
-        // Sort or filter products based on ordered or totalSales for best seller products
-        const bestSellers = products
-          .filter((product: Product) => product.ordered !== undefined)
-          .sort((a: Product, b: Product) => (b.ordered || 0) - (a.ordered || 0));
-  
-        setMostFavoriteProducts(favoriteProducts);
-        setBestSellerProducts(bestSellers);
 
-        // Fetch reviews for each product
-        const reviewsMap: Record<string, Review[]> = {};
-        for (const product of products) {
-          if (product._id) {
+        if (products && products.length > 0) {
+          const reviewsMap: Record<string, Review[]> = {};
+
+          const productsWithReviews = await Promise.all(products.map(async (product) => {
             const reviews = await getReviews(product._id);
             reviewsMap[product._id] = reviews;
-          }
-        }
-        setReviewsByProduct(reviewsMap);
 
+            // Type the accumulate function and the review parameter
+            const averageRating = reviews.length > 0 
+              ? reviews.reduce((acc: number, review: Review) => acc + review.rating, 0) / reviews.length 
+              : 0;
+
+            return {
+              ...product,
+              averageRating,
+            };
+          }));
+
+          const filteredProducts = productsWithReviews.filter(product => product.averageRating > 3);
+
+          const favoriteProducts = filteredProducts
+            .sort((a, b) => (b.likes || 0) - (a.likes || 0));
+
+          const bestSellers = filteredProducts
+            .sort((a, b) => (b.ordered || 0) - (a.ordered || 0));
+
+          setMostFavoriteProducts(favoriteProducts);
+          setBestSellerProducts(bestSellers);
+          setReviewsByProduct(reviewsMap);
+        } else {
+          console.warn('No products found.');
+        }
       } catch (error) {
         console.error('Error fetching products:', error);
       }
     };
-  
+
     fetchProducts();
   }, []);
 
@@ -95,7 +103,7 @@ const Analytics: React.FC = () => {
                     <div className="product-info">
                       <h4>{product.name}</h4>
                       <p className='mou'>{product.totalSales || 0} Total Sales</p>
-                      <p>⭐ {reviewsByProduct[product._id]?.length || 0} Reviews</p> {/* Display review count */}
+                      <p>⭐ {reviewsByProduct[product._id]?.length || 0} Reviews</p>
                       <p>❤️ {product.likes || 0} Like it</p>
                     </div>
                   </div>
@@ -117,7 +125,7 @@ const Analytics: React.FC = () => {
                     <div className="product-details">
                       <h4>{product.name}</h4>
                       <p className='mou'>{product.ordered || 0} Ordered</p>
-                      <p>⭐ {reviewsByProduct[product._id]?.length || 0} Reviews</p> {/* Display review count */}
+                      <p>⭐ {reviewsByProduct[product._id]?.length || 0} Reviews</p>
                       <p>❤️ {product.likes || 0} Like it</p>
                     </div>
                   </div>

@@ -101,3 +101,12 @@ export const filterProducts = async (filters: {
   }
 };
  */
+export const getMostFavoriteProducts = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/most-favorites`);
+      return response.data;
+    } catch (error: any) {
+      console.error('Error fetching most favorite products:', error);
+      throw new Error('Error fetching most favorite products. Please try again.');
+    }
+  };

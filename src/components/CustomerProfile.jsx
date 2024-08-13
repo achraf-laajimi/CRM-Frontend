@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { blockUser } from '../api/UserMethods';
 
 const CustomerProfile = () => {
   const location = useLocation();
@@ -9,6 +10,16 @@ const CustomerProfile = () => {
     return <p>Select a customer to view their profile</p>;
   }
 
+  const block = async () => {
+    try {
+      await blockUser(customer._id); // Use '_id' to correctly reference the customer ID
+      alert('Customer has been blocked successfully.');
+    } catch (error) {
+      console.error('Error blocking customer:', error);
+      alert('Failed to block the customer.');
+    }
+  };
+  
   const customerComments = [
     { productId: 1, productName: 'Product A', productImage: 'https://via.placeholder.com/80', comment: 'Great product, highly recommend!' },
     { productId: 2, productName: 'Product B', productImage: 'https://via.placeholder.com/80', comment: 'Not satisfied with the quality.' },
@@ -25,12 +36,12 @@ const CustomerProfile = () => {
           className="w-24 h-24 rounded-full object-cover"
         />
         <div className="ml-4">
-          <p className="text-gray-700 text-xl font-semibold">{customer.firstName} {customer.lastName}</p>
+          <p className="text-gray-700 text-xl font-semibold">{customer.firstName} {customer.lastName} (Full Name)</p>
           <p className="text-gray-500 text-sm">{customer.email}</p>
         </div>
       </div>
       <button 
-        className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 mb-6"
+        className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 mb-6" onClick={block}
       >
         Block Customer
       </button>

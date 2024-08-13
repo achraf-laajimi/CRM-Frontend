@@ -1,27 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUsers } from '../api/UserMethods';
 
-const allCustomers = [
-  { id: 1, firstName: 'John', lastName: 'Doe', username: 'John Doe', email: 'john@example.com', role: 'Buyer', adresse: 'USA', telephone: '123-456-7890' },
-  { id: 2, firstName: 'John', lastName: 'Doe', username: 'Jane Smith', email: 'jane@example.com', role: 'Seller', adresse: 'UK', telephone: '987-654-3210' },
-  { id: 3, firstName: 'John', lastName: 'Doe', username: 'Alice Johnson', email: 'alice@example.com', role: 'Seller', adresse: 'Canada', telephone: '456-789-0123' },
-  { id: 4, firstName: 'John', lastName: 'Doe', username: 'Bob Brown', role: 'Buyer', email: 'bob@example.com', adresse: 'Australia', telephone: '321-654-0987' },
-  // Add more customer data as needed
-];
-
-const CustomerReview = ({ customer, onDetails }) => {
+function CustomerReview({ customer, onDetails }) {
   if (!customer) return null;
 
   return (
     <div className="w-80 bg-white rounded-lg shadow-md p-4 mb-4 mx-auto">
       <div className="text-center text-gray-700 font-semibold mb-2">ID: {customer.id}</div>
       <div className="flex justify-center mb-4">
-        <img 
-          src="https://via.placeholder.com/100" 
-          alt="Customer Profile" 
-          className="w-24 h-24 rounded-full object-cover"
-        />
+        <img
+          src="https://via.placeholder.com/100"
+          alt="Customer Profile"
+          className="w-24 h-24 rounded-full object-cover" />
       </div>
       <div className="text-center text-gray-700 text-xl font-semibold mb-2">{customer.username}</div>
       <div className="text-center text-gray-500 border-b border-gray-300 pb-2 mb-4">{customer.role}</div>
@@ -33,7 +24,7 @@ const CustomerReview = ({ customer, onDetails }) => {
       </button>
     </div>
   );
-};
+}
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
@@ -102,8 +93,8 @@ const Customers = () => {
             onChange={handleRoleFilterChange}
           >
             <option value="">All</option>
-            <option value="Buyer">Buyer</option>
-            <option value="Seller">Seller</option>
+            <option value="client">Buyer</option>
+            <option value="Rep Commerciale">Seller</option>
           </select>
         </div>
         <div className="overflow-x-auto">
@@ -120,11 +111,11 @@ const Customers = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {currentCustomers.map((customer) => (
                 <tr
-                  key={customer.id}
-                  className={customer.role.toLowerCase() === 'buyer' ? 'bg-gray-100' : 'bg-white'}
+                  key={customer._id}
+                  className={customer.role.toLowerCase() === 'client' ? 'bg-gray-100' : 'bg-white'}
                   onClick={() => handleCustomerClick(customer)}
                 >
-                  <th scope="row" className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{customer.id}</th>
+                  <th scope="row" className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{customer._id}</th>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 cursor-pointer">{customer.username}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{customer.role}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{customer.adresse}</td>

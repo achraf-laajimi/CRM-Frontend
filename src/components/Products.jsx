@@ -1,48 +1,32 @@
 // src/components/Products.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getProducts } from '../api/ProductMethods';
 
-const allProducts = [
-  { id: 1, name: 'nike', orders: 1500, price: 130, stock: 650, rating: 4, comments: [
-      { rating: 5, text: 'Excellent product!' },
-      { rating: 4, text: 'Very good, but could be improved.' },
-      { rating: 3, text: 'Average product.' },
-    ]
-  },
-  { id: 2, name: 'adidas', orders: 1500, price: 130, stock: 650, rating: 4, comments: [
-      { rating: 5, text: 'Excellent product!' },
-      { rating: 4, text: 'Very good, but could be improved.' },
-      { rating: 3, text: 'Average product.' },
-    ]
-  },
-  { id: 3, name: 'puma', orders: 1500, price: 130, stock: 650, rating: 4, comments: [
-      { rating: 5, text: 'Excellent product!' },
-      { rating: 4, text: 'Very good, but could be improved.' },
-      { rating: 3, text: 'Average product.' },
-    ]
-  },
-  // Add more product data as needed
-];
-
-const Products = () => {
+function Products() {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 15;
   const navigate = useNavigate();
- 
+
   //get the products from backend
-  const [products,setProducts] = useState([])
-  useEffect(()=> {
-    getProducts()
-      .then(data => setUsers(data))
-      .catch(err => console.log(err));
-  }, [])
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const fetchedProducts = await getProducts();
+        setProducts(fetchedProducts);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    };
+    fetchProducts();
+  }, []);
 
 
   // Calculate total pages
-  const totalPages = Math.ceil(allProducts.length / productsPerPage);
+  const totalPages = Math.ceil(products.length / productsPerPage);
   // Get current products
-  const currentProducts = allProducts.slice(
+  const currentProducts = products.slice(
     (currentPage - 1) * productsPerPage,
     currentPage * productsPerPage
   );
@@ -75,7 +59,7 @@ const Products = () => {
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-stone-950 tracking-wider">ID</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-stone-950 tracking-wider">NAME</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-stone-950 tracking-wider">ORDERS</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-stone-950 tracking-wider">CATEGORY</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-stone-950 tracking-wider">PRICE</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-stone-950 tracking-wider">STOCK</th>
                   <th className="px-6 py-3"></th>
@@ -83,10 +67,10 @@ const Products = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {currentProducts.map((product) => (
-                  <tr key={product.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.id}</td>
+                  <tr key={product._id}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product._id}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.orders}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.category}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.price}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.stock}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -105,19 +89,19 @@ const Products = () => {
         </div>
         <div className="flex justify-between items-center border-t border-gray-300 p-4 mt-4">
           <p className="text-gray-700">
-            Showing {Math.min(currentPage * productsPerPage, allProducts.length)} of {allProducts.length} Products
+            Showing {Math.min(currentPage * productsPerPage, products.length)} of {products.length} Products
           </p>
           <div>
             <button
-              className="bg-white text-gray-700 py-2 px-4 rounded mr-2 hover:border-transparent hover:text-orange-500" 
+              className="bg-white text-gray-700 py-2 px-4 rounded mr-2 hover:border-transparent hover:text-orange-500"
               onClick={handlePreviousPage}
               disabled={currentPage === 1}
             >
               Previous
             </button>
-            <button 
-              className="bg-white text-gray-700 py-2 px-4 rounded hover:border-transparent hover:text-orange-500" 
-              onClick={handleNextPage} 
+            <button
+              className="bg-white text-gray-700 py-2 px-4 rounded hover:border-transparent hover:text-orange-500"
+              onClick={handleNextPage}
               disabled={currentPage === totalPages}
             >
               Next
@@ -127,6 +111,6 @@ const Products = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Products;

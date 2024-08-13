@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3001/auth';
+const API_BASE_URL = 'http://localhost:3000/auth';
 
 export const getUsers = async () => {
   try {
-        const res = await axios.get(API_BASE_URL);
+        const res = await axios.get(`${API_BASE_URL}/getUsers`);
         return res.data;
     } catch (err) {
         console.error(err);
@@ -13,6 +13,10 @@ export const getUsers = async () => {
 };
 
 export const getUser = async (id) => {
+    if (!id || typeof id !== 'string') {
+        console.error('Invalid user ID:', id);
+        throw new Error('Invalid user ID');
+    }
     try {
         const res = await axios.get(`${API_BASE_URL}/getUser/${id}`);
         return res.data;

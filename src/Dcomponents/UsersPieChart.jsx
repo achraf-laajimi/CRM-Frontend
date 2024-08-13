@@ -1,30 +1,48 @@
-import React from 'react'
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts'
+import React, { useState, useEffect } from 'react';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
+import { getUsers } from '../api/UserMethods';
 
-const data = [
-	{ name: 'Seller', value: 540 },
-	{ name: 'Buyer', value: 720 }
-]
+const COLORS = ['#00C49F', '#FFBB28'];
 
-const RADIAN = Math.PI / 180
-const COLORS = ['#00C49F', '#FFBB28', '#FF8042']
+const RADIAN = Math.PI / 180;
 
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
-	const radius = innerRadius + (outerRadius - innerRadius) * 0.5
-	const x = cx + radius * Math.cos(-midAngle * RADIAN)
-	const y = cy + radius * Math.sin(-midAngle * RADIAN)
+	const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+	const x = cx + radius * Math.cos(-midAngle * RADIAN);
+	const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
 	return (
 		<text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
 			{`${(percent * 100).toFixed(0)}%`}
 		</text>
-	)
-}
+	);
+};
 
 export default function UsersPieChart() {
+	const [data, setData] = useState([]);
+
+	useEffect(() => {
+		const fetchUserData = async () => {
+			try {
+				const users = await getUsers();
+				const buyers = users.filter(user => user.role === 'client').length;
+				const sellers = users.filter(user => user.role === 'Rep Commerciale').length;
+
+				setData([
+					{ name: 'Buyers', value: buyers },
+					{ name: 'Sellers', value: sellers },
+				]);
+			} catch (error) {
+				console.error('Error fetching users:', error);
+			}
+		};
+
+		fetchUserData();
+	}, []);
+
 	return (
 		<div className="w-[20rem] h-[22rem] bg-white p-4 rounded-sm border border-gray-200 flex flex-col">
-			<strong className="text-gray-700 font-medium">Buyer Profile</strong>
+			<strong className="text-gray-700 font-medium">User Profile</strong>
 			<div className="mt-3 w-full flex-1 text-xs">
 				<ResponsiveContainer width="100%" height="100%">
 					<PieChart width={400} height={300}>
@@ -47,5 +65,5 @@ export default function UsersPieChart() {
 				</ResponsiveContainer>
 			</div>
 		</div>
-	)
+	);
 }

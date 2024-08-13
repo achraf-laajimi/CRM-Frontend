@@ -4,70 +4,82 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 const data = [
 	{
 		name: 'Jan',
-		Expense: 4000,
+		Orders: 300,
+		Visitors: 5000,
 		Income: 2400
 	},
 	{
 		name: 'Feb',
-		Expense: 3000,
-		Income: 1398
+		Orders: 200,
+		Visitors: 4000,
+		Income: 3200
 	},
 	{
 		name: 'Mar',
-		Expense: 2000,
-		Income: 9800
+		Orders: 350,
+		Visitors: 6000,
+		Income: 4300
 	},
 	{
 		name: 'Apr',
-		Expense: 2780,
-		Income: 3908
+		Orders: 400,
+		Visitors: 7500,
+		Income: 5200
 	},
 	{
 		name: 'May',
-		Expense: 1890,
-		Income: 4800
+		Orders: 450,
+		Visitors: 8000,
+		Income: 6100
 	},
 	{
 		name: 'Jun',
-		Expense: 2390,
-		Income: 3800
+		Orders: 300,
+		Visitors: 6500,
+		Income: 4200
 	},
 	{
 		name: 'July',
-		Expense: 3490,
-		Income: 4300
+		Orders: 500,
+		Visitors: 9000,
+		Income: 7200
 	},
 	{
 		name: 'Aug',
-		Expense: 2000,
-		Income: 9800
+		Orders: 600,
+		Visitors: 10000,
+		Income: 8200
 	},
 	{
 		name: 'Sep',
-		Expense: 2780,
-		Income: 3908
+		Orders: 550,
+		Visitors: 9500,
+		Income: 7900
 	},
 	{
 		name: 'Oct',
-		Expense: 1890,
-		Income: 4800
+		Orders: 480,
+		Visitors: 8500,
+		Income: 6800
 	},
 	{
 		name: 'Nov',
-		Expense: 2390,
-		Income: 3800
+		Orders: 520,
+		Visitors: 8700,
+		Income: 7100
 	},
 	{
 		name: 'Dec',
-		Expense: 3490,
-		Income: 4300
+		Orders: 630,
+		Visitors: 12000,
+		Income: 9400
 	}
 ]
 
 export default function TransactionChart() {
 	return (
 		<div className="h-[22rem] bg-white p-4 rounded-sm border border-gray-200 flex flex-col flex-1">
-			<strong className="text-gray-700 font-medium">Transactions</strong>
+			<strong className="text-gray-700 font-medium">Stats</strong>
 			<div className="mt-3 w-full flex-1 text-xs">
 				<ResponsiveContainer width="100%" height="100%">
 					<BarChart
@@ -81,13 +93,14 @@ export default function TransactionChart() {
 							bottom: 0
 						}}
 					>
-						<CartesianGrid strokeDasharray="3 3 0 0" vertical={false} />
+						<CartesianGrid strokeDasharray="3 3" vertical={false} />
 						<XAxis dataKey="name" />
 						<YAxis />
 						<Tooltip />
 						<Legend />
 						<Bar dataKey="Income" fill="#0ea5e9" />
-						<Bar dataKey="Expense" fill="#ea580c" />
+						<Bar dataKey="Orders" fill="#34d399" />
+						<Bar dataKey="Visitors" fill="#facc15" />
 					</BarChart>
 				</ResponsiveContainer>
 			</div>

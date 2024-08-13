@@ -1,6 +1,8 @@
 import axios, { AxiosError } from 'axios';
 
+// Define API base URL
 const API_URL = 'http://localhost:3000/CRM';
+const BASE_URL = 'http://localhost:3000/CRM'; // Adjust if needed
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -10,53 +12,31 @@ export const api = axios.create({
 interface ErrorResponse {
   message?: string;
 }
+
 export const getProducts = async () => {
   try {
-    const response = await api.get('/get'); // Utilisation correcte de api
+    const response = await api.get('/get');
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<ErrorResponse>;
-      console.error('Error fetching products:', axiosError.message);
-      throw new Error(axiosError.response?.data?.message || 'Error fetching products. Please try again.');
-    } else {
-      console.error('Unexpected error:', error);
-      throw new Error('An unexpected error occurred. Please try again.');
-    }
+    handleAxiosError(error, 'Error fetching products.');
   }
 };
 
 export const getProduct = async (id: string) => {
   try {
-    const response = await api.get(`/get/${id}`); // Utilisation correcte de api et inclusion de l'ID
+    const response = await api.get(`/get/${id}`);
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<ErrorResponse>;
-      console.error('Error fetching product:', axiosError.message);
-      throw new Error(axiosError.response?.data?.message || 'Error fetching product. Please try again.');
-    } else {
-      console.error('Unexpected error:', error);
-      throw new Error('An unexpected error occurred. Please try again.');
-    }
+    handleAxiosError(error, 'Error fetching product.');
   }
 };
-
-
 
 export const addReview = async (productId: string, userId: string, rating: number, comment: string) => {
   try {
     const response = await api.post('/add-review', { productId, userId, rating, comment });
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<ErrorResponse>;
-      console.error('Error adding review:', axiosError.message);
-      throw new Error('Error adding review. Please try again.');
-    } else {
-      console.error('Unexpected error:', error);
-      throw new Error('An unexpected error occurred. Please try again.');
-    }
+    handleAxiosError(error, 'Error adding review.');
   }
 };
 
@@ -65,40 +45,46 @@ export const getReviews = async (productId: string) => {
     const response = await api.get(`/get-reviews/${productId}`);
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<ErrorResponse>;
-      console.error('Error fetching reviews:', axiosError.message);
-      throw new Error('Error fetching reviews. Please try again.');
-    } else {
-      console.error('Unexpected error:', error);
-      throw new Error('An unexpected error occurred. Please try again.');
-    }
+    handleAxiosError(error, 'Error fetching reviews.');
   }
 };
-
 
 export const signup = async (name: string, email: string, password: string) => {
   try {
     const response = await api.post('/signup', { name, email, password });
     return response.data;
   } catch (error) {
-    throw new Error('Error signing up. Please try again.');
+    handleAxiosError(error, 'Error signing up.');
   }
 };
+
 export const getOrders = async () => {
-  const response = await axios.get('/orders/allorders');
-  return response.data;
+  try {
+    const response = await api.get('/orders/allorders');
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error, 'Error fetching orders.');
+  }
 };
 
 export const placeOrder = async (orderData: any) => {
-  const response = await axios.post('/orders/passer', orderData);
-  return response.data;
+  try {
+    const response = await api.post('/orders/passer', orderData);
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error, 'Error placing order.');
+  }
 };
 
 export const cancelOrder = async (orderId: string) => {
-  const response = await axios.put(`${API_URL}/${orderId}/cancel`);
-  return response.data;
+  try {
+    const response = await api.put(`/orders/${orderId}/cancel`);
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error, 'Error canceling order.');
+  }
 };
+
 export const loginUser = async (email: string, password: string) => {
   try {
     const response = await api.post('/login', { email, password });
@@ -108,51 +94,29 @@ export const loginUser = async (email: string, password: string) => {
       throw new Error('Login failed. Please check your credentials.');
     }
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<ErrorResponse>;
-      console.error('Login error:', axiosError);
-      throw new Error(axiosError.response?.data?.message || 'Error logging in. Please try again.');
-    } else {
-      console.error('Unexpected error:', error);
-      throw new Error('An unexpected error occurred. Please try again.');
-    }
+    handleAxiosError(error, 'Error logging in.');
   }
-}; 
+};
 
 export const getUsers = async () => {
   try {
-    const response = await api.get('/getUsers'); // Utiliser le point de terminaison correct
-    console.log('API Response:', response.data); // Affichez les données pour déboguer
+    const response = await api.get('/getUsers');
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<ErrorResponse>;
-      console.error('Axios error fetching users:', axiosError.message);
-      throw new Error(axiosError.response?.data?.message || 'Error fetching users. Please try again.');
-    } else {
-      console.error('Unexpected error:', error);
-      throw new Error('An unexpected error occurred. Please try again.');
-    }
+    handleAxiosError(error, 'Error fetching users.');
   }
 };
 
 export const getUser = async (id: string) => {
   try {
-    const response = await api.get(`/getUser/${id}`); // Utiliser le point de terminaison correct
+    const response = await api.get(`/getUser/${id}`);
     if (response.data) {
       return response.data;
     } else {
       throw new Error('User data not found');
     }
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<ErrorResponse>;
-      console.error('Error fetching user by ID:', axiosError.message);
-      throw new Error('Error fetching user. Please try again.');
-    } else {
-      console.error('Unexpected error:', error);
-      throw new Error('Error fetching user. Please try again.');
-    }
+    handleAxiosError(error, 'Error fetching user.');
   }
 };
 
@@ -161,58 +125,95 @@ export const createUser = async (name: string, email: string, password: string) 
     const response = await api.post('/adduser', { name, email, password });
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<ErrorResponse>;
-      console.error('Error creating user:', axiosError.message);
-      throw new Error('Error creating user. Please try again.');
-    } else {
-      console.error('Unexpected error:', error);
-      throw new Error('Error creating user. Please try again.');
-    }
+    handleAxiosError(error, 'Error creating user.');
   }
 };
 
-export const updateUser = async (id: string, data: { username: string; email: string}) => {
+export const updateUser = async (id: string, data: { firstName: string; lastName: string; email: string }) => {
   try {
-    const response = await api.put(`/updateUser/${id}`, data); // Utiliser le point de terminaison correct
+    const response = await api.put(`/updateUser/${id}`);
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<ErrorResponse>;
-      console.error('Error updating user:', axiosError.message);
-      throw new Error('Error updating user. Please try again.');
-    } else {
-      console.error('Unexpected error:', error);
-      throw new Error('Error updating user. Please try again.');
-    }
+    handleAxiosError(error, 'Error updating user.');
   }
 };
+
+export const getUserProfile = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/user/profile`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    throw error;
+  }
+};
+
+// Update the logged-in user's profile
+export const updateUserProfile = async (userData: any) => {
+  try {
+    const response = await axios.put(`${BASE_URL}/user/profile`, userData);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+    throw error;
+  }
+};
+
+
+
+
 
 export const deleteUser = async (id: string) => {
   try {
-    const response = await api.delete(`/deleteUser/${id}`); // Utiliser le point de terminaison correct
+    const response = await api.delete(`/deleteUser/${id}`);
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<ErrorResponse>;
-      console.error('Error deleting user:', axiosError.message);
-      throw new Error('Error deleting user. Please try again.');
-    } else {
-      console.error('Unexpected error:', error);
-      throw new Error('Error deleting user. Please try again.');
-    }
+    handleAxiosError(error, 'Error deleting user.');
   }
 };
+
 export const blockUser = async (userId: string) => {
-  return await axios.put(`${API_URL}/blockUser/${userId}`);
+  try {
+    const response = await api.put(`/blockUser/${userId}`);
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error, 'Error blocking user.');
+  }
 };
 
 export const getTransactions = async () => {
   try {
-    const response = await api.get('/getTransactions'); // Assurez-vous que ce point de terminaison est correct
+    const response = await api.get('/getTransactions');
     return response.data;
   } catch (error) {
-    console.error('Error fetching transactions:', error);
-    throw error;
+    handleAxiosError(error, 'Error fetching transactions.');
+  }
+};
+
+// Helper function to handle Axios errors
+const handleAxiosError = (error: unknown, defaultMessage: string) => {
+  if (axios.isAxiosError(error)) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    console.error('Axios error:', axiosError.message);
+    throw new Error(axiosError.response?.data?.message || defaultMessage);
+  } else {
+    console.error('Unexpected error:', error);
+    throw new Error(defaultMessage);
+  }
+};
+export const likeProduct = async (userId: string) => {
+  try {
+    const response = await api.put(`/blockUser/${userId}`);
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error, 'Error blocking user.');
+  }
+};
+export const unlikeProduct = async (userId: string) => {
+  try {
+    const response = await api.put(`/blockUser/${userId}`);
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error, 'Error blocking user.');
   }
 };

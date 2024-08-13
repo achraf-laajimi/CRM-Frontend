@@ -188,7 +188,7 @@ const Dashboard: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="trending-products">
+      {/*     <div className="trending-products">
             <h2>Daily Trending Products</h2>
             <p>Lorem ipsum dolor sit ame.</p>
             <div className="pall">
@@ -217,7 +217,7 @@ const Dashboard: React.FC = () => {
                 <p className="order-count">Order 89x</p>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

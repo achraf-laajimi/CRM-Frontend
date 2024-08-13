@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './produit.css';
+import { deleteProduct, getProducts } from '../../api/produitRep';
 import Navbar from '../navbar/navbar';
-import { getProducts, deleteProduct } from '../../api/produitRep';
+import './produit.css';
 
 interface Product {
     _id: string;
@@ -50,8 +50,22 @@ const ProductList: React.FC = () => {
     };
 
     const handleNavigateToReviews = (product: Product) => {
-        navigate(`/review`, { state: { product } });
+        const fakeReviews = [
+            { rating: 5, comment: "Amazing product! Highly recommend." },
+            { rating: 4, comment: "Very good quality, but could be cheaper." },
+            { rating: 3, comment: "Decent product, but not as described." },
+        ];
+    
+        const productWithReviews = { ...product, reviews: fakeReviews };
+        
+        console.log("Navigating to review page with product:", productWithReviews);
+    
+        // Use a unique key to ensure React Router recognizes the state
+        navigate(`/review`, { state: { product: productWithReviews, key: Math.random() } });
     };
+    
+    
+    
 
     return (
         <div className="produit">

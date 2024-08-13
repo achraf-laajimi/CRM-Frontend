@@ -1,7 +1,7 @@
+import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js';
 import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import { getOrderStatistics } from '../../api/orderRep'; // Ajustez le chemin si nécessaire
+import { getOrderStatistics } from '../../api/orderRep'; // Adjust path if necessary
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -26,11 +26,11 @@ const RevenueChart: React.FC = () => {
   }, []);
 
   const data = {
-    labels: revenueData ? ['Total Orders', 'Total Delivered', 'Total Canceled'] : [],
+    labels: revenueData ? ['Total Orders', 'Total Delivered', 'Total Canceled', 'Total Revenue'] : [],
     datasets: [
       {
         label: 'Revenue',
-        data: revenueData ? [revenueData.totalOrders, revenueData.totalDelivered, revenueData.totalCanceled] : [],
+        data: revenueData ? [revenueData.totalOrders, revenueData.totalDelivered, revenueData.totalCanceled, revenueData.totalRevenue] : [],
         backgroundColor: 'rgba(75,192,192,0.2)',
         borderColor: 'rgba(75,192,192,1)',
         borderWidth: 1,
@@ -65,8 +65,8 @@ const RevenueChart: React.FC = () => {
     },
   };
 
-/*   if (loading) return <p>Loading...</p>;
-  if (error) return <p style={{ color: 'red' }}>{error}</p>; */
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p style={{ color: 'red' }}>{error}</p>;
 
   return (
     <div className="revenue-chart-container">

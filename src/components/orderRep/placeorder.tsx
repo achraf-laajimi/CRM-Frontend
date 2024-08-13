@@ -46,7 +46,7 @@ const PlaceOrder: React.FC = () => {
     try {
       await createOrder(orderData);
       alert('Order created successfully!');
-      navigate('/orders'); // Redirige vers la liste des commandes après la création
+      navigate('/order'); // Redirige vers la liste des commandes après la création
     } catch (err) {
       console.error('Erreur lors de la création de la commande:', err);
       alert('Erreur lors de la création de la commande');

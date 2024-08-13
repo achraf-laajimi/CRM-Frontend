@@ -15,7 +15,7 @@ import AddProductForm from './components/produitRep/ajoutProduct';
 import EditProductForm from './components/produitRep/EditProductForm';
 import ProductList from './components/produitRep/produit';
 import Profile from './components/profile/profile';
-import Review from './components/review/review';
+import ProductReview from './components/review/review';
 import Signup from './components/signup/Signup';
 
 
@@ -57,16 +57,17 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
-      <div>
-        
+    
+    <div className="App">
+     
+     
+
         <Routes>
           <Route path="/dashbord" element={<Dashbord />} />
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/customers" element={<Customers />} />
           <Route path="/order" element={<Order />} />
-          <Route path="/review" element={<Review />} />
           <Route path="/produit" element={<ProductList />} />
           <Route path="/add-product" element={<AddProductForm />} />
           <Route path="/edit-product" element={<EditProductForm />} />
@@ -75,6 +76,7 @@ const App: React.FC = () => {
           <Route path="/signup" element={user ? <Navigate to="/" /> : <Signup />} />
           <Route path="/" element={user ? <Home user={user} /> : <Navigate to="/login" />} />
           <Route path="/passer" element={<PlaceOrder />} />
+          <Route path="/review" element={<ProductReview />} />
 
         </Routes>
         <ToastContainer
@@ -90,7 +92,7 @@ const App: React.FC = () => {
           theme='colored'
         />
       </div>
-    </UserContext.Provider>
+      
   );
 };
 

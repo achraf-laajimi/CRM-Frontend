@@ -9,6 +9,7 @@ import img1 from '../../assets/Signup.svg';
 import img2 from '../../assets/google.png';
 import addUserSchema from '../validation/SignupShema';
 import './signup.css';
+
 const Signup: React.FC = () => {
   const navigate = useNavigate();
 
@@ -17,7 +18,7 @@ const Signup: React.FC = () => {
       const { token } = await signupUser(values);
       Cookies.set('token', token, { expires: 7 });
       toast.success('Signup successful!');
-      navigate('/');
+      navigate('/profile', { state: { user: values } }); // Passing user data to profile
     } catch (error: any) {
       console.error('Signup error:', error);
       if (error.response && error.response.data.msg === 'User already exists') {

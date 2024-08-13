@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { getProducts, getReviews } from '../../api/apiRep';
+import { getProducts, getReviews, likeProduct, unlikeProduct } from '../../api/apiRep';
 import Navbar from '../navbar/navbar';
+import '../PopularProducts';
 import './analytics.css';
 import img from './Bland_Cosmetic_Product_Packaging_Unit_500x400.jpg';
 
@@ -9,11 +10,13 @@ interface Product {
   name: string;
   imageUrl: string;
   totalSales?: number;
-  reviews?: number;
+  reviews: Review[];
   likes?: number;
   inStock?: boolean;
   ordered?: number;
   reviewIds?: string[];
+  averageRating?: number;
+  price: number;
 }
 
 interface Review {
@@ -25,45 +28,47 @@ interface Review {
 const Analytics: React.FC = () => {
   const [mostFavoriteProducts, setMostFavoriteProducts] = useState<Product[]>([]);
   const [bestSellerProducts, setBestSellerProducts] = useState<Product[]>([]);
+  const [popularProducts, setPopularProducts] = useState<Product[]>([]);
   const [reviewsByProduct, setReviewsByProduct] = useState<Record<string, Review[]>>({});
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const products: Product[] = await getProducts();
+        console.log('Fetched products:', products);
 
-        if (products && products.length > 0) {
-          const reviewsMap: Record<string, Review[]> = {};
+        // Calculate average rating for each product
+        const productsWithRating = products.map((product) => {
+          const totalRating = product.reviews.reduce((acc, review) => acc + review.rating, 0);
+          const averageRating = product.reviews.length > 0 ? totalRating / product.reviews.length : 0;
+          return { ...product, averageRating };
+        });
 
-          const productsWithReviews = await Promise.all(products.map(async (product) => {
+        setPopularProducts(productsWithRating);
+
+        // Sort or filter products based on likes for most favorite products
+        const favoriteProducts = productsWithRating
+          .filter((product) => product.likes !== undefined)
+          .sort((a, b) => (b.likes || 0) - (a.likes || 0));
+
+        // Sort or filter products based on ordered or totalSales for best seller products
+        const bestSellers = productsWithRating
+          .filter((product) => product.ordered !== undefined)
+          .sort((a, b) => (b.ordered || 0) - (a.ordered || 0));
+
+        setMostFavoriteProducts(favoriteProducts);
+        setBestSellerProducts(bestSellers);
+
+        // Fetch reviews for each product
+        const reviewsMap: Record<string, Review[]> = {};
+        for (const product of products) {
+          if (product._id) {
             const reviews = await getReviews(product._id);
             reviewsMap[product._id] = reviews;
-
-            // Type the accumulate function and the review parameter
-            const averageRating = reviews.length > 0 
-              ? reviews.reduce((acc: number, review: Review) => acc + review.rating, 0) / reviews.length 
-              : 0;
-
-            return {
-              ...product,
-              averageRating,
-            };
-          }));
-
-          const filteredProducts = productsWithReviews.filter(product => product.averageRating > 3);
-
-          const favoriteProducts = filteredProducts
-            .sort((a, b) => (b.likes || 0) - (a.likes || 0));
-
-          const bestSellers = filteredProducts
-            .sort((a, b) => (b.ordered || 0) - (a.ordered || 0));
-
-          setMostFavoriteProducts(favoriteProducts);
-          setBestSellerProducts(bestSellers);
-          setReviewsByProduct(reviewsMap);
-        } else {
-          console.warn('No products found.');
+          }
         }
+        setReviewsByProduct(reviewsMap);
+
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -71,6 +76,34 @@ const Analytics: React.FC = () => {
 
     fetchProducts();
   }, []);
+
+  // Function to handle liking a product
+  const handleLikeProduct = async (productId: string) => {
+    try {
+      const updatedProduct = await likeProduct(productId);
+      setMostFavoriteProducts((prevProducts) =>
+        prevProducts.map((product) =>
+          product._id === productId ? { ...product, likes: updatedProduct.likes } : product
+        )
+      );
+    } catch (error) {
+      console.error('Error liking product:', error);
+    }
+  };
+
+  // Function to handle unliking a product
+  const handleUnlikeProduct = async (productId: string) => {
+    try {
+      const updatedProduct = await unlikeProduct(productId);
+      setMostFavoriteProducts((prevProducts) =>
+        prevProducts.map((product) =>
+          product._id === productId ? { ...product, likes: updatedProduct.likes } : product
+        )
+      );
+    } catch (error) {
+      console.error('Error unliking product:', error);
+    }
+  };
 
   return (
     <div className="analytics">
@@ -81,6 +114,8 @@ const Analytics: React.FC = () => {
             <h2>Analytics</h2>
             <p>Here is your products summary with graph view</p>
           </div>
+
+          {/* Most Favorite Products Section */}
           <div className="favorite-products">
             <div className="chanoufa">
               <div className="chan">
@@ -105,6 +140,8 @@ const Analytics: React.FC = () => {
                       <p className='mou'>{product.totalSales || 0} Total Sales</p>
                       <p>⭐ {reviewsByProduct[product._id]?.length || 0} Reviews</p>
                       <p>❤️ {product.likes || 0} Like it</p>
+                      <button onClick={() => handleLikeProduct(product._id)}>Like</button>
+                      <button onClick={() => handleUnlikeProduct(product._id)}>Unlike</button>
                     </div>
                   </div>
                 ))
@@ -115,6 +152,8 @@ const Analytics: React.FC = () => {
             </div>
             <button className="viewbtn">View More</button>
           </div>
+
+          {/* Best Seller Products Section */}
           <div className="best-seller-products">
             <h3>Best Seller Product</h3>
             <div className="product-list">
@@ -135,6 +174,36 @@ const Analytics: React.FC = () => {
               )}
             </div>
           </div>
+
+          {/* Popular Products Section */}
+          <div className="popular-products">
+            <h3>Popular Products</h3>
+            <div className="product-list">
+              {popularProducts.length > 0 ? (
+                popularProducts.map((product) => (
+                  <div className="product-item" key={product._id}>
+                    <div className="product-info">
+                      <h4>{product.name}</h4>
+                      <div className="product-rating">
+                        {product.reviews.length > 0 ? (
+                          <>
+                            <span className="text-yellow-500">{product.averageRating?.toFixed(1)} / 5</span>
+                            <span className="ml-1">({product.reviews.length} reviews)</span>
+                          </>
+                        ) : (
+                          'No reviews'
+                        )}
+                      </div>
+                      <div className="product-price">{`$${product.price.toFixed(2)}`}</div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No popular products available.</p>
+              )}
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

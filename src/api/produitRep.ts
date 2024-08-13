@@ -91,7 +91,7 @@ export const filterProducts = async (filters: {
   }
 };
 
-/* export const getUsers = async () => {
+export const getUsers = async () => {
   try {
     const response = await axios.get('http://localhost:3000/users');
     return response.data;
@@ -100,13 +100,4 @@ export const filterProducts = async (filters: {
     throw new Error('Error fetching users. Please try again.');
   }
 };
- */
-export const getMostFavoriteProducts = async () => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/most-favorites`);
-      return response.data;
-    } catch (error: any) {
-      console.error('Error fetching most favorite products:', error);
-      throw new Error('Error fetching most favorite products. Please try again.');
-    }
-  };
+

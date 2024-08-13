@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getUser, updateUser } from '../../api/apiRep';
 import './edituser.css';
-import { toast, ToastContainer } from 'react-toastify';
 
-// Define interface for update data
 interface UserUpdateData {
-  username: string; // Use 'username' as the key
+  firstName: string;
+  lastName: string;
   email: string;
 }
 
-// Define interface for user data
 interface User {
-  username: string; // Use 'username' to match frontend usage
+  username: string;
   email: string;
 }
 
 const EditUser: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [username, setUsername] = useState(''); // Use 'username' for the state
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { userId } = useParams<{ userId: string }>();
 
@@ -29,10 +29,11 @@ const EditUser: React.FC = () => {
         try {
           const data = await getUser(userId);
           setUser(data);
-          setUsername(data.username); // Store the username in state
+          setFirstName(data.username); // Assuming 'username' is used as 'firstName'
           setEmail(data.email);
         } catch (error) {
           console.error('Error fetching user:', error);
+          setError('Failed to load user data.');
         }
       }
     };
@@ -45,41 +46,45 @@ const EditUser: React.FC = () => {
     try {
       if (userId) {
         const updateData: UserUpdateData = {
-          username, // Use 'username' as key and value
+          firstName,
+          lastName,
           email,
         };
 
-        await updateUser(userId, updateData); // Send 'username' to the backend
-        toast.success('User updated successfully!');
+        await updateUser(userId, updateData);
         navigate('/customers');
       }
     } catch (error) {
       console.error('Error updating user:', error);
+      setError('Failed to update user. Please try again later.');
     }
   };
 
   if (!user) return <div>Loading...</div>;
 
   return (
-    <div className="form-container">
+    <div className="edit-user-container">
+      {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <label>
-          Username:
-          <input
-            type="text"
-            value={username} // Bind input to 'username'
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </label>
-        <label>
-          Email:
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </label>
-        <button type="submit">Update User</button>
+        <input
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          placeholder="First Name"
+        />
+        <input
+          type="text"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          placeholder="Last Name"
+        />
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+        />
+        <button type="submit">Update</button>
       </form>
     </div>
   );

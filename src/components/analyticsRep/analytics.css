@@ -21,6 +21,7 @@
     overflow-x: hidden;
     overflow-y: hidden;
   }
+  
   .unde {
     position: absolute;
     left: -536px;
@@ -29,6 +30,8 @@
     height: 43px;
     background-color: #FC410C;
   }
+
+  
    .lkolfelkol{
     padding: 33px;
     position: absolute;
@@ -88,7 +91,15 @@
       font-size: 17px;
       margin-bottom: 13px;
     }
+    .favorite-products h4{
+      color: #FD693F;
+      font-size: 20px;
+      /* margin-bottom: 13px; */
+      /* margin-top: 29px; */
+      padding-top: 18px;
+      padding-left: 12px;
   
+  }
   .favorite-products p, .best-seller-products p {
     color: #7a7a7a;
     margin-top: -15px;

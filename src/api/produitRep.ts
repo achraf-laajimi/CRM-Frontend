@@ -101,3 +101,23 @@ export const getUsers = async () => {
   }
 };
 
+
+export const getTopLikedProducts = async () => {
+    try {
+      const response = await axios.get('/products/top-liked');
+      return response.data;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error fetching top liked products:', error.message);
+        if (error.response) {
+          console.error('Response status:', error.response.status);
+          console.error('Response data:', error.response.data);
+        } else if (error.request) {
+          console.error('No response received:', error.request);
+        }
+      } else {
+        console.error('An unexpected error occurred:', (error as Error).message);
+      }
+      throw error;
+    }
+  };

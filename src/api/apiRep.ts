@@ -3,6 +3,7 @@ import axios, { AxiosError } from 'axios';
 // Define API base URL
 const API_URL = 'http://localhost:3000/CRM';
 const BASE_URL = 'http://localhost:3000/CRM'; // Adjust if needed
+const API_URLL = 'http://localhost:3000';
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -12,6 +13,7 @@ export const api = axios.create({
 interface ErrorResponse {
   message?: string;
 }
+
 
 export const getProducts = async () => {
   try {
@@ -109,14 +111,11 @@ export const getUsers = async () => {
 
 export const getUser = async (id: string) => {
   try {
-    const response = await api.get(`/getUser/${id}`);
-    if (response.data) {
-      return response.data;
-    } else {
-      throw new Error('User data not found');
-    }
+    const response = await axios.get(`${API_URL}/user/${id}`);
+    return response.data;
   } catch (error) {
-    handleAxiosError(error, 'Error fetching user.');
+    console.error('Error fetching user data:', error);
+    throw error; // Rethrow the error for handling in the component
   }
 };
 
@@ -158,10 +157,24 @@ export const updateUserProfile = async (userData: any) => {
     throw error;
   }
 };
+export const getDailyTrendingProducts = async (): Promise<Product[]> => {
+  try {
+    const response = await axios.get(`${API_URL}/trending/daily`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching daily trending products:', error);
+    throw new Error('Error fetching daily trending products');
+  }
+};
 
 
-
-
+export interface Product {
+  _id: string;
+  name: string;
+  imageUrl: string;
+  price: number;
+  sales: number; // Ajoutez ce champ si vous souhaitez l'utiliser
+}
 
 export const deleteUser = async (id: string) => {
   try {
@@ -215,5 +228,16 @@ export const unlikeProduct = async (userId: string) => {
     return response.data;
   } catch (error) {
     handleAxiosError(error, 'Error blocking user.');
+  }
+};
+
+export const getBestSellingProducts = async (salesRepId: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/best-sellers/${salesRepId}`);
+    console.log('API Response:', response.data); // Log the response data
+    return response.data; // Ensure this matches the expected structure
+  } catch (error) {
+    console.error('Error fetching best-selling products:', error);
+    throw error;
   }
 };

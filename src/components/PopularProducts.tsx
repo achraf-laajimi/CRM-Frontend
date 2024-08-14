@@ -1,34 +1,42 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { getProducts } from '../api/apiRep';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getProducts } from '../api/produitRep';
+import './populaire.css';  // Import the CSS file
 
+// Define interfaces for the product and review
 interface Review {
   rating: number;
-  // Add other fields if needed
 }
 
 interface Product {
   _id: string;
   name: string;
-  price: number;
   imageUrl: string;
+  price: number;
   reviews: Review[];
   averageRating?: number;
 }
 
 function PopularProducts() {
   const [products, setProducts] = useState<Product[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const fetchedProducts = await getProducts();
         const productsWithRating = fetchedProducts.map((product: Product) => {
-          const totalRating = product.reviews.reduce((acc: number, review: Review) => acc + review.rating, 0);
+          const totalRating = product.reviews.reduce((acc, review) => acc + review.rating, 0);
           const averageRating = product.reviews.length > 0 ? totalRating / product.reviews.length : 0;
           return { ...product, averageRating };
         });
-        setProducts(productsWithRating);
+
+        // Filter products that have at least one review with a rating greater than 3
+        const filteredProducts = productsWithRating.filter((product: Product) =>
+          product.reviews.some((review: Review) => review.rating > 3)
+        );
+
+        setProducts(filteredProducts);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -37,26 +45,27 @@ function PopularProducts() {
     fetchProducts();
   }, []);
 
+  const handleNavigateToReviews = (product: Product) => {
+    navigate('/review', { state: { product } });
+  };
   return (
-    <div className="w-[20rem] bg-white p-4 rounded-sm border border-gray-200">
-      <strong className="text-gray-700 font-medium">Popular Products</strong>
-      <div className="mt-4 flex flex-col gap-3">
+    <div className="container">
+      <div className="header">
+      </div>
+      <div className="product-listt">
         {products.map((product) => (
-          <Link
-            key={product._id}
-            to={`/product/${product._id}`}
-            className="flex items-start hover:no-underline"
-          >
-            <div className="w-10 h-10 min-w-[2.5rem] bg-gray-200 rounded-sm">
+          <div key={product._id} className="product-cardd">
+            <div className="image-wrapper">
               <img
-                className="w-full h-full object-cover rounded-sm"
                 src={product.imageUrl}
                 alt={product.name}
+                className="product-image"
+                onClick={() => handleNavigateToReviews(product)}
               />
             </div>
-            <div className="ml-4 flex-1">
-              <p className="text-sm text-gray-800">{product.name}</p>
-              <div className="text-xs text-gray-600">
+            <div className="details">
+              <p className="product-name">{product.name}</p>
+              <div className="rating">
                 {product.reviews.length > 0 ? (
                   <>
                     <span className="text-yellow-500">{product.averageRating?.toFixed(1)} / 5</span>
@@ -66,9 +75,9 @@ function PopularProducts() {
                   'No reviews'
                 )}
               </div>
+              <div className="price">{`$${product.price.toFixed(2)}`}</div>
             </div>
-            <div className="text-xs text-gray-400 pl-1.5">{`$${product.price.toFixed(2)}`}</div>
-          </Link>
+          </div>
         ))}
       </div>
     </div>

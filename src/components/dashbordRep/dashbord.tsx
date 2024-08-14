@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importez useNavigate
 import './dashbord.css';
 import Navbar from '../navbar/navbar';
 import RevenueChart from './RevenueChart';
@@ -8,6 +9,7 @@ import totalCanceledImg from './cancel.png';
 import totalRevenueImg from './money-bag.png';
 import img from '../analyticsRep/Bland_Cosmetic_Product_Packaging_Unit_500x400.jpg';
 import { getOrderStatistics } from '../../api/orderRep';
+import PopularProducts from '../PopularProducts';
 
 const Dashboard: React.FC = () => {
   const [showValue, setShowValue] = useState(true);
@@ -19,6 +21,8 @@ const Dashboard: React.FC = () => {
   }>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const navigate = useNavigate(); // Créez une instance de navigate
 
   useEffect(() => {
     const fetchStatistics = async () => {
@@ -43,7 +47,13 @@ const Dashboard: React.FC = () => {
     setShowValue(false);
   };
 
-/*   if (loading) return <p>Loading...</p>;
+  const handleMoreDetailsClick = () => {
+    navigate('/order'); // Utilisez navigate pour rediriger vers la page /order
+  };
+  const handleDetailsClick = () => {
+    navigate('/analytics'); // Utilisez navigate pour rediriger vers la page /order
+  };
+  /*   if (loading) return <p>Loading...</p>;
   if (error) return <p style={{ color: 'red' }}>{error}</p>; */
 
   return (
@@ -144,11 +154,11 @@ const Dashboard: React.FC = () => {
           <div className="orders-summary">
             <h2>Orders Summary</h2>
             <p className='p22'>Lorem ipsum dolor sit amet, consectetur</p>
-            <div className="summary-controls">
+            {/*  <div className="summary-controls">
               <button className="active">Monthly</button>
               <button>Weekly</button>
               <button>Today</button>
-            </div>
+            </div> */}
             <div className="summary-content">
               <div className="percentage">
                 <svg viewBox="0 0 36 36" className="circular-chart orange">
@@ -170,7 +180,7 @@ const Dashboard: React.FC = () => {
                 <p>{stats.totalRevenue?.toFixed(2) ?? '0.00'}</p>
                 <p>from {stats.totalOrders ?? '0'}</p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</p>
-                <button>More Details</button>
+                <button onClick={handleMoreDetailsClick}>More Details</button> {/* Ajoutez l'événement onClick */}
               </div>
             </div>
             <div className="orders-status">
@@ -188,36 +198,14 @@ const Dashboard: React.FC = () => {
               </div>
             </div>
           </div>
-      {/*     <div className="trending-products">
+          <div className="trending-products">
             <h2>Daily Trending Products</h2>
             <p>Lorem ipsum dolor sit ame.</p>
             <div className="pall">
-              <div className="product">
-                <img src={img} alt="Product 1" className="product-image" />
-                <div className="product-details">
-                  <p>Product 1</p>
-                  <p>$2.4</p>
-                </div>
-                <p className="order-count">Order 89x</p>
-              </div>
-              <div className="product">
-                <img src={img} alt="Product 2" className="product-image" />
-                <div className="product-details">
-                  <p>Lorem ipsum dolor sit ame.</p>
-                  <p>$2.4</p>
-                </div>
-                <p className="order-count">Order 89x</p>
-              </div>
-              <div className="product">
-                <img src={img} alt="Product 3" className="product-image"/>
-                <div className="product-details">
-                  <p>Lorem ipsum dolor sit ame.</p>
-                  <p>$2.4</p>
-                </div>
-                <p className="order-count">Order 89x</p>
-              </div>
+              <PopularProducts />
+              <button onClick={handleDetailsClick}>View More</button> {/* Ajoutez l'événement onClick */}
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     </div>

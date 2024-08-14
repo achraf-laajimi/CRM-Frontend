@@ -149,7 +149,17 @@ width: 260px;
     position: relative;
 
   }
-  
+  .pall button{
+    padding: 7px 25px;
+    border: none;
+    border-radius: 8px;
+    background-color: #FDF3DF;
+    color: #FEAB00;
+    cursor: pointer;
+    font-size: 10px;
+    margin-top: 12px;
+    margin-left: 400px;
+  }
   .pie {
     width: 100px;
     height: 100px;

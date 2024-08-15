@@ -24,6 +24,7 @@ const Analytics: React.FC = () => {
         const products = await getBestSellingProducts(salesRepId);
         console.log('Fetched best-selling products:', products);
         setBestSellerProducts(products);
+        
       } catch (error) {
         console.error('Error fetching best-selling products:', error);
         setError('Failed to fetch best-selling products. Please try again later.');

@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 // Define API base URL
-const API_URL = 'http://localhost:3000/CRM';
+const API_URL = 'http://localhost:3000/api';
 const BASE_URL = 'http://localhost:3000/CRM'; // Adjust if needed
 const API_URLL = 'http://localhost:3000';
 
@@ -102,7 +102,7 @@ export const loginUser = async (email: string, password: string) => {
 
 export const getUsers = async () => {
   try {
-    const response = await api.get('/getUsers');
+    const response = await axios.get(`${API_URLL}/auth/getUsers`);
     return response.data;
   } catch (error) {
     handleAxiosError(error, 'Error fetching users.');
@@ -111,7 +111,7 @@ export const getUsers = async () => {
 
 export const getUser = async (id: string) => {
   try {
-    const response = await axios.get(`${API_URL}/user/${id}`);
+    const response = await axios.get(`${API_URLL}/auth/getuser/${id}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching user data:', error);
@@ -130,7 +130,7 @@ export const createUser = async (name: string, email: string, password: string) 
 
 export const updateUser = async (id: string, data: { firstName: string; lastName: string; email: string }) => {
   try {
-    const response = await api.put(`/updateUser/${id}`);
+    const response = await axios.put(`${API_URLL}/auth/updateuser/${id}`,data);
     return response.data;
   } catch (error) {
     handleAxiosError(error, 'Error updating user.');
@@ -178,7 +178,7 @@ export interface Product {
 
 export const deleteUser = async (id: string) => {
   try {
-    const response = await api.delete(`/deleteUser/${id}`);
+    const response = await axios.delete(`${API_URLL}/auth/deleteUser/${id}`);
     return response.data;
   } catch (error) {
     handleAxiosError(error, 'Error deleting user.');
@@ -233,7 +233,7 @@ export const unlikeProduct = async (userId: string) => {
 
 export const getBestSellingProducts = async (salesRepId: string) => {
   try {
-    const response = await axios.get(`${API_URL}/best-sellers/${salesRepId}`);
+    const response = await axios.get(`${API_URL}/statistics/best-selling-products`);
     console.log('API Response:', response.data); // Log the response data
     return response.data; // Ensure this matches the expected structure
   } catch (error) {

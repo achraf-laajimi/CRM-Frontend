@@ -187,7 +187,7 @@ export const deleteUser = async (id: string) => {
 
 export const blockUser = async (userId: string) => {
   try {
-    const response = await api.put(`/blockUser/${userId}`);
+    const response = await axios.put(`${API_URLL}/auth/blockUser/${userId}`);
     return response.data;
   } catch (error) {
     handleAxiosError(error, 'Error blocking user.');

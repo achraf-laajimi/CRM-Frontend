@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 interface Customer {
   _id: string;
   username: string;
+  firstName: string;
   email: string;
   avatar: string;
   isBlocked?: boolean;
@@ -146,7 +147,7 @@ const Customers: React.FC = () => {
                   </td>
                   <td>
                     <img src={customer.avatar || img} alt={customer.username} className="avatar" />
-                    {customer.username}
+                    {customer.firstName}
                   </td>
                   <td>{customer.email}</td>
                   <td>

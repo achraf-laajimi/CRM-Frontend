@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getOrders } from '../../api/orderRep';
-import Navbar from '../navbar/navbar';
+import Sidebar from '../sidebar/sidebar';
 import './order.css';
 
 interface Order {
@@ -66,7 +66,7 @@ const OrdersTable: React.FC = () => {
 
   return (
     <div className='order'>
-      <Navbar />
+      <Sidebar />
       <div className="orders-container">
         <div className="orders-header">
           <h2>Orders</h2>

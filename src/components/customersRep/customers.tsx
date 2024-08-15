@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../navbar/navbar';
+import Sidebar from '../sidebar/sidebar';
 import img from './téléchargement.jpg';
 import { ReactComponent as TrashIcon } from './trash.svg';
 import { ReactComponent as EditIcon } from './pencil.svg';
@@ -121,7 +121,7 @@ const Customers: React.FC = () => {
 
   return (
     <div className='customer'>
-      <Navbar />
+      <Sidebar />
       {!showHistory ? (
         <div className="customers">
           <h2>Customers</h2>

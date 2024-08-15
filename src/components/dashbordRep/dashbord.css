@@ -18,13 +18,14 @@ body {
   }
   .dashboard {
     padding: 33px;
-    position: absolute;
-    top: 12px;
-    left: 260px;
+    /* position: absolute; */
+    /* top: 12px;
+    left: 260px; */
     width: calc(100% - 268px);
     border-radius: 24px;
     background-color: #f4f5f7;
-    margin-top: 10px;
+    margin-top: -32px;
+    margin-left: 258px;
   }
   
   .dashboard-header {

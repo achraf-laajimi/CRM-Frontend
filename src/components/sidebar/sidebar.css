@@ -1,7 +1,10 @@
 body {
     font-family: Arial, sans-serif;
 }
-
+.contain {
+    display: flex;
+  
+  }
 .sidebar {
     width: 240px;
     height: 667px;
@@ -14,8 +17,8 @@ body {
     padding-left: 9px;
     margin-left: -9px;
     margin-top: -8px;
-/*     position: fixed;  */
- 
+position: fixed;
+z-index: 3
 }
 .bi4i{
     width: 20px;
@@ -144,12 +147,12 @@ body {
     left: 28px;
 }
 
-.bii { top: 130px; }
-.biii { top: 180px; }
-.biiii { top: 234px; }
-.biiiii { top: 290px; }
-.biiiiii { top: 342px; }
-.b6 { top: 391px; }
+.bii { top: 141px; }
+.biii { top: 192px; }
+.biiii { top: 242px; }
+.biiiii { top: 298px; }
+.biiiiii { top: 350px; }
+.b6 { top: 400px; }
 
 /* Media Queries for responsiveness */
 @media (max-width: 768px) {

@@ -1,12 +1,12 @@
 import React from 'react'
 import "./navbar.css"
-import Sidebar from "../sidebar/sidebar"
+/* import Sidebar from "../sidebar/sidebar" */
 
 
 const navbar = () => {
   return (
     <div className='container'>
-         <Sidebar/>
+        {/*  <Sidebar/> */}
     <div className="navbar">
         <div className='cou'></div>
         

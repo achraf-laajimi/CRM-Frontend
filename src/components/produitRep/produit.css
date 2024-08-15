@@ -1,13 +1,13 @@
 .product-list {
-    padding: 33px;
-    position: absolute;
-    top: 52px;
-    left: 264px;
-    width: 1065px;
-    border-radius: 24px;
-    background-color: #EEEEEE;
-    border-radius: 15px;
-    margin-top: 30px;
+  padding: 33px;
+  position: absolute;
+  top: 48px;
+  left: 278px;
+  width: 1066px;
+  border-radius: 24px;
+  background-color: #EEEEEE;
+  border-radius: 15px;
+  margin-top: 30px;
   }
   
   .add-product-btn,

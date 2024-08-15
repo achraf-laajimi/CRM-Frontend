@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { deleteProduct, getProducts } from '../../api/produitRep';
-import Navbar from '../navbar/navbar';
+import Sidebar from '../sidebar/sidebar';
 import './produit.css';
 
 interface Product {
@@ -69,7 +69,7 @@ const ProductList: React.FC = () => {
 
     return (
         <div className="produit">
-            <Navbar />
+            <Sidebar />
             <div className="product-list">
                 <div className="btnete">
                     <button   className="add-product-btn" 

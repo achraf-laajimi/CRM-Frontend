@@ -2,6 +2,7 @@ import React, { useEffect , useState } from 'react';
 import './sidebar.css';
 import { Link, useLocation } from 'react-router-dom';
 import logo from './images.png';
+import Navbar from '../navbar/navbar';
 
 const Sidebar: React.FC = () => {
     const location = useLocation();
@@ -33,7 +34,10 @@ const Sidebar: React.FC = () => {
     
 
     return (
+    <div className="contain">
+         <Navbar/> 
         <div className="sidebar">
+           
             <div className="logo">
                 <img src={logo} alt="Logo" />
                 <h1><span className='b'>N</span>om-Site</h1>
@@ -86,6 +90,7 @@ const Sidebar: React.FC = () => {
                     <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708" stroke="black" strokeWidth="0.5"/>
                 </svg>
             </div>
+        </div>
         </div>
     );
 }

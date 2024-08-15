@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FaStar } from 'react-icons/fa';
-import Navbar from '../navbar/navbar';
+import Sidebar from '../sidebar/sidebar';
 import './review.css';
 
 interface Review {
@@ -36,7 +36,7 @@ const ProductReview: React.FC = () => {
 
   return (
     <div className='review'>
-      <Navbar />
+      <Sidebar />
       <div className='revieww'>
         <div className='product-header'>
           <img src={product.imageUrl} alt={product.name} className='product-image' />

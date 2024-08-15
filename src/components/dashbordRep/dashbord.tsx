@@ -10,6 +10,7 @@ import totalRevenueImg from './money-bag.png';
 import img from '../analyticsRep/Bland_Cosmetic_Product_Packaging_Unit_500x400.jpg';
 import { getOrderStatistics } from '../../api/orderRep';
 import PopularProducts from '../PopularProducts';
+import Sidebar from '../sidebar/sidebar';
 
 const Dashboard: React.FC = () => {
   const [showValue, setShowValue] = useState(true);
@@ -58,7 +59,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className='dash'>
-      <Navbar />
+      <Sidebar />
       <div className="dashboard">
         <div className="unde1"></div>
         <header className="dashboard-header">

@@ -8,10 +8,14 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 20px;
-    background-color: #EEEEEE;
+    background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    margin-top: -8px;
+    width: 1175px;
+    margin-top: -14px;
+    height: 62px;
+    margin-left: 256px;
+    /* position: fixed; */
+    z-index: 5
 
   }
   
@@ -36,7 +40,7 @@
     /* border-radius: 20px; */
     padding: 5px 10px;
     margin-left: -1995px;
-    margin-top: -629px;
+    margin-top: 17px;
     /* border: 1px solid #FC410C; */
     z-index: 2;
 }

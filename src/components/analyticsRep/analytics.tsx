@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getBestSellingProducts } from '../../api/apiRep';
-import Navbar from '../navbar/navbar';
+import Sidebar from '../sidebar/sidebar';
 import './analytics.css';
 import PopularProducts from '../PopularProducts';
 
@@ -36,7 +36,7 @@ const Analytics: React.FC = () => {
 
   return (
     <div className="analytics">
-      <Navbar />
+      <Sidebar />
       <div className="lkolfelkol">
         <div className="analytics-container">
           <div className="analytics-header">

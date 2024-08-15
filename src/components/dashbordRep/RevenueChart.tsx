@@ -65,8 +65,8 @@ const RevenueChart: React.FC = () => {
     },
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p style={{ color: 'red' }}>{error}</p>;
+/*   if (loading) return <p>Loading...</p>;
+  if (error) return <p style={{ color: 'red' }}>{error}</p>; */
 
   return (
     <div className="revenue-chart-container">
@@ -76,11 +76,11 @@ const RevenueChart: React.FC = () => {
             <h2>Revenue</h2>
             <p>Overview of total revenue and order statistics</p>
           </div>
-          <div className="chart-controls">
+          {/* <div className="chart-controls">
             <button className="active1">Monthly <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" className="svg1" viewBox="0 0 16 16">
               <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
             </svg></button>
-          </div>
+          </div> */}
         </div>
         <Bar data={data} options={options} />
       </div>

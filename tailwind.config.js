@@ -10,6 +10,9 @@ export default {
         '40px': '40px',  // Ajoute une marge de 40 pixels
         '60px': '60px',  // Ajoute une marge de 60 pixels
         '80px': '80px',  // Ajoute une marge de 80 pixels
+        '229': '229px',
+        '-200': '-200px',
+        '-4': '-4px',
       },
     },
   },

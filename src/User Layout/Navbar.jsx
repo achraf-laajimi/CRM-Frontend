@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { FaSearch, FaChevronDown } from 'react-icons/fa';
 import { RiUserFollowLine, RiNotification3Line, RiMessage3Line } from "react-icons/ri";
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = ({ handleSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate(); // Hook pour la navigation
 
   const handleChange = (e) => {
     setSearchTerm(e.target.value);
@@ -13,6 +15,9 @@ const Navbar = ({ handleSearch }) => {
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
+  };
+  const goToOrders = () => {
+    navigate('/vos-commandes'); // Remplacez '/vos-commandes' par l'URL que vous souhaitez
   };
 
   const username = "JohnDoe"; // Replace this with the actual username
@@ -41,7 +46,7 @@ const Navbar = ({ handleSearch }) => {
         {dropdownOpen && (
           <div className="absolute top-12 bg-white border border-gray-200 rounded shadow-lg w-48 z-10">
             <ul className="flex flex-col">
-              <li className="px-6 py-2 text-gray-700 cursor-pointer hover:bg-slate-100">Vos commandes</li>
+              <li className="px-6 py-2 text-gray-700 cursor-pointer hover:bg-slate-100"  onClick={goToOrders} >Vos commandes</li>
               <li className="px-6 py-2 text-gray-700 cursor-pointer hover:bg-slate-100">Votre liste d'envie</li>
               <li className="px-6 py-2 text-gray-700 cursor-pointer hover:bg-slate-100">Boite de réception</li>
               <li className="px-12 py-2 text-orange-500 cursor-pointer border-t">Déconnexion</li>

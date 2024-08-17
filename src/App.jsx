@@ -9,6 +9,7 @@ import Help from './User Components/Help';
 import Promote from './User Components/Promote';
 import Products from './User Components/Products';
 import Commande from './User Components/commande';
+import Ff from './User Components/ff';
 
 function App() {
   const handleSearch = (searchTerm) => {
@@ -26,6 +27,7 @@ function App() {
                 <Route path="profile" element={<Profile />} />
                 <Route path="help" element={<Help />} />
                 <Route path='promote' element={<Promote />} />
+                <Route path='ff' element={<Ff />} />
                 
                 </Route>
         <Route path="vos-commandes" element={<Commande />} />

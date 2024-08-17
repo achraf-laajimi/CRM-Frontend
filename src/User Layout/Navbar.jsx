@@ -23,7 +23,7 @@ const Navbar = ({ handleSearch }) => {
   const username = "JohnDoe"; // Replace this with the actual username
 
   return (
-    <nav className="bg-white shadow-md z-50 w-[calc(100%-240px)] fixed top-0 left-60 p-4 flex items-center justify-between">
+    <nav className="bg-white shadow-md z-40 w-[calc(100%-240px)] fixed top-0 left-60 p-4 flex items-center justify-between">
       <form className="flex items-center">
         <input
           className="bg-white border border-gray-300 rounded p-2 mr-2 focus:outline-none focus:ring-2 focus:ring-orange-400"

@@ -1,6 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Commande = () => {
+    const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/');   };
     return (
         <div className=" bg-gray-100 flex flex-col items-center p-4 w-[1160px] rounded-[20px] h-[700px]">
           <header className="w-full flex justify-between items-center p-4 bg-white shadow-md rounded-[5px]">
@@ -26,7 +31,7 @@ const Commande = () => {
               <p className="text-gray-600 mt-2">
                 Parcourez nos catégories et découvrez nos meilleures offres!
               </p>
-              <button className="bg-orange-500 text-white rounded-full px-4 py-2 mt-6 hover:bg-orange-600">
+              <button className="bg-orange-500 text-white rounded-full px-4 py-2 mt-6 hover:bg-orange-600" onClick={handleClick}>
                 Commencer vos achats
               </button>
             </div>

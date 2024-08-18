@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { FaHeart, FaShoppingCart, FaFilter, FaTimes } from 'react-icons/fa';
-import { getProducts } from '../User api/Methods';
+import { FaHeart, FaShoppingCart, FaFilter, FaTimes, FaCommentDots } from 'react-icons/fa';
+import { getProducts, likeProduct, unlikeProduct } from '../User api/Methods';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filters, setFilters] = useState({ color: '', gender: '', category: '' });
   const [sortOrder, setSortOrder] = useState('newest');
+  const [userId, setUserId] = useState('66b9e52908f4cfb69c52f440'); // Replace with actual user ID
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -36,9 +37,9 @@ const Products = () => {
   };
 
   const filterProducts = (products) => {
-    return products.filter(product => {
+    return products.filter((product) => {
       return (
-        (!filters.color || product.color === filters.color) &&
+        (!filters.color || product.colors.includes(filters.color)) &&
         (!filters.gender || product.gender === filters.gender) &&
         (!filters.category || product.category === filters.category)
       );
@@ -56,13 +57,39 @@ const Products = () => {
     return products;
   };
 
+  const handleLikeClick = async (productId, isLiked) => {
+    try {
+      if (isLiked) {
+        await unlikeProduct(productId, userId);
+      } else {
+        await likeProduct(productId, userId);
+      }
+
+      // Update the product list with the new like/unlike status
+      setProducts((prevProducts) =>
+        prevProducts.map((product) =>
+          product._id === productId
+            ? {
+                ...product,
+                likes: isLiked
+                  ? product.likes.filter((id) => id !== userId)
+                  : [...product.likes, userId],
+              }
+            : product
+        )
+      );
+    } catch (error) {
+      console.error('Error updating like status:', error);
+    }
+  };
+
   const filteredAndSortedProducts = sortProducts(filterProducts(products));
 
   return (
     <div className="relative p-5 flex flex-col">
       {/* Top Section with Filters and Sort By */}
       <div className="flex justify-between items-center mb-5">
-        <h1 className="text-2xl font-bold text-neutral-800">Products</h1>
+        <h1 className="text-2xl font-bold text-neutral-800">Products Section</h1>
         <div className="flex items-center space-x-4">
           <button
             onClick={toggleFilter}
@@ -96,7 +123,7 @@ const Products = () => {
         <div className="fixed top-0 right-0 w-64 h-full bg-white border-l border-gray-300 p-4 z-50">
           <div className="flex items-center justify-between border-b border-gray-300 pb-2 mb-4">
             <h2 className="text-lg font-semibold text-neutral-800">Filters</h2>
-            <button onClick={toggleFilter} className="text-xl text-neutral-800">
+            <button onClick={toggleFilter} className="text-white">
               <FaTimes />
             </button>
           </div>
@@ -159,23 +186,23 @@ const Products = () => {
                 <input
                   type="radio"
                   name="category"
-                  value="cat1"
-                  checked={filters.category === 'cat1'}
+                  value="shoes"
+                  checked={filters.category === 'shoes'}
                   onChange={handleFilterChange}
                   className="mr-2"
                 />
-                shoes
+                Shoes
               </label>
               <label className="block">
                 <input
                   type="radio"
                   name="category"
-                  value="cat2"
-                  checked={filters.category === 'cat2'}
+                  value="pull"
+                  checked={filters.category === 'pull'}
                   onChange={handleFilterChange}
                   className="mr-2"
                 />
-                pull
+                Pull
               </label>
               {/* Add more categories as needed */}
             </div>
@@ -184,24 +211,33 @@ const Products = () => {
       )}
 
       {/* Main Content */}
-      <div className={`flex-1 ${isFilterOpen ? 'ml-64' : ''} transition-all duration-300`}>
+      <div className={`flex-1 ${isFilterOpen ? 'mr-64' : ''} transition-all duration-300`}>
         {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filteredAndSortedProducts.map(product => (
-            <div key={product._id} className="bg-white border rounded-lg shadow-md overflow-hidden">
-              <img src={product.imageUrl} alt={product.name} className="w-full h-40 object-cover" />
-              <div className="p-4 flex flex-col justify-between">
-                <div className="flex justify-between items-center mb-2 space-x-7">
-                  <h3 className="text-lg font-semibold text-neutral-800">{product.name}</h3>
-                  <div className="flex space-x-2">
-                    <FaHeart className="text-red-500 cursor-pointer" />
-                    <FaShoppingCart className="text-orange-500 cursor-pointer" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
+          {filteredAndSortedProducts.map((product) => {
+            const isLiked = product.likes.includes(userId);
+            return (
+              <div key={product._id} className="bg-white border rounded-lg shadow-md overflow-hidden">
+                <img src={product.imageUrl} alt={product.name} className="w-full h-40 object-cover" />
+                <div className="p-4 flex flex-col justify-between">
+                  <div className="flex justify-between items-center mb-2 space-x-7">
+                    <h3 className="text-lg font-semibold text-neutral-800">{product.name}</h3>
+                    <div className="flex space-x-2">
+                      <FaHeart
+                        className={`cursor-pointer ${isLiked ? 'text-red-500' : 'text-gray-400'}`}
+                        onClick={() => handleLikeClick(product._id, isLiked)}
+                      />
+                      <FaShoppingCart className="text-orange-500 cursor-pointer" />
+                    </div>
+                  </div>
+                  <div className='flex justify-between items-center mb-2 space-x-7'>
+                    <FaCommentDots className="text-orange-500 cursor-pointer mt-4 text-lg" />
+                  <p className="text-gray-600 mt-4">${product.price}</p>
                   </div>
                 </div>
-                <p className="text-right text-gray-600 mt-4">${product.price}</p>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

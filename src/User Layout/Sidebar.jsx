@@ -40,7 +40,7 @@ const Sidebar = () => {
           <RiProfileLine className="text-xl" />
           <span>Profile</span>
         </NavLink>
-        <NavLink
+  {/*       <NavLink
           to="/income"
           className={({ isActive }) =>
             `flex items-center gap-2 px-2 py-1 text-neutral-400 hover:text-orange-500 ${
@@ -52,7 +52,7 @@ const Sidebar = () => {
         >
           <FaMoneyBillWave className="text-xl" />
           <span>Income</span>
-        </NavLink>
+        </NavLink> */}
         <NavLink
           to="/promote"
           className={({ isActive }) =>

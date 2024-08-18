@@ -19,6 +19,9 @@ const Navbar = ({ handleSearch }) => {
   const goToOrders = () => {
     navigate('/vos-commandes'); // Remplacez '/vos-commandes' par l'URL que vous souhaitez
   };
+  const goToMsg = () => {
+    navigate('/message'); // Remplacez '/vos-commandes' par l'URL que vous souhaitez
+  };
 
   const username = "JohnDoe"; // Replace this with the actual username
 
@@ -54,7 +57,7 @@ const Navbar = ({ handleSearch }) => {
           </div>
         )}
         <RiNotification3Line className="text-xl text-gray-600 cursor-pointer" />
-        <RiMessage3Line className="text-xl text-gray-600 cursor-pointer" />
+        <RiMessage3Line className="text-xl text-gray-600 cursor-pointer "onClick={goToMsg} />
       </div>
     </nav>
   );

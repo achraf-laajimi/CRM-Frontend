@@ -10,6 +10,8 @@ import Promote from './User Components/Promote';
 import Products from './User Components/Products';
 import Commande from './User Components/commande';
 import Ff from './User Components/ff';
+import Message from './User Components/message';
+import Messages from './User Components/messages';
 
 function App() {
   const handleSearch = (searchTerm) => {
@@ -28,6 +30,8 @@ function App() {
                 <Route path="help" element={<Help />} />
                 <Route path='promote' element={<Promote />} />
                 <Route path='ff' element={<Ff />} />
+                <Route path='message' element={<Message />} />
+                <Route path='messages' element={<Messages />} />
                 
                 </Route>
         <Route path="vos-commandes" element={<Commande />} />

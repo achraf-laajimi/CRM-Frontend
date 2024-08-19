@@ -65,7 +65,6 @@ const Products = () => {
         await likeProduct(productId, userId);
       }
 
-      // Update the product list with the new like/unlike status
       setProducts((prevProducts) =>
         prevProducts.map((product) =>
           product._id === productId
@@ -81,6 +80,12 @@ const Products = () => {
     } catch (error) {
       console.error('Error updating like status:', error);
     }
+  };
+
+  const handleAddToCart = (product) => {
+    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    cartItems.push(product);
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
   };
 
   const filteredAndSortedProducts = sortProducts(filterProducts(products));
@@ -127,7 +132,9 @@ const Products = () => {
               <FaTimes />
             </button>
           </div>
+          {/* Filters */}
           <div className="space-y-4">
+            {/* Color Filter */}
             <div>
               <h3 className="font-semibold text-neutral-800 mb-2">Colors</h3>
               <label className="block">
@@ -154,6 +161,7 @@ const Products = () => {
               </label>
               {/* Add more color options as needed */}
             </div>
+            {/* Gender Filter */}
             <div>
               <h3 className="font-semibold text-neutral-800 mb-2">Gender</h3>
               <label className="block">
@@ -180,6 +188,7 @@ const Products = () => {
               </label>
               {/* Add more gender options as needed */}
             </div>
+            {/* Category Filter */}
             <div>
               <h3 className="font-semibold text-neutral-800 mb-2">Categories</h3>
               <label className="block">
@@ -227,12 +236,15 @@ const Products = () => {
                         className={`cursor-pointer ${isLiked ? 'text-red-500' : 'text-gray-400'}`}
                         onClick={() => handleLikeClick(product._id, isLiked)}
                       />
-                      <FaShoppingCart className="text-orange-500 cursor-pointer" />
+                      <FaShoppingCart
+                        className="text-orange-500 cursor-pointer"
+                        onClick={() => handleAddToCart(product)}
+                      />
                     </div>
                   </div>
-                  <div className='flex justify-between items-center mb-2 space-x-7'>
-                    <FaCommentDots className="text-orange-500 cursor-pointer mt-4 text-lg" />
-                  <p className="text-gray-600 mt-4">${product.price}</p>
+                  <div>
+                    <p className="text-neutral-800 mb-2">{product.description}</p>
+                    <p className="text-orange-500 font-semibold text-lg">{product.price} $</p>
                   </div>
                 </div>
               </div>

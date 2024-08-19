@@ -12,6 +12,7 @@ import Commande from './User Components/commande';
 import Ff from './User Components/ff';
 import Message from './User Components/message';
 import Messages from './User Components/messages';
+import UserProfile from './User Components/UserProfile';
 import Wishliste from './User Components/wishlsite';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
               <Route path="/" element={<Outlet />}>
                 <Route index element={<Products />} />
                 <Route path="profile" element={<Profile />} />
+                <Route path="userprofile" element={<UserProfile />} />
                 <Route path="help" element={<Help />} />
                 <Route path='promote' element={<Promote />} />
                 <Route path='ff' element={<Ff />} />

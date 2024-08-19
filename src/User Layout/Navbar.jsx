@@ -22,7 +22,9 @@ const Navbar = ({ handleSearch }) => {
   const goToMsg = () => {
     navigate('/message'); // Remplacez '/vos-commandes' par l'URL que vous souhaitez
   };
-
+  const goToWish = () => {
+    navigate('/wishliste'); // Remplacez '/vos-commandes' par l'URL que vous souhaitez
+  };
   const username = "JohnDoe"; // Replace this with the actual username
 
   return (
@@ -50,7 +52,7 @@ const Navbar = ({ handleSearch }) => {
           <div className="absolute top-12 bg-white border border-gray-200 rounded shadow-lg w-48 z-10">
             <ul className="flex flex-col">
               <li className="px-6 py-2 text-gray-700 cursor-pointer hover:bg-slate-100"  onClick={goToOrders} >Vos commandes</li>
-              <li className="px-6 py-2 text-gray-700 cursor-pointer hover:bg-slate-100">Votre liste d'envie</li>
+              <li className="px-6 py-2 text-gray-700 cursor-pointer hover:bg-slate-100" onClick={goToWish}>Votre liste d'envie</li>
               <li className="px-6 py-2 text-gray-700 cursor-pointer hover:bg-slate-100">Boite de réception</li>
               <li className="px-12 py-2 text-orange-500 cursor-pointer border-t">Déconnexion</li>
             </ul>

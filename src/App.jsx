@@ -13,6 +13,7 @@ import Ff from './User Components/ff';
 import Message from './User Components/message';
 import Messages from './User Components/messages';
 import UserProfile from './User Components/UserProfile';
+import Wishliste from './User Components/wishlsite';
 
 function App() {
   const handleSearch = (searchTerm) => {
@@ -34,7 +35,7 @@ function App() {
                 <Route path='ff' element={<Ff />} />
                 <Route path='message' element={<Message />} />
                 <Route path='messages' element={<Messages />} />
-                
+                <Route path='wishliste' element={<Wishliste />} />
                 </Route>
         <Route path="vos-commandes" element={<Commande />} />
             </Routes>

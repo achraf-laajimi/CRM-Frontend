@@ -3,29 +3,52 @@ import React, { useState, useEffect } from "react";
 const Commande = () => {
   const [cartItems, setCartItems] = useState([]);
   const [quantities, setQuantities] = useState({});
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const storedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    setCartItems(storedCartItems);
-
-    // Initialize quantities based on cart items
-    const initialQuantities = {};
-    storedCartItems.forEach((item) => {
-      initialQuantities[item._id] = (initialQuantities[item._id] || 0) + 1; // Update quantity if already exists
+    
+    // Process cart items to ensure they are unique and aggregate quantities
+    const processedItems = [];
+    const processedQuantities = {};
+    
+    storedCartItems.forEach(item => {
+      if (processedQuantities[item._id]) {
+        processedQuantities[item._id] += 1;
+      } else {
+        processedQuantities[item._id] = 1;
+        processedItems.push(item);
+      }
     });
-    setQuantities(initialQuantities);
+
+    setCartItems(processedItems);
+    setQuantities(processedQuantities);
   }, []);
 
   const handleQuantityChange = (productId, delta) => {
-    setQuantities((prev) => {
-      const newQuantity = Math.max((prev[productId] || 0) + delta, 1);
+    setQuantities(prev => {
+      const newQuantity = Math.max((prev[productId] || 0) + delta, 0);
+
+      // Update cart items and local storage
+      const updatedCartItems = newQuantity === 0
+        ? cartItems.filter(item => item._id !== productId)
+        : cartItems.map(item =>
+            item._id === productId
+              ? { ...item, quantity: newQuantity }
+              : item
+          );
+
       if (newQuantity === 0) {
-        // Remove item if quantity reaches 0
-        const updatedCartItems = cartItems.filter((item) => item._id !== productId);
-        setCartItems(updatedCartItems);
+        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+      } else {
+        const existingItemIndex = updatedCartItems.findIndex(item => item._id === productId);
+        if (existingItemIndex > -1) {
+          updatedCartItems[existingItemIndex] = { ...updatedCartItems[existingItemIndex], quantity: newQuantity };
+        } else {
+          updatedCartItems.push({ _id: productId, quantity: newQuantity });
+        }
         localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
       }
+
       return {
         ...prev,
         [productId]: newQuantity,
@@ -34,15 +57,18 @@ const Commande = () => {
   };
 
   const handleRemoveItem = (productId) => {
-    const updatedCartItems = cartItems.filter((item) => item._id !== productId);
+    const updatedCartItems = cartItems.filter(item => item._id !== productId);
     setCartItems(updatedCartItems);
     localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
-    setQuantities((prev) => {
+    setQuantities(prev => {
       const newQuantities = { ...prev };
       delete newQuantities[productId];
       return newQuantities;
     });
   };
+
+  // Calculate the total number of items in the cart
+  const totalItemsInCart = Object.values(quantities).reduce((total, qty) => total + qty, 0);
 
   return (
     <div className="bg-gray-100 p-4 min-h-screen w-full max-w-7xl mx-auto rounded-lg">
@@ -51,21 +77,21 @@ const Commande = () => {
         <div className="relative">
           <div className="text-2xl">🛒</div>
           <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-            {cartItems.length}
+            {totalItemsInCart}
           </span>
         </div>
       </div>
 
       <div className="bg-white p-4 rounded-lg shadow">
         <div className="flex justify-between items-center border-b pb-2 mb-2">
-          <h2 className="text-xl font-bold">Panier ({cartItems.length})</h2>
+          <h2 className="text-xl font-bold">Panier ({totalItemsInCart})</h2>
         </div>
 
         {cartItems.length === 0 ? (
           <p className="text-neutral-600">Your cart is empty.</p>
         ) : (
           <div className="space-y-4">
-            {cartItems.map((item) => (
+            {cartItems.map(item => (
               <div key={item._id} className="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg shadow-sm">
                 <img src={item.imageUrl} alt={item.name} className="w-20 h-20 object-cover" />
                 <div className="flex-1">

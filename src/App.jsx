@@ -32,7 +32,7 @@ function App() {
                 <Route path="userprofile" element={<UserProfile />} />
                 <Route path="help" element={<Help />} />
                 <Route path='promote' element={<Promote />} />
-                <Route path='ff' element={<Ff />} />
+              {/*   <Route path='ff' element={<Ff />} /> */}
                 <Route path='message' element={<Message />} />
                 <Route path='messages' element={<Messages />} />
                 <Route path='wishliste' element={<Wishliste />} />

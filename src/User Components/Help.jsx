@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 const HelpCenterCard = () => {
   return (
-    <div className="fixed top-20 right-[50px] w-64 p-4 bg-white shadow-lg rounded-lg mt-[58px] w-[310px] ">
+    <div className="fixed top-20 right-[50px] w-64 p-4 bg-white shadow-lg rounded-lg mt-[18px] w-[310px] ">
       <div className="bg-orange-200 rounded-t-lg p-2 flex items-center">
         <div className="bg-white rounded-full w-8 h-8 flex items-center justify-center">
           <span className="text-orange-500 font-bold">N</span>
@@ -402,7 +402,7 @@ Tous les articles doivent être dans leur état et emballage d'origine pour pouv
    
 
     <aside className="mt-8">
-    <div className="mt-60px flex justify-end">
+   <div className="mt-60px flex justify-end">
       <button
         onClick={handleToggle}
         className={`${

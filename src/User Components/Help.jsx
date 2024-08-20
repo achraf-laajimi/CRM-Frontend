@@ -21,6 +21,7 @@ const HelpCenterCard = () => {
         <button className="mt-4 w-full bg-orange-400 text-white py-2 rounded-lg mt-5">
           Nouvelle conversation
         </button>
+        
       </div>
     </div>
   );

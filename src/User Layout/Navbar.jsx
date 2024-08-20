@@ -80,7 +80,7 @@ const Navbar = ({ filter, setFilter }) => {
             </ul>
           </div>
         )}
-        <RiNotification3Line className="text-xl text-gray-600 cursor-pointer" />
+ {/*        <RiNotification3Line className="text-xl text-gray-600 cursor-pointer" /> */}
         <RiMessage3Line className="text-xl text-gray-600 cursor-pointer" onClick={goToMsg} />
       </div>
     </nav>

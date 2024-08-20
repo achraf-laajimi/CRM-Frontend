@@ -20,7 +20,7 @@ function App() {
     <Router>
       <Sidebar />
       <div className="flex-1 flex flex-col ml-60"> {/* Adjusted left margin for the main content */}
-        <Navbar setFilter={setFilter} />
+        <Navbar filter={filter} setFilter={setFilter} />
         <div className="flex-1 p-5 overflow-auto mt-20 ml-5"> {/* Adjusted top margin for main content */}
           <Routes>
             <Route path="/" element={<Outlet />}>

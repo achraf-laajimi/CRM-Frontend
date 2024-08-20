@@ -1,22 +1,19 @@
 import React, { useState } from 'react';
 import { FaSearch, FaChevronDown } from 'react-icons/fa';
 import { RiUserFollowLine, RiNotification3Line, RiMessage3Line } from "react-icons/ri";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-const Navbar = ({ setFilter }) => {
+const Navbar = ({ filter, setFilter }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate(); // Hook pour la navigation
+  const location = useLocation(); // Hook pour obtenir la route actuelle
 
   const handleChange = (e) => {
-    const term = e.target.value;
-    setSearchTerm(term);
-    setFilter(term); // Mise à jour du filtre dans App
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Empêche le rechargement de la page
-    setFilter(searchTerm); // Assurez-vous que le filtre est mis à jour
+    setSearchTerm(e.target.value);
+    if (setFilter) {
+      setFilter(e.target.value);
+    }
   };
 
   const toggleDropdown = () => {
@@ -24,34 +21,43 @@ const Navbar = ({ setFilter }) => {
   };
 
   const goToOrders = () => {
-    navigate('/vos-commandes'); // Remplacez '/vos-commandes' par l'URL que vous souhaitez
+    navigate('/vos-commandes');
   };
 
   const goToMsg = () => {
-    navigate('/message'); // Remplacez '/message' par l'URL que vous souhaitez
+    navigate('/message');
   };
 
   const goToWish = () => {
-    navigate('/wishliste'); // Remplacez '/wishliste' par l'URL que vous souhaitez
+    navigate('/wishliste');
   };
 
   const username = "JohnDoe"; // Remplacez par le nom d'utilisateur réel
 
+  // Affiche la barre de recherche uniquement sur la page des produits
+  const showSearch = location.pathname === '/';
+
   return (
     <nav className="bg-white shadow-md z-40 w-[calc(100%-240px)] fixed top-0 left-60 p-4 flex items-center justify-between">
-      <form className="flex items-center" onSubmit={handleSubmit}>
-        <input
-          className="bg-white border border-gray-300 rounded p-2 mr-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
-          type="search"
-          placeholder="Search Here ..."
-          aria-label="Search"
-          value={searchTerm}
-          onChange={handleChange}
-        />
-        <button className="bg-white text-orange-500 p-2 hover:text-orange-600" type="submit">
-          <FaSearch />
-        </button>
-      </form>
+      <div className="flex-1 flex items-center">
+        {showSearch ? (
+          <form className="flex items-center ">
+            <input
+              className="bg-white border border-gray-300 rounded p-2 mr-2 flex-1 focus:outline-none focus:ring-2 focus:ring-orange-400"
+              type="search"
+              placeholder="Search Here ..."
+              aria-label="Search"
+              value={searchTerm}
+              onChange={handleChange}
+            />
+            <button className="bg-white text-orange-500 p-2 hover:text-orange-600" type="submit">
+              <FaSearch />
+            </button>
+          </form>
+        ) : (
+          <div className="flex-1"></div>  // Placeholder to maintain alignment when search bar is hidden
+        )}
+      </div>
       <div className="flex items-center space-x-4 relative">
         <div className="flex items-center space-x-1 mx-9 cursor-pointer" onClick={toggleDropdown}>
           <RiUserFollowLine className="text-xl text-neutral-800" />

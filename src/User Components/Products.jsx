@@ -1,25 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { FaHeart, FaShoppingCart, FaFilter, FaTimes, FaCommentDots } from 'react-icons/fa';
+import { FaHeart, FaShoppingCart, FaFilter, FaTimes } from 'react-icons/fa';
 import { getProducts, likeProduct, unlikeProduct } from '../User api/Methods';
 
-const Products = () => {
+const Products = ({ filter }) => {
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filters, setFilters] = useState({ color: '', gender: '', category: '' });
   const [sortOrder, setSortOrder] = useState('newest');
-  const [userId, setUserId] = useState('66b9e52908f4cfb69c52f440'); // Replace with actual user ID
+  const [userId, setUserId] = useState('66b9e52908f4cfb69c52f440'); // Remplacez par l'ID utilisateur réel
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const fetchedProducts = await getProducts();
         setProducts(fetchedProducts);
+        setFilteredProducts(fetchedProducts);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Erreur lors de la récupération des produits :', error);
       }
     };
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    let updatedProducts = products;
+
+    // Application des filtres
+    updatedProducts = updatedProducts.filter(product => {
+      return (
+        (!filters.color || product.colors.includes(filters.color)) &&
+        (!filters.gender || product.gender === filters.gender) &&
+        (!filters.category || product.category === filters.category)
+      );
+    });
+
+    // Application du filtre de recherche
+    if (filter) {
+      updatedProducts = updatedProducts.filter(product => 
+        product.name.toLowerCase().includes(filter.toLowerCase())
+      );
+    }
+
+    // Mise à jour des produits filtrés
+    setFilteredProducts(updatedProducts);
+  }, [filter, filters, products]);
 
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
@@ -78,7 +103,7 @@ const Products = () => {
         )
       );
     } catch (error) {
-      console.error('Error updating like status:', error);
+      console.error('Erreur lors de la mise à jour du statut "like" :', error);
     }
   };
 
@@ -88,11 +113,11 @@ const Products = () => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   };
 
-  const filteredAndSortedProducts = sortProducts(filterProducts(products));
+  const filteredAndSortedProducts = sortProducts(filteredProducts);
 
   return (
     <div className="relative p-5 flex flex-col">
-      {/* Top Section with Filters and Sort By */}
+      {/* Section supérieure avec les filtres et le tri */}
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-2xl font-bold text-neutral-800">Products Section</h1>
         <div className="flex items-center space-x-4">
@@ -123,7 +148,7 @@ const Products = () => {
         <div className="fixed inset-0 bg-neutral-800 opacity-50 z-40" onClick={toggleFilter}></div>
       )}
 
-      {/* Filter Sidebar */}
+      {/* Barre latérale des filtres */}
       {isFilterOpen && (
         <div className="fixed top-0 right-0 w-64 h-full bg-white border-l border-gray-300 p-4 z-50">
           <div className="flex items-center justify-between border-b border-gray-300 pb-2 mb-4">
@@ -132,9 +157,9 @@ const Products = () => {
               <FaTimes />
             </button>
           </div>
-          {/* Filters */}
+          {/* Filtres */}
           <div className="space-y-4">
-            {/* Color Filter */}
+            {/* Filtre par couleur */}
             <div>
               <h3 className="font-semibold text-neutral-800 mb-2">Colors</h3>
               <label className="block">
@@ -159,9 +184,9 @@ const Products = () => {
                 />
                 Blue
               </label>
-              {/* Add more color options as needed */}
+              {/* Ajoutez d'autres options de couleur si nécessaire */}
             </div>
-            {/* Gender Filter */}
+            {/* Filtre par genre */}
             <div>
               <h3 className="font-semibold text-neutral-800 mb-2">Gender</h3>
               <label className="block">
@@ -186,9 +211,9 @@ const Products = () => {
                 />
                 Women
               </label>
-              {/* Add more gender options as needed */}
+              {/* Ajoutez d'autres options de genre si nécessaire */}
             </div>
-            {/* Category Filter */}
+            {/* Filtre par catégorie */}
             <div>
               <h3 className="font-semibold text-neutral-800 mb-2">Categories</h3>
               <label className="block">
@@ -213,44 +238,42 @@ const Products = () => {
                 />
                 Pull
               </label>
-              {/* Add more categories as needed */}
+              {/* Ajoutez d'autres options de catégorie si nécessaire */}
             </div>
           </div>
         </div>
       )}
 
-      {/* Main Content */}
-      <div className={`flex-1 ${isFilterOpen ? 'mr-64' : ''} transition-all duration-300`}>
-        {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
-          {filteredAndSortedProducts.map((product) => {
-            const isLiked = product.likes.includes(userId);
-            return (
-              <div key={product._id} className="bg-white border rounded-lg shadow-md overflow-hidden">
-                <img src={product.imageUrl} alt={product.name} className="w-full h-40 object-cover" />
-                <div className="p-4 flex flex-col justify-between">
-                  <div className="flex justify-between items-center mb-2 space-x-7">
-                    <h3 className="text-lg font-semibold text-neutral-800">{product.name}</h3>
-                    <div className="flex space-x-2">
-                      <FaHeart
-                        className={`cursor-pointer ${isLiked ? 'text-red-500' : 'text-gray-400'}`}
-                        onClick={() => handleLikeClick(product._id, isLiked)}
-                      />
-                      <FaShoppingCart
-                        className="text-orange-500 cursor-pointer"
-                        onClick={() => handleAddToCart(product)}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-neutral-800 mb-2">{product.description}</p>
-                    <p className="text-orange-500 font-semibold text-lg">{product.price} $</p>
-                  </div>
-                </div>
+      {/* Liste des produits */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {filteredAndSortedProducts.length > 0 ? (
+          filteredAndSortedProducts.map(product => (
+            <div key={product._id} className="border-2 border-custom-orange rounded-lg p-4 bg-[#fff]">
+              <img src={product.imageUrl} alt={product.name} className="w-full h-48 object-cover mb-4" />
+              <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
+              <p className="text-gray-600 mb-2">{product.category}</p>
+              <p className="text-lg font-bold mb-2">${product.price}</p>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => handleLikeClick(product._id, product.likes.includes(userId))}
+                  className="flex items-center space-x-1 bg-transparent"
+                >
+                  <FaHeart className={`text-xl ${product.likes.includes(userId) ? 'text-red-500' : 'text-gray-400'}`} />
+                  <span>{product.likes.length}</span>
+                </button>
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  className="flex items-center space-x-1 bg-transparent "
+                >
+                <FaShoppingCart className="text-xl text-gray-400 hover:text-custom-orange" />
+                  <span>Add to Cart</span>
+                </button>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-center col-span-full">No products found</p>
+        )}
       </div>
     </div>
   );

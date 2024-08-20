@@ -14,6 +14,9 @@ export default {
         '-200': '-200px',
         '-4': '-4px',
       },
+      colors: {
+        'custom-orange': '#FC410C', // Définir votre couleur personnalisée ici
+      },
     },
   },
   plugins: [],

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaHeart, FaShoppingCart, FaFilter, FaTimes } from 'react-icons/fa';
+import { FaHeart, FaShoppingCart, FaFilter, FaTimes, FaCommentDots } from 'react-icons/fa';
 import { getProducts, likeProduct, unlikeProduct } from '../User api/Methods';
 
 const Products = ({ filter }) => {
@@ -250,24 +250,16 @@ const Products = ({ filter }) => {
           filteredAndSortedProducts.map(product => (
             <div key={product._id} className="border-2 border-custom-orange rounded-lg p-4 bg-[#fff]">
               <img src={product.imageUrl} alt={product.name} className="w-full h-48 object-cover mb-4" />
-              <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
-              <p className="text-gray-600 mb-2">{product.category}</p>
-              <p className="text-lg font-bold mb-2">${product.price}</p>
-              <div className="flex items-center space-x-2">
-                <button
-                  onClick={() => handleLikeClick(product._id, product.likes.includes(userId))}
-                  className="flex items-center space-x-1 bg-transparent"
-                >
-                  <FaHeart className={`text-xl ${product.likes.includes(userId) ? 'text-red-500' : 'text-gray-400'}`} />
-                  <span>{product.likes.length}</span>
-                </button>
-                <button
-                  onClick={() => handleAddToCart(product)}
-                  className="flex items-center space-x-1 bg-transparent "
-                >
-                <FaShoppingCart className="text-xl text-gray-400 hover:text-custom-orange" />
-                  <span>Add to Cart</span>
-                </button>
+              <div className='flex justify-between items-center'>
+                <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
+                <div className="flex items-center space-x-3 ml-auto">
+                    <FaHeart className={`text-xl cursor-pointer ${product.likes.includes(userId) ? 'text-red-500' : 'text-gray-400'}`} onClick={() => handleLikeClick(product._id, product.likes.includes(userId))}/>
+                    <FaShoppingCart className="text-xl text-gray-400 cursor-pointer" onClick={() => handleAddToCart(product)} />
+                </div>
+              </div>
+              <div className='flex justify-between items-center space-y-4'>
+                <FaCommentDots className="text-xl text-gray-400 mt-4" />
+                <p className="text-lg font-bold text-right">${product.price}</p>
               </div>
             </div>
           ))

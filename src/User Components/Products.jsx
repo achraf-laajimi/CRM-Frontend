@@ -254,7 +254,7 @@ const Products = ({ filter }) => {
                 <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
                 <div className="flex items-center space-x-3 ml-auto">
                     <FaHeart className={`text-xl cursor-pointer ${product.likes.includes(userId) ? 'text-red-500' : 'text-gray-400'}`} onClick={() => handleLikeClick(product._id, product.likes.includes(userId))}/>
-                    <FaShoppingCart className="text-xl text-gray-400 cursor-pointer" onClick={() => handleAddToCart(product)} />
+                    <FaShoppingCart className="text-xl text-gray-400 hover:text-custom-orange" onClick={() => handleAddToCart(product)} />
                 </div>
               </div>
               <div className='flex justify-between items-center space-y-4'>

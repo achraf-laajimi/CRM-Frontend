@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaHeart, FaShoppingCart, FaFilter, FaTimes, FaCommentDots } from 'react-icons/fa';
 import { getProducts, likeProduct, unlikeProduct } from '../User api/Methods';
+import ProdReview from './ProdReview';
 
 const Products = ({ filter }) => {
   const [products, setProducts] = useState([]);
@@ -9,6 +10,7 @@ const Products = ({ filter }) => {
   const [filters, setFilters] = useState({ color: '', gender: '', category: '' });
   const [sortOrder, setSortOrder] = useState('newest');
   const [userId, setUserId] = useState('66b9e52908f4cfb69c52f440'); // Remplacez par l'ID utilisateur réel
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -61,16 +63,6 @@ const Products = ({ filter }) => {
     setSortOrder(e.target.value);
   };
 
-  const filterProducts = (products) => {
-    return products.filter((product) => {
-      return (
-        (!filters.color || product.colors.includes(filters.color)) &&
-        (!filters.gender || product.gender === filters.gender) &&
-        (!filters.category || product.category === filters.category)
-      );
-    });
-  };
-
   const sortProducts = (products) => {
     if (sortOrder === 'newest') {
       return products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -113,9 +105,17 @@ const Products = ({ filter }) => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   };
 
+  const handleCommentClick = (product) => {
+    setSelectedProduct(product);
+  };
+  const closeReviewModal = () => {
+    setSelectedProduct(null);
+  };
+
   const filteredAndSortedProducts = sortProducts(filteredProducts);
 
   return (
+    
     <div className="relative p-5 flex flex-col">
       {/* Section supérieure avec les filtres et le tri */}
       <div className="flex justify-between items-center mb-5">
@@ -254,11 +254,11 @@ const Products = ({ filter }) => {
                 <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
                 <div className="flex items-center space-x-3 ml-auto">
                     <FaHeart className={`text-xl cursor-pointer ${product.likes.includes(userId) ? 'text-red-500' : 'text-gray-400'}`} onClick={() => handleLikeClick(product._id, product.likes.includes(userId))}/>
-                    <FaShoppingCart className="text-xl text-gray-400 hover:text-custom-orange" onClick={() => handleAddToCart(product)} />
+                    <FaShoppingCart className="text-xl text-gray-400 cursor-pointer" onClick={() => handleAddToCart(product)} />
                 </div>
               </div>
               <div className='flex justify-between items-center space-y-4'>
-                <FaCommentDots className="text-xl text-gray-400 mt-4" />
+                <FaCommentDots className="text-xl text-gray-400 mt-4 cursor-pointer" onClick={() => handleCommentClick(product)} />
                 <p className="text-lg font-bold text-right">${product.price}</p>
               </div>
             </div>
@@ -267,6 +267,9 @@ const Products = ({ filter }) => {
           <p className="text-center col-span-full">No products found</p>
         )}
       </div>
+      {selectedProduct && (
+        <ProdReview product={selectedProduct} closeReviewModal={closeReviewModal} />
+      )}
     </div>
   );
 };

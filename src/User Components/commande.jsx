@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 const Commande = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -26,9 +26,8 @@ const Commande = () => {
 
   const handleQuantityChange = (productId, delta) => {
     setQuantities(prev => {
-      const newQuantity = Math.max((prev[productId] || 0) + delta, 0);
+      const newQuantity = Math.max((prev[productId] || 1) + delta, 0);
 
-      // Update cart items and local storage
       const updatedCartItems = newQuantity === 0
         ? cartItems.filter(item => item._id !== productId)
         : cartItems.map(item =>
@@ -88,7 +87,7 @@ const Commande = () => {
         </div>
 
         {cartItems.length === 0 ? (
-          <p className="text-neutral-600">Your cart is empty.</p>
+          <p className="text-neutral-600">Votre panier est vide.</p>
         ) : (
           <div className="space-y-4">
             {cartItems.map(item => (

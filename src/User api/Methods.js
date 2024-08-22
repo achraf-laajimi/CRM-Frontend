@@ -46,6 +46,7 @@ export const likeProduct = async (productId, userId) => {
 
 // Function to unlike a product
 // Fonction pour ne plus aimer un produit
+
 export const unlikeProduct = async (productId, userId) => {
   try {
     const res = await axios.post(

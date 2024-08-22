@@ -71,7 +71,7 @@ const Commande = () => {
   const totalItemsInCart = Object.values(quantities).reduce((total, qty) => total + qty, 0);
 
   return (
-    <div className="bg-gray-100 p-4 min-h-screen w-full max-w-7xl mx-auto rounded-lg">
+    <div className="bg-gray-100 p-4 min-h-screen w-full max-w-7xl mx-auto rounded-lg w-[1200px]">
       <div className="flex justify-between items-center bg-white p-4 shadow mb-4 rounded-lg">
         <div className="text-orange-500 text-2xl font-bold">Nom-Site</div>
         <div className="relative">

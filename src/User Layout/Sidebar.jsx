@@ -10,25 +10,25 @@ const Sidebar = () => {
 
   return (
     <div className="bg-white w-60 p-3 flex flex-col h-screen fixed border-r border-gray-200">
-      <div className="flex items-center gap-2 px-1 py-3">
+      <div className="flex items-left gap-2 py-3">
         <h1 className="text-neutral-800 text-lg font-semibold">title</h1>
       </div>
-      <div className="py-8 flex flex-1 flex-col space-y-2.5">
+      <div className="py-8 flex flex-1 flex-col space-y-2.5 mt-[-296px]">
         <NavLink
           to="/"
           className={({ isActive }) =>
-            `flex items-center gap-2 px-2 py-1 text-neutral-400 hover:text-orange-500 ${
+            `flex items-left gap-2 px-2 py-1 text-neutral-400 hover:text-orange-500 ${
               isActive
                 ? 'bg-orange-100 border-l-4 border-orange-500 text-orange-500'
                 : 'hover:bg-orange-50 hover:border-l-4 hover:border-orange-500'
             }`
           }
         >
-          <MdOutlineProductionQuantityLimits className="text-xl" />
+          <MdOutlineProductionQuantityLimits className="text-xl ml-[-80px]" />
           <span>Products</span>
         </NavLink>
         <NavLink
-          to="/profile"
+          to="/userprofile"
           className={({ isActive }) =>
             `flex items-center gap-2 px-2 py-1 text-neutral-400 hover:text-orange-500 ${
               isActive
@@ -37,7 +37,7 @@ const Sidebar = () => {
             }`
           }
         >
-          <RiProfileLine className="text-xl" />
+          <RiProfileLine className="text-xl ml-[-85px]" />
           <span>Profile</span>
         </NavLink>
   {/*       <NavLink
@@ -56,14 +56,14 @@ const Sidebar = () => {
         <NavLink
           to="/promote"
           className={({ isActive }) =>
-            `flex items-center gap-2 px-2 py-1 text-neutral-400 hover:text-orange-500 ${
+            `flex items-center gap-2 px-2 py-1 text-neutral-400 hover:text-orange-500 ml-[-100px]${
               isActive
                 ? 'bg-orange-100 border-l-4 border-orange-500 text-orange-500'
                 : 'hover:bg-orange-50 hover:border-l-4 hover:border-orange-500'
             }`
           }
         >
-          <RiAdvertisementLine className="text-xl" />
+          <RiAdvertisementLine className="text-xl ml-[-69px]" />
           <span>Promote</span>
         </NavLink>
         <NavLink
@@ -76,7 +76,7 @@ const Sidebar = () => {
             }`
           }
         >
-          <RiQuestionLine className="text-xl" />
+          <RiQuestionLine className="text-xl ml-[-100px]" />
           <span>Help</span>
         </NavLink>
       </div>

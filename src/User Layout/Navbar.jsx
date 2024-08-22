@@ -41,7 +41,7 @@ const Navbar = ({ filter, setFilter }) => {
     <nav className="bg-white shadow-md z-40 w-[calc(100%-240px)] fixed top-0 left-60 p-4 flex items-center justify-between">
       <div className="flex-1 flex items-center">
         {showSearch ? (
-          <form className="flex items-center ">
+          <form className="flex items-center ml-[-420px]">
             <input
               className="bg-white border border-gray-300 rounded p-2 mr-2 flex-1 focus:outline-none focus:ring-2 focus:ring-orange-400"
               type="search"

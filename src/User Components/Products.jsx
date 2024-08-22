@@ -14,16 +14,26 @@ const Products = ({ filter }) => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      try {
-        const fetchedProducts = await getProducts();
-        setProducts(fetchedProducts);
-        setFilteredProducts(fetchedProducts);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des produits :', error);
-      }
+        console.log('Fetching products...'); // Indique que la récupération des produits commence
+        try {
+            console.log('Calling getProducts function...'); // Indique que la fonction de récupération des produits est appelée
+            const fetchedProducts = await getProducts();
+            console.log('Products fetched:', fetchedProducts); // Affiche les produits récupérés
+            
+            console.log('Setting products state...'); // Indique que l'état des produits est sur le point d'être défini
+            setProducts(fetchedProducts);
+            
+            console.log('Setting filtered products state...'); // Indique que l'état des produits filtrés est sur le point d'être défini
+            setFilteredProducts(fetchedProducts);
+        } catch (error) {
+            console.error('Erreur lors de la récupération des produits :', error); // Affiche les erreurs en cas de problème
+        }
     };
+    
+    console.log('useEffect triggered, fetching products...'); // Indique que useEffect a été déclenché
     fetchProducts();
-  }, []);
+}, []);
+
 
   useEffect(() => {
     let updatedProducts = products;
@@ -63,6 +73,16 @@ const Products = ({ filter }) => {
     setSortOrder(e.target.value);
   };
 
+  const filterProducts = (products) => {
+    return products.filter((product) => {
+      return (
+        (!filters.color || product.colors.includes(filters.color)) &&
+        (!filters.gender || product.gender === filters.gender) &&
+        (!filters.category || product.category === filters.category)
+      );
+    });
+  };
+
   const sortProducts = (products) => {
     if (sortOrder === 'newest') {
       return products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -98,13 +118,6 @@ const Products = ({ filter }) => {
       console.error('Erreur lors de la mise à jour du statut "like" :', error);
     }
   };
-
-  const handleAddToCart = (product) => {
-    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    cartItems.push(product);
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  };
-
   const handleCommentClick = (product) => {
     setSelectedProduct(product);
   };
@@ -112,11 +125,16 @@ const Products = ({ filter }) => {
     setSelectedProduct(null);
   };
 
+  const handleAddToCart = (product) => {
+    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    cartItems.push(product);
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  };
+
   const filteredAndSortedProducts = sortProducts(filteredProducts);
 
   return (
-    
-    <div className="relative p-5 flex flex-col">
+    <div className="relative p-5 flex flex-col w-[1100px]">
       {/* Section supérieure avec les filtres et le tri */}
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-2xl font-bold text-neutral-800">Products Section</h1>
@@ -245,7 +263,7 @@ const Products = ({ filter }) => {
       )}
 
       {/* Liste des produits */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 " >
         {filteredAndSortedProducts.length > 0 ? (
           filteredAndSortedProducts.map(product => (
             <div key={product._id} className="border-2 border-custom-orange rounded-lg p-4 bg-[#fff]">
@@ -253,12 +271,12 @@ const Products = ({ filter }) => {
               <div className='flex justify-between items-center'>
                 <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
                 <div className="flex items-center space-x-3 ml-auto">
-                    <FaHeart className={`text-xl cursor-pointer ${product.likes.includes(userId) ? 'text-red-500' : 'text-gray-400'}`} onClick={() => handleLikeClick(product._id, product.likes.includes(userId))}/>
-                    <FaShoppingCart className="text-xl text-gray-400 cursor-pointer" onClick={() => handleAddToCart(product)} />
+                <FaHeart className={`text-xl cursor-pointer ${product.likes.includes(userId) ? 'text-red-500' : 'text-gray-400'}`} onClick={() => handleLikeClick(product._id, product.likes.includes(userId))}/>
+                    <FaShoppingCart className="cursor-pointer text-xl text-gray-400 hover:text-custom-orange" onClick={() => handleAddToCart(product)} />
                 </div>
               </div>
               <div className='flex justify-between items-center space-y-4'>
-                <FaCommentDots className="text-xl text-gray-400 mt-4 cursor-pointer" onClick={() => handleCommentClick(product)} />
+              <FaCommentDots className="text-xl text-gray-400 mt-4 cursor-pointer" onClick={() => handleCommentClick(product)} />
                 <p className="text-lg font-bold text-right">${product.price}</p>
               </div>
             </div>
@@ -268,7 +286,7 @@ const Products = ({ filter }) => {
         )}
       </div>
       {selectedProduct && (
-        <ProdReview product={selectedProduct} closeReviewModal={closeReviewModal} />
+        <ProdReview product={selectedProduct} onClose={closeReviewModal} />
       )}
     </div>
   );

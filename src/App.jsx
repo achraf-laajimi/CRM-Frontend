@@ -52,7 +52,7 @@ function App() {
               <Route path="/" element={user ? <Products filter={filter} /> : <Navigate to="/login" />} />
               <Route path="/userprofile" element={user ? <UserProfile /> : <Navigate to="/login" />} />
               <Route path="/help" element={user ? <Help /> : <Navigate to="/login" />} />
-              <Route path="/promote" element={user ? <Promote /> : <Navigate to="/login" />} />
+              <Route path="/promote" element={user ? <Promote filter={filter} /> : <Navigate to="/login" />} />
               <Route path="/message" element={user ? <Message /> : <Navigate to="/login" />} />
               <Route path="/messages" element={user ? <Messages /> : <Navigate to="/login" />} />
               <Route path="/wishliste" element={user ? <Wishliste /> : <Navigate to="/login" />} />

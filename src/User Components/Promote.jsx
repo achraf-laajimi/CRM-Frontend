@@ -15,11 +15,11 @@ const Promote = ({ filter }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const fetchedProducts = await getProducts();
+        const fetchedProducts = await getProducts(); // Remplacez avec `getPromotionalProducts` si disponible
         setProducts(fetchedProducts);
         setFilteredProducts(fetchedProducts);
       } catch (error) {
-        console.error('Erreur lors de la récupération des produits :', error);
+        console.error('Erreur lors du chargement des produits:', error);
       }
     };
     fetchProducts();
@@ -28,7 +28,6 @@ const Promote = ({ filter }) => {
   useEffect(() => {
     let updatedProducts = products;
 
-    // Application des filtres
     updatedProducts = updatedProducts.filter(product => {
       return (
         (!filters.color || product.colors.includes(filters.color)) &&
@@ -37,14 +36,12 @@ const Promote = ({ filter }) => {
       );
     });
 
-    // Application du filtre de recherche
     if (filter) {
-      updatedProducts = updatedProducts.filter(product => 
+      updatedProducts = updatedProducts.filter(product =>
         product.name.toLowerCase().includes(filter.toLowerCase())
       );
     }
 
-    // Mise à jour des produits filtrés
     setFilteredProducts(updatedProducts);
   }, [filter, filters, products]);
 
@@ -61,16 +58,6 @@ const Promote = ({ filter }) => {
 
   const handleSortChange = (e) => {
     setSortOrder(e.target.value);
-  };
-
-  const filterProducts = (products) => {
-    return products.filter((product) => {
-      return (
-        (!filters.color || product.colors.includes(filters.color)) &&
-        (!filters.gender || product.gender === filters.gender) &&
-        (!filters.category || product.category === filters.category)
-      );
-    });
   };
 
   const sortProducts = (products) => {
@@ -105,14 +92,8 @@ const Promote = ({ filter }) => {
         )
       );
     } catch (error) {
-      console.error('Erreur lors de la mise à jour du statut "like" :', error);
+      console.error('Erreur lors de la mise à jour du statut de like:', error);
     }
-  };
-  const handleCommentClick = (product) => {
-    setSelectedProduct(product);
-  };
-  const closeReviewModal = () => {
-    setSelectedProduct(null);
   };
 
   const handleAddToCart = (product) => {
@@ -121,31 +102,44 @@ const Promote = ({ filter }) => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   };
 
+  const handleCommentClick = (product) => {
+    setSelectedProduct(product);
+  };
+
+  const closeReviewModal = () => {
+    setSelectedProduct(null);
+  };
+
+  const calculPromoPrice = (product) => {
+    const promo = product.price * (product.promotionDetails / 100);
+    return product.price - promo;
+  };
+
   const filteredAndSortedProducts = sortProducts(filteredProducts);
 
   return (
-    <div className="relative p-5 flex flex-col w-[1100px]">
+    <div className="relative px-5 flex flex-col">
       {/* Section supérieure avec les filtres et le tri */}
       <div className="flex justify-between items-center mb-5">
-        <h1 className="text-2xl font-bold text-neutral-800">Products Section</h1>
+        <h1 className="text-2xl font-bold text-neutral-800">Promotions</h1>
         <div className="flex items-center space-x-4">
           <button
             onClick={toggleFilter}
             className="bg-white border border-gray-300 rounded p-2 flex items-center space-x-2"
           >
             <FaFilter className="text-xl text-neutral-800" />
-            <span className="text-neutral-800 font-semibold">Filters</span>
+            <span className="text-neutral-800 font-semibold">Filtres</span>
           </button>
           <div className="flex items-center space-x-4">
-            <h2 className="text-lg font-semibold text-neutral-800">Sort By:</h2>
+            <h2 className="text-lg font-semibold text-neutral-800">Trier par :</h2>
             <select
               value={sortOrder}
               onChange={handleSortChange}
               className="bg-white border border-gray-300 rounded p-2"
             >
-              <option value="newest">Newest</option>
-              <option value="highestPrice">Highest Price</option>
-              <option value="lowestPrice">Lowest Price</option>
+              <option value="newest">Nouveautés</option>
+              <option value="highestPrice">Prix le plus élevé</option>
+              <option value="lowestPrice">Prix le plus bas</option>
             </select>
           </div>
         </div>
@@ -156,11 +150,11 @@ const Promote = ({ filter }) => {
         <div className="fixed inset-0 bg-neutral-800 opacity-50 z-40" onClick={toggleFilter}></div>
       )}
 
-      {/* Barre latérale des filtres */}
+      {/* Barre latérale de filtres */}
       {isFilterOpen && (
         <div className="fixed top-0 right-0 w-64 h-full bg-white border-l border-gray-300 p-4 z-50">
           <div className="flex items-center justify-between border-b border-gray-300 pb-2 mb-4">
-            <h2 className="text-lg font-semibold text-neutral-800">Filters</h2>
+            <h2 className="text-lg font-semibold text-neutral-800">Filtres</h2>
             <button onClick={toggleFilter} className="text-white">
               <FaTimes />
             </button>
@@ -169,7 +163,7 @@ const Promote = ({ filter }) => {
           <div className="space-y-4">
             {/* Filtre par couleur */}
             <div>
-              <h3 className="font-semibold text-neutral-800 mb-2">Colors</h3>
+              <h3 className="font-semibold text-neutral-800 mb-2">Couleurs</h3>
               <label className="block">
                 <input
                   type="radio"
@@ -179,7 +173,7 @@ const Promote = ({ filter }) => {
                   onChange={handleFilterChange}
                   className="mr-2"
                 />
-                Red
+                Rouge
               </label>
               <label className="block">
                 <input
@@ -190,13 +184,12 @@ const Promote = ({ filter }) => {
                   onChange={handleFilterChange}
                   className="mr-2"
                 />
-                Blue
+                Bleu
               </label>
-              {/* Ajoutez d'autres options de couleur si nécessaire */}
             </div>
             {/* Filtre par genre */}
             <div>
-              <h3 className="font-semibold text-neutral-800 mb-2">Gender</h3>
+              <h3 className="font-semibold text-neutral-800 mb-2">Genre</h3>
               <label className="block">
                 <input
                   type="radio"
@@ -206,7 +199,7 @@ const Promote = ({ filter }) => {
                   onChange={handleFilterChange}
                   className="mr-2"
                 />
-                Men
+                Hommes
               </label>
               <label className="block">
                 <input
@@ -217,13 +210,12 @@ const Promote = ({ filter }) => {
                   onChange={handleFilterChange}
                   className="mr-2"
                 />
-                Women
+                Femmes
               </label>
-              {/* Ajoutez d'autres options de genre si nécessaire */}
             </div>
             {/* Filtre par catégorie */}
             <div>
-              <h3 className="font-semibold text-neutral-800 mb-2">Categories</h3>
+              <h3 className="font-semibold text-neutral-800 mb-2">Catégories</h3>
               <label className="block">
                 <input
                   type="radio"
@@ -233,7 +225,7 @@ const Promote = ({ filter }) => {
                   onChange={handleFilterChange}
                   className="mr-2"
                 />
-                Shoes
+                Chaussures
               </label>
               <label className="block">
                 <input
@@ -246,37 +238,62 @@ const Promote = ({ filter }) => {
                 />
                 Pull
               </label>
-              {/* Ajoutez d'autres options de catégorie si nécessaire */}
             </div>
           </div>
         </div>
       )}
 
       {/* Liste des produits */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 " >
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {filteredAndSortedProducts.length > 0 ? (
           filteredAndSortedProducts.map(product => (
-            <div key={product._id} className="border-2 border-custom-orange rounded-lg p-4 bg-[#fff]">
+            <div key={product._id} className="border-2 border-custom-orange rounded-lg p-4 bg-white relative">
               <img src={product.imageUrl} alt={product.name} className="w-full h-48 object-cover mb-4" />
-              <div className='flex justify-between items-center'>
-                <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
-                <div className="flex items-center space-x-3 ml-auto">
-                <FaHeart className={`text-xl cursor-pointer ${product.likes.includes(userId) ? 'text-red-500' : 'text-gray-400'}`} onClick={() => handleLikeClick(product._id, product.likes.includes(userId))}/>
-                    <FaShoppingCart className="cursor-pointer text-xl text-gray-400 hover:text-custom-orange" onClick={() => handleAddToCart(product)} />
-                </div>
+              {/* Valeur de la promotion */}
+              <span className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
+                -{product.promotionDetails}%
+              </span>
+              <h3 className="text-lg font-semibold mb-2 text-neutral-800">{product.name}</h3>
+              <p className="text-sm text-neutral-600 mb-2">{product.description}</p>
+              <div className="flex items-center space-x-2 mb-2">
+                <span className="text-gray-500 line-through">{product.price} $</span>
+                <span className="text-green-500">{calculPromoPrice(product)} $</span>
               </div>
-              <div className='flex justify-between items-center space-y-4'>
-              <FaCommentDots className="text-xl text-gray-400 mt-4 cursor-pointer" onClick={() => handleCommentClick(product)} />
-                <p className="text-lg font-bold text-right">${product.price}</p>
+              <div className="flex justify-between items-center">
+                <button
+                  onClick={() => handleLikeClick(product._id, product.likes.includes(userId))}
+                  className={`p-2 rounded-full ${
+                    product.likes.includes(userId) ? 'text-red-500' : 'text-gray-400'
+                  }`}
+                >
+                  <FaHeart />
+                </button>
+                <button
+                  onClick={() => handleCommentClick(product)}
+                  className="p-2 rounded-full text-neutral-800 bg-gray-200"
+                >
+                  <FaCommentDots />
+                </button>
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  className="p-2 rounded-full text-neutral-800 bg-gray-200"
+                >
+                  <FaShoppingCart />
+                </button>
               </div>
             </div>
           ))
         ) : (
-          <p className="text-center col-span-full">No products found</p>
+          <p>Aucun produit trouvé</p>
         )}
       </div>
+
       {selectedProduct && (
-        <ProdReview product={selectedProduct} onClose={closeReviewModal} />
+        <ProdReview
+          product={selectedProduct}
+          onClose={closeReviewModal}
+          userId={userId}
+        />
       )}
     </div>
   );

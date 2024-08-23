@@ -91,3 +91,17 @@ export const getReviews = async (productId) => {
     throw err;
   }
 };
+
+export const getPromotionalProducts = async (token) => {
+  try {
+    const response = await axios.get(`${API_URL}/products/promotions`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching promotional products:', error);
+    throw error;
+  }
+};

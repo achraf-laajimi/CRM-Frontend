@@ -4,7 +4,7 @@ import { RiUserFollowLine, RiNotification3Line, RiMessage3Line } from "react-ico
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar = ({ filter, setFilter }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(filter || '');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate(); // Hook pour la navigation
   const location = useLocation(); // Hook pour obtenir la route actuelle
@@ -35,7 +35,7 @@ const Navbar = ({ filter, setFilter }) => {
   const username = "JohnDoe"; // Remplacez par le nom d'utilisateur réel
 
   // Affiche la barre de recherche uniquement sur la page des produits
-  const showSearch = location.pathname === '/';
+  const showSearch = location.pathname === '/' || location.pathname === '/promote';
 
   return (
     <nav className="bg-white shadow-md z-40 w-[calc(100%-240px)] fixed top-0 left-60 p-4 flex items-center justify-between">
@@ -80,7 +80,6 @@ const Navbar = ({ filter, setFilter }) => {
             </ul>
           </div>
         )}
- {/*        <RiNotification3Line className="text-xl text-gray-600 cursor-pointer" /> */}
         <RiMessage3Line className="text-xl text-gray-600 cursor-pointer" onClick={goToMsg} />
       </div>
     </nav>

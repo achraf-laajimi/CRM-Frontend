@@ -7,7 +7,7 @@ const Profile = () => {
     address: '',
     email: '',
     city: '',
-    password: 'aaa'
+    password: ''
   });
 
   const handleChange = (e) => {

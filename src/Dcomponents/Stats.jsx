@@ -19,7 +19,7 @@ export default function Stats() {
 	
 			// Calculate total sales from delivered orders
 			const sales = orders
-			  .filter(order => order.status === 'Delivered') // Adjust status if needed
+			  .filter(order => order.status === 'pending') // Adjust status if needed
 			  .reduce((acc, order) => acc + order.totalAmount, 0);
 	
 			setTotalSales(sales);

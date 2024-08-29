@@ -17,16 +17,12 @@ import './App.css'; // Make sure this includes any necessary global styles
 const App = () => {
   const [selectedItem, setSelectedItem] = useState('Dashboard');
 
-  const handleSearch = (searchTerm) => {
-    console.log('Search Term:', searchTerm);
-  };
-
   return (
     <Router>
         <Sidebar setSelectedItem={setSelectedItem} />
         <div className="flex-1 flex flex-col ml-60"> {/* Adjusted left margin for the main content */}
-          <Navbar selectedItem={selectedItem} handleSearch={handleSearch} />
-          <div className="flex-1 p-5 overflow-auto mt-20 ml-5 bg-red-200"> {/* Adjusted top margin for main content */}
+          <Navbar selectedItem={selectedItem} />
+          <div className="flex-1 p-5 overflow-auto mt-20 ml-5"> {/* Adjusted top margin for main content */}
             <Routes>
               <Route path="/" element={<Outlet />}>
                 <Route index element={<Dashboard />} />

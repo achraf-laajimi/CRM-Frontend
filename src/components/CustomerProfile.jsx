@@ -7,7 +7,7 @@ const CustomerProfile = () => {
   const customer = location.state?.customer;
 
   if (!customer) {
-    return <p>Select a customer to view their profile</p>;
+    return <p>Customer does not exist</p>;
   }
 
   const block = async () => {

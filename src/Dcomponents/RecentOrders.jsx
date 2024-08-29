@@ -62,20 +62,20 @@ export default function RecentOrders() {
 
 function UserName({ user }) {
   const [userName, setUserName] = useState('Loading...');
-
+  const [id,setId] = useState('')
   useEffect(() => {
     const fetchUserName = async () => {
       if (!user) {
         setUserName('Unknown User');
         return;
       }
-
       try {
         const userId = typeof user === 'object' && user._id ? user._id : user;
         const fetchedUser = await getUser(userId);
 
         if (fetchedUser && fetchedUser.username) {
           setUserName(`${fetchedUser.username}`);
+          setId(userId);
         } else {
           setUserName('Unknown User');
         }
@@ -89,8 +89,6 @@ function UserName({ user }) {
   }, [user]);
   
   return (
-    <Link to={`/customers/${user?._id || user}`} className="text-blue-400">
-      {userName}
-    </Link>
+    <Link to={`/customers/${id}`} state={{ customer: user }} className="text-blue-400"> {userName} </Link>
   );
 }

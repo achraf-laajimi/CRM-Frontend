@@ -14,7 +14,7 @@ function PopularProducts() {
           const averageRating = product.reviews.length > 0 ? totalRating / product.reviews.length : 0;
           return { ...product, averageRating };
         });
-        setProducts(productsWithRating);
+        setProducts(productsWithRating.slice(0, 6));
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -30,7 +30,8 @@ function PopularProducts() {
         {products.map((product) => (
           <Link
             key={product._id}
-            to={`/product/${product._id}`}
+            to={`/products/${product._id}`} // Correct the pathname with product._id instead of product.id
+            state={{ product: product }}
             className="flex items-start hover:no-underline"
           >
             <div className="w-10 h-10 min-w-[2.5rem] bg-gray-200 rounded-sm">

@@ -1,30 +1,48 @@
 import React, { useState, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
 
 const Commande = () => {
   const [cartItems, setCartItems] = useState([]);
   const [quantities, setQuantities] = useState({});
+  const [userId, setUserId] = useState('');
 
   useEffect(() => {
-    const storedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    
-    // Process cart items to ensure they are unique and aggregate quantities
-    const processedItems = [];
-    const processedQuantities = {};
-    
-    storedCartItems.forEach(item => {
-      if (processedQuantities[item._id]) {
-        processedQuantities[item._id] += 1;
-      } else {
-        processedQuantities[item._id] = 1;
-        processedItems.push(item);
+    const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setUserId(decodedToken.id);
+      } catch (error) {
+        console.error('Error decoding token:', error);
       }
-    });
-
-    setCartItems(processedItems);
-    setQuantities(processedQuantities);
+    }
   }, []);
 
+  useEffect(() => {
+    if (userId) {
+      const storedCartItems = JSON.parse(localStorage.getItem(`cartItems_${userId}`)) || [];
+      
+      // Process cart items to ensure they are unique and aggregate quantities
+      const processedItems = [];
+      const processedQuantities = {};
+      
+      storedCartItems.forEach(item => {
+        if (processedQuantities[item._id]) {
+          processedQuantities[item._id] += 1;
+        } else {
+          processedQuantities[item._id] = 1;
+          processedItems.push(item);
+        }
+      });
+
+      setCartItems(processedItems);
+      setQuantities(processedQuantities);
+    }
+  }, [userId]);
+
   const handleQuantityChange = (productId, delta) => {
+    if (!userId) return;
+
     setQuantities(prev => {
       const newQuantity = Math.max((prev[productId] || 1) + delta, 0);
 
@@ -37,7 +55,7 @@ const Commande = () => {
           );
 
       if (newQuantity === 0) {
-        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+        localStorage.setItem(`cartItems_${userId}`, JSON.stringify(updatedCartItems));
       } else {
         const existingItemIndex = updatedCartItems.findIndex(item => item._id === productId);
         if (existingItemIndex > -1) {
@@ -45,7 +63,7 @@ const Commande = () => {
         } else {
           updatedCartItems.push({ _id: productId, quantity: newQuantity });
         }
-        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+        localStorage.setItem(`cartItems_${userId}`, JSON.stringify(updatedCartItems));
       }
 
       return {
@@ -56,9 +74,11 @@ const Commande = () => {
   };
 
   const handleRemoveItem = (productId) => {
+    if (!userId) return;
+
     const updatedCartItems = cartItems.filter(item => item._id !== productId);
     setCartItems(updatedCartItems);
-    localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+    localStorage.setItem(`cartItems_${userId}`, JSON.stringify(updatedCartItems));
     setQuantities(prev => {
       const newQuantities = { ...prev };
       delete newQuantities[productId];
@@ -66,7 +86,6 @@ const Commande = () => {
     });
   };
 
-  // Calculate the total number of items in the cart
   const totalItemsInCart = Object.values(quantities).reduce((total, qty) => total + qty, 0);
 
   return (

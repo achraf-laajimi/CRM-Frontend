@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getProducts } from '../User api/Methods'; // Assurez-vous que le chemin est correct
+import { jwtDecode } from 'jwt-decode';
 
 const ProductItem = ({ product, onBuy }) => (
   <div className="bg-white p-4 rounded-lg flex items-center shadow mb-4 w-[800px] ml-[182px]">
@@ -22,13 +23,31 @@ const ProductItem = ({ product, onBuy }) => (
 
 const Wishlist = () => {
   const [products, setProducts] = useState([]);
+  const [userId, setUserId] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Extract user ID from token
+    const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setUserId(decodedToken.id); 
+      } catch (error) {
+        console.error('Error decoding token:', error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     const fetchProducts = async () => {
+      if (!userId) return; // Don't fetch products if userId is not set
+
       try {
         const fetchedProducts = await getProducts();
-        const likedProducts = fetchedProducts.filter(product => product.likes.length > 0);
+        const likedProducts = fetchedProducts.filter(product => 
+          product.likes.includes(userId)
+        );
         setProducts(likedProducts);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -36,8 +55,7 @@ const Wishlist = () => {
     };
 
     fetchProducts();
-  }, []);
-
+  }, [userId]);
   const handleBuy = (product) => {
     let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
     const existingProductIndex = cart.findIndex(item => item._id === product._id);

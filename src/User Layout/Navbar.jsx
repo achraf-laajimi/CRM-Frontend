@@ -1,13 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaSearch, FaChevronDown } from 'react-icons/fa';
 import { RiUserFollowLine, RiNotification3Line, RiMessage3Line } from "react-icons/ri";
 import { useNavigate, useLocation } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import { getUser} from '../User api/UserMethods';
 
 const Navbar = ({ filter, setFilter }) => {
   const [searchTerm, setSearchTerm] = useState(filter || '');
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [userId, setUserId] = useState('');
+  const [userName, setUserName] = useState('');
   const navigate = useNavigate(); // Hook pour la navigation
   const location = useLocation(); // Hook pour obtenir la route actuelle
+
+  useEffect(() => {
+    // Decode the token to get the user ID
+    const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+    
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setUserId(decodedToken.id); 
+      } catch (error) {
+        console.error('Error decoding token:', error);
+      }
+    }
+
+    const fetchProfile = async () => {
+      if (userId && token) {
+        try {
+          const userData = await getUser(userId, token);
+          console.log(userData);
+          setUserName(userData.username);
+        } catch (error) {
+          console.error('Error fetching profile:', error.response ? error.response.data : error.message);
+        }
+      }
+    };
+
+    fetchProfile();
+  }, [userId]);
 
   const handleChange = (e) => {
     setSearchTerm(e.target.value);
@@ -31,8 +63,6 @@ const Navbar = ({ filter, setFilter }) => {
   const goToWish = () => {
     navigate('/wishliste');
   };
-
-  const username = "JohnDoe"; // Remplacez par le nom d'utilisateur réel
 
   // Affiche la barre de recherche uniquement sur la page des produits
   const showSearch = location.pathname === '/' || location.pathname === '/promote';
@@ -61,7 +91,7 @@ const Navbar = ({ filter, setFilter }) => {
       <div className="flex items-center space-x-4 relative">
         <div className="flex items-center space-x-1 mx-9 cursor-pointer" onClick={toggleDropdown}>
           <RiUserFollowLine className="text-xl text-neutral-800" />
-          <span className="text-neutral-800 font-semibold">Welcome, {username}</span>
+          <span className="text-neutral-800 font-semibold">Welcome, {userName}</span>
           <FaChevronDown className="text-neutral-800" />
         </div>
         {dropdownOpen && (

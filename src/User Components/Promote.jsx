@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaHeart, FaShoppingCart, FaFilter, FaTimes, FaCommentDots } from 'react-icons/fa';
 import { getProducts, likeProduct, unlikeProduct } from '../User api/Methods';
 import ProdReview from './ProdReview';
+import { jwtDecode } from 'jwt-decode';
 
 const Promote = ({ filter }) => {
   const [products, setProducts] = useState([]);
@@ -9,10 +10,19 @@ const Promote = ({ filter }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filters, setFilters] = useState({ color: '', gender: '', category: '' });
   const [sortOrder, setSortOrder] = useState('newest');
-  const [userId, setUserId] = useState('66b9e52908f4cfb69c52f440'); // Remplacez par l'ID utilisateur réel
+  const [userId, setUserId] = useState(''); // Remplacez par l'ID utilisateur réel
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
+    const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setUserId(decodedToken.id); 
+      } catch (error) {
+        console.error('Error decoding token:', error);
+      }
+    }
     const fetchProducts = async () => {
       try {
         const fetchedProducts = await getProducts(); // Remplacez avec `getPromotionalProducts` si disponible

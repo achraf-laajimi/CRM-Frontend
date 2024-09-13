@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { deleteProduct, getProducts } from '../../api/produitRep';
-import Sidebar from '../sidebar/sidebar';
+import Navbar from '../navbar/navbar';
 import './produit.css';
 
 interface Product {
@@ -15,24 +15,40 @@ interface Product {
 
 const ProductList: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const productsPerPage = 15;
+    const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+    const [filter, setFilter] = useState<string>('');
+    const [visibleCount, setVisibleCount] = useState<number>(500000); // Définir visibleCount ici
+    const productsPerPage = 500000;
     const [products, setProducts] = useState<Product[]>([]);
     const navigate = useNavigate();
 
+
+        useEffect(() => {
+            const fetchProducts = async () => {
+                console.log('Fetching products...');
+                try {
+                    const fetchedProducts = await getProducts();
+                    console.log('Products fetched:', fetchedProducts);
+                    setProducts(fetchedProducts);
+                    setFilteredProducts(fetchedProducts);
+                } catch (error) {
+                    console.error('Error fetching products:', error);
+                    // Add more detailed error handling here if needed
+                }
+            };
+            fetchProducts();
+        }, []);
+
     useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const fetchedProducts = await getProducts();
-                setProducts(fetchedProducts);
-            } catch (error) {
-                console.error('Error fetching products:', error);
-            }
-        };
-        fetchProducts();
-    }, []);
+        if (filter === "") {
+            setFilteredProducts(products);
+        } else {
+            setFilteredProducts(products.filter(product => product.name.includes(filter)));
+        }
+    }, [products, filter]);
 
     const totalPages = Math.ceil(products.length / productsPerPage);
-    const currentProducts = products.slice(
+    const currentProducts = filteredProducts.slice(
         (currentPage - 1) * productsPerPage,
         currentPage * productsPerPage
     );
@@ -45,35 +61,24 @@ const ProductList: React.FC = () => {
             console.error('Failed to delete product:', error);
         }
     };
+
     const handleEdit = (product: Product) => {
         navigate('/edit-product', { state: { product } });
     };
 
     const handleNavigateToReviews = (product: Product) => {
-        const fakeReviews = [
-            { rating: 5, comment: "Amazing product! Highly recommend." },
-            { rating: 4, comment: "Very good quality, but could be cheaper." },
-            { rating: 3, comment: "Decent product, but not as described." },
-        ];
     
-        const productWithReviews = { ...product, reviews: fakeReviews };
+        const productWithReviews = { ...product};
         
-        console.log("Navigating to review page with product:", productWithReviews);
-    
-        // Use a unique key to ensure React Router recognizes the state
         navigate(`/review`, { state: { product: productWithReviews, key: Math.random() } });
     };
-    
-    
-    
 
     return (
         <div className="produit">
-            <Sidebar />
+            <Navbar setFilter={setFilter} filter={filter} />
             <div className="product-list">
                 <div className="btnete">
-                    <button   className="add-product-btn" 
-  onClick={() => navigate('/add-product')}>+ ajouter produit</button>
+                    <button className="add-product-btn" onClick={() => navigate('/add-product')}>+ ajouter produit</button>
                 </div>
                 <div className="products-grid">
                     {currentProducts.map((product) => (
@@ -86,9 +91,9 @@ const ProductList: React.FC = () => {
                                 style={{ cursor: 'pointer' }}
                             />
                             <div className="product-details">
-                                <h3 className="product-name">{product.name}</h3>
+                                <h3 className="productt-name">{product.name}</h3>
                                 <p className="product-quantity">{product.stock}ps</p>
-                                <p className="product-price">${product.price}</p>
+                                <p className="productt-price">${product.price}</p>
                                 <div className="product-actions">
                                     <button 
                                         className="edit-btn" 
@@ -97,8 +102,8 @@ const ProductList: React.FC = () => {
                                         ✏️
                                     </button>
                                     <button 
-                                         className="delete-btn" 
-                                         onClick={() => handleDelete(product._id)} 
+                                        className="delete-btn" 
+                                        onClick={() => handleDelete(product._id)} 
                                     >
                                         🗑️
                                     </button>

@@ -10,7 +10,6 @@ import totalRevenueImg from './money-bag.png';
 import img from '../analyticsRep/Bland_Cosmetic_Product_Packaging_Unit_500x400.jpg';
 import { getOrderStatistics } from '../../api/orderRep';
 import PopularProducts from '../PopularProducts';
-import Sidebar from '../sidebar/sidebar';
 
 const Dashboard: React.FC = () => {
   const [showValue, setShowValue] = useState(true);
@@ -22,6 +21,7 @@ const Dashboard: React.FC = () => {
   }>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [visibleCount, setVisibleCount] = useState(1);
 
   const navigate = useNavigate(); // Créez une instance de navigate
 
@@ -59,7 +59,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className='dash'>
-      <Sidebar />
+      <Navbar />
       <div className="dashboard">
         <div className="unde1"></div>
         <header className="dashboard-header">
@@ -178,7 +178,7 @@ const Dashboard: React.FC = () => {
                 </svg>
               </div>
               <div className="details">
-                <p>{stats.totalRevenue?.toFixed(2) ?? '0.00'}</p>
+                <p>{stats.totalOrders ? Math.min(100, stats.totalOrders / 500000) * 100 : 0}</p>
                 <p>from {stats.totalOrders ?? '0'}</p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</p>
                 <button onClick={handleMoreDetailsClick}>More Details</button> {/* Ajoutez l'événement onClick */}
@@ -203,8 +203,10 @@ const Dashboard: React.FC = () => {
             <h2>Daily Trending Products</h2>
             <p>Lorem ipsum dolor sit ame.</p>
             <div className="pall">
-              <PopularProducts />
-              <button onClick={handleDetailsClick}>View More</button> {/* Ajoutez l'événement onClick */}
+            <PopularProducts count={1} />
+              {visibleCount > 0 && (
+                <button onClick={handleDetailsClick}>View More</button>
+              )}
             </div>
           </div>
         </div>

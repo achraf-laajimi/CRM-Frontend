@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { getProducts } from '../api/produitRep';
 import './populaire.css';  // Import the CSS file
 
-// Define interfaces for the product and review
 interface Review {
   rating: number;
 }
@@ -15,9 +14,14 @@ interface Product {
   price: number;
   reviews: Review[];
   averageRating?: number;
+  count: number;
 }
 
-function PopularProducts() {
+interface PopularProductsProps {
+  count: number; // Number of products to display
+}
+
+const PopularProducts: React.FC<PopularProductsProps> = ({ count }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const navigate = useNavigate();
 
@@ -31,26 +35,28 @@ function PopularProducts() {
           return { ...product, averageRating };
         });
 
-        // Filter products that have at least one review with a rating greater than 3
         const filteredProducts = productsWithRating.filter((product: Product) =>
           product.reviews.some((review: Review) => review.rating > 3)
         );
 
-        setProducts(filteredProducts);
+        // Limit the number of products based on the count prop
+        setProducts(filteredProducts.slice(0, count));
       } catch (error) {
         console.error('Error fetching products:', error);
       }
     };
 
     fetchProducts();
-  }, []);
+  }, [count]); // Re-run effect when count changes
 
   const handleNavigateToReviews = (product: Product) => {
     navigate('/review', { state: { product } });
   };
+
   return (
     <div className="container">
       <div className="header">
+        {/* <h2>Popular Products</h2> */}
       </div>
       <div className="product-listt">
         {products.map((product) => (
@@ -59,7 +65,7 @@ function PopularProducts() {
               <img
                 src={product.imageUrl}
                 alt={product.name}
-                className="product-image"
+                className="produuct-image"
                 onClick={() => handleNavigateToReviews(product)}
               />
             </div>

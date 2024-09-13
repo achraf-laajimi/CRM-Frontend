@@ -1,13 +1,36 @@
 import React, { useEffect , useState } from 'react';
 import './sidebar.css';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation ,useNavigate} from 'react-router-dom';
 import logo from './images.png';
-import Navbar from '../navbar/navbar';
-
+import { jwtDecode } from 'jwt-decode';
+import { getUser} from '../../api/apiRep';
+import { CiLogout } from "react-icons/ci";
+import { logoutUser } from '../../api/auth';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Cookies from 'js-cookie';
+interface DecodedToken {
+    id: string;
+    // Add other properties if needed
+  } 
 const Sidebar: React.FC = () => {
+   
     const location = useLocation();
+    const navigate = useNavigate();
     const [userName, setUserName] = useState('');
-
+    const [userId, setUserId] = useState('');
+    useEffect(() => {
+        const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+        
+        if (token) {
+          try {
+            const decodedToken = jwtDecode<DecodedToken>(token);
+            setUserId(decodedToken.id);
+          } catch (error) {
+            console.error('Error decoding token:', error);
+          }
+        }
+      }, []);
     useEffect(() => {
         const navLinks = document.querySelectorAll('.nav-link');
 
@@ -31,13 +54,39 @@ const Sidebar: React.FC = () => {
         });
     }, [location.pathname]);
     
-    
+   useEffect(() => {
+  const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+  
+  if (userId && token) {
+    const fetchProfile = async () => {
+      try {
+        const userData = await getUser(userId); // Assuming getUser expects only userId
+  
+        setUserName(userData.username);
+      } catch (error) {
+        console.error('Error fetching profile:', (error as Error).message);
+      }
+    };
+    fetchProfile();
+  }
+}, [userId]);
 
+const handleLogout = async (): Promise<void> => {
+    try {
+      console.log('Attempting to log out...');
+      await logoutUser(); // Cette fonction appelle le backend et nettoie le cookie
+      Cookies.remove('token');
+      toast.success('Logout successful!');
+      window.location.href = '/login';
+   
+      console.log('Logout successful, navigating to login...');
+  
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
     return (
-    <div className="contain">
-         <Navbar/> 
         <div className="sidebar">
-           
             <div className="logo">
                 <img src={logo} alt="Logo" />
                 <h1><span className='b'>N</span>om-Site</h1>
@@ -81,16 +130,16 @@ const Sidebar: React.FC = () => {
                 </Link></li>
             </ul>
             <div className="profilee">
-                <img src={logo} alt="Profile Picture" />
+            {/*     <img src={logo} alt="Profile Picture" /> */}
                 <div className='a'>
                 <h2>Welcome, {userName}</h2>
-                    <p>Product Owner</p>
+                <button onClick={handleLogout} className="logout-btn">
+        <CiLogout /> Logout
+      </button>
+                  
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi" viewBox="0 0 16 16">
-                    <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708" stroke="black" strokeWidth="0.5"/>
-                </svg>
+               
             </div>
-        </div>
         </div>
     );
 }

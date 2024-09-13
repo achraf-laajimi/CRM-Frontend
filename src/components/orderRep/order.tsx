@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getOrders } from '../../api/orderRep';
-import Sidebar from '../sidebar/sidebar';
+import Navbar from '../navbar/navbar';
 import './order.css';
 
 interface Order {
@@ -9,16 +9,18 @@ interface Order {
   createdAt: string;
   paymentMethod: string;
   shippingAddress: string;
-  totalAmount: string;
+  totalAmount: string; // Assurez-vous que c'est bien une chaîne de caractères
   status: string;
 }
 
 const OrdersTable: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const ordersPerPage = 15;
+  const [filter, setFilter] = useState<string>('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,12 +40,26 @@ const OrdersTable: React.FC = () => {
     fetchOrders();
   }, []);
 
-  const currentOrders = orders.slice(
+  useEffect(() => {
+    const lowercasedFilter = filter.toLowerCase();
+    setFilteredOrders(
+      orders.filter(order => 
+        order._id.toLowerCase().includes(lowercasedFilter) ||
+        order.createdAt.toLowerCase().includes(lowercasedFilter) ||
+        order.paymentMethod.toLowerCase().includes(lowercasedFilter) ||
+        order.shippingAddress.toLowerCase().includes(lowercasedFilter) ||
+        String(order.totalAmount).toLowerCase().includes(lowercasedFilter) || // Convertir en chaîne de caractères
+        order.status.toLowerCase().includes(lowercasedFilter)
+      )
+    );
+  }, [orders, filter]);
+
+  const currentOrders = filteredOrders.slice(
     (currentPage - 1) * ordersPerPage,
     currentPage * ordersPerPage
   );
 
-  const totalPages = Math.ceil(orders.length / ordersPerPage);
+  const totalPages = Math.ceil(filteredOrders.length / ordersPerPage);
 
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -66,7 +82,7 @@ const OrdersTable: React.FC = () => {
 
   return (
     <div className='order'>
-      <Sidebar />
+      <Navbar setFilter={setFilter} filter={filter} />
       <div className="orders-container">
         <div className="orders-header">
           <h2>Orders</h2>
@@ -108,7 +124,7 @@ const OrdersTable: React.FC = () => {
                 </tbody>
               </table>
             </div>
-           {/*  <div className="pagination">
+          {/*   <div className="pagination">
               <button 
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}

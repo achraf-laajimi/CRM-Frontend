@@ -259,3 +259,11 @@ z-index: 3
         left: 15px;
     }
 }
+.logout-btn{
+    color: #FC410C;
+    border: none;
+    background-color: transparent;
+    font-size: 20px;
+    /* margin-top: -15px; */
+    font-weight: bold;
+}

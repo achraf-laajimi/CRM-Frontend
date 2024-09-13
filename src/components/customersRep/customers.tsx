@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../sidebar/sidebar';
+import Navbar from '../navbar/navbar';
 import img from './téléchargement.jpg';
 import { ReactComponent as TrashIcon } from './trash.svg';
 import { ReactComponent as EditIcon } from './pencil.svg';
 import './customers.css';
 import { getUsers, blockUser, deleteUser } from '../../api/apiRep';
-import { getOrderStatistics } from '../../api/orderRep';
+import { getOrderStatistics, getOrdersByClientId } from '../../api/orderRep';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -19,17 +19,10 @@ interface Customer {
   isBlocked?: boolean;
 }
 
-const transactions = [
-  { id: 1, transactionId: '289272304', date: '22/12/2019', product: '$50- Amazon Giftcard', amount: '#39,000.00', status: 'Successful' },
-  { id: 2, transactionId: '289272304', date: '22/12/2019', product: '$130- Skrill Giftcard', amount: '#39,000.00', status: 'Successful' },
-  { id: 3, transactionId: '289272304', date: '22/12/2019', product: '2Btc- Bitcoin', amount: '#39,000.00', status: 'Decline' },
-  { id: 4, transactionId: '289272304', date: '22/12/2019', product: '$250- Steam Giftcard', amount: '#39,000.00', status: 'Successful' },
-  { id: 5, transactionId: '289272304', date: '22/12/2019', product: '$134- Google Play Giftcard', amount: '#39,000.00', status: 'Successful' },
-  { id: 6, transactionId: '289272304', date: '22/12/2019', product: '26Btc- Bitcoin', amount: '#39,000.00', status: 'Decline' },
-];
-
 const Customers: React.FC = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
+  const [transactions, setTransactions] = useState<any[]>([]);
+  const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
   const [visibleCount, setVisibleCount] = useState(8);
   const [selectedCustomerIds, setSelectedCustomerIds] = useState<{ [key: string]: boolean }>({});
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
@@ -39,12 +32,13 @@ const Customers: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [showValue, setShowValue] = useState<boolean>(false);
+  const [filter,setFilter]=useState<string>("")
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const data = await getUsers();
+        const data = await getUsers('');
         setCustomers(data);
       } catch (error) {
         console.error('Error fetching customers:', error);
@@ -69,6 +63,15 @@ const Customers: React.FC = () => {
     fetchStatistics();
   }, []);
 
+  useEffect(()=>{
+    if(filter===""){
+      setFilteredCustomers(customers)
+    }else{
+      setFilteredCustomers(customers.filter(customer=>customer.firstName.includes(filter)))
+    }
+
+  },[customers,filter])
+
   const handleShowValueChange = () => {
     setShowValue(true);
   };
@@ -88,9 +91,17 @@ const Customers: React.FC = () => {
     setMenuOpenId((prev) => (prev === customerId ? null : customerId));
   };
 
-  const handleViewClick = (customer: Customer) => {
+  const handleViewClick = async (customer: Customer) => {
     setSelectedCustomer(customer);
     setShowHistory(true);
+    try {
+      const data = await getOrdersByClientId(customer._id);
+      setTransactions(data);
+      console.log('Fetched Data:', data); // Check the data here
+    } catch (error) {
+      console.error('Error fetching transactions:', error);
+      toast.error('no orders for this person');
+    }
   };
 
   const handleDeleteUser = async (userId: string) => {
@@ -121,7 +132,7 @@ const Customers: React.FC = () => {
 
   return (
     <div className='customer'>
-      <Sidebar />
+      <Navbar setFilter={setFilter} filter={filter} />
       {!showHistory ? (
         <div className="customers">
           <h2>Customers</h2>
@@ -135,7 +146,7 @@ const Customers: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {customers.slice(0, visibleCount).map(customer => (
+              {filteredCustomers.slice(0, visibleCount).map(customer => (
                 <tr key={customer._id} className={selectedCustomerIds[customer._id] ? 'selected' : ''}>
                   <td className='ooo'>
                     <input
@@ -146,7 +157,7 @@ const Customers: React.FC = () => {
                     <button className="view-button" onClick={() => handleViewClick(customer)}>View</button>
                   </td>
                   <td>
-                    <img src={customer.avatar || img} alt={customer.username} className="avatar" />
+                   
                     {customer.firstName}
                   </td>
                   <td>{customer.email}</td>
@@ -250,24 +261,26 @@ const Customers: React.FC = () => {
                 <table className="transactions-table">
                   <thead>
                     <tr>
-                      <th>Transaction ID</th>
+                      <th>Transaction Id</th>
                       <th>Date</th>
-                      <th>Product</th>
+                      <th>Products</th>
                       <th>Amount</th>
                       <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     {transactions.map((transaction) => (
-                      <tr key={transaction.id}>
-                        <td>{transaction.transactionId}</td>
+                      <tr key={transaction._id}>
+                        <td>{transaction.id}</td>
                         <td>{transaction.date}</td>
-                        <td>{transaction.product}</td>
-                        <td>{transaction.amount}</td>
+                        <td>{transaction.products.length}</td>
+                        <td>{transaction.totalAmount}</td>
                         <td className={`status ${transaction.status.toLowerCase()}`}>
             {transaction.status}
           </td>
                       </tr>
+                       
+                      
                     ))}
                   </tbody>
                 </table>

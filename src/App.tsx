@@ -1,13 +1,13 @@
-import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Assurez-vous d'inclure les styles de Toastify
+import 'react-toastify/dist/ReactToastify.css';
+import Cookies from 'js-cookie';
+
 import Analytics from './components/analyticsRep/analytics';
 import Customers from './components/customersRep/customers';
 import EditUser from './components/customersRep/edituser';
 import Dashbord from './components/dashbordRep/dashbord';
-import Home from './components/home/Home';
 import Login from './components/login/Login';
 import Order from './components/orderRep/order';
 import PlaceOrder from './components/orderRep/placeorder';
@@ -18,37 +18,28 @@ import Profile from './components/profile/profile';
 import ProductReview from './components/review/review';
 import Signup from './components/signup/Signup';
 
-
-export interface User {
-  firstName: string;
-  lastName: string;
-  username: string;
-  emailAddress: string;
-  password: string;
-  adresse: string;
-  telephone: string;
-  role: string;
-}
 interface UserContextType {
-  user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
-
+  user: string | null;
+  setUser: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-export const UserContext = createContext<UserContextType | undefined>(undefined);
-
+export const UserContext = createContext<UserContextType>({
+  user: null,
+  setUser: () => {}
+});
 
 const App: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<string | null>(null);
 
-  const getUser = async () => {
-    try {
-      const url = 'http://localhost:3000/auth/login/success';
-      const { data } = await axios.get<{ user: { _json: User } }>(url, { withCredentials: true });
-      setUser(data.user._json);
-    } catch (err) {
-      console.error('Error fetching user data:', err);
-      setUser(null); // Handle errors by setting user to null
+  const getUser = () => {
+    const token = Cookies.get('token'); // Obtenez le token des cookies
+    console.log('Token récupéré:', token); // Vérifiez la présence du token
+
+    if (token) {
+      setUser(token); // Définissez l'utilisateur comme connecté si le token existe
+    } else {
+      console.warn('Aucun token trouvé, l\'utilisateur n\'est pas connecté.');
+      setUser(null); // Assurez-vous que l'utilisateur est déconnecté si aucun token n'est trouvé
     }
   };
 
@@ -57,27 +48,24 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    
-    <div className="App">
-     
-     
-
+    <UserContext.Provider value={{ user, setUser }}>
+      <div className="App">
         <Routes>
-          <Route path="/dashbord" element={<Dashbord />} />
-          <Route path="/analytics" element={<Analytics />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/customers" element={<Customers />} />
-          <Route path="/order" element={<Order />} />
-          <Route path="/produit" element={<ProductList />} />
-          <Route path="/add-product" element={<AddProductForm />} />
-          <Route path="/edit-product" element={<EditProductForm />} />
-          <Route path="/edit-user/:userId" element={<EditUser />} />
-          <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
-          <Route path="/signup" element={user ? <Navigate to="/" /> : <Signup />} />
-          <Route path="/" element={user ? <Home user={user} /> : <Navigate to="/login" />} />
-          <Route path="/passer" element={<PlaceOrder />} />
-          <Route path="/review" element={<ProductReview />} />
-
+        <Route path="/login" element={!user ? <Login /> : <Navigate to="/dashbord" />} />
+        <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/dashbord" />} />
+          <Route path="/dashbord" element={user ? <Dashbord /> : <Navigate to="/login" />} />
+          <Route path="/analytics" element={user ? <Analytics /> : <Navigate to="/login" />} />
+          <Route path="/profile" element={user ? <Profile /> : <Navigate to="/login" />} />
+          <Route path="/customers" element={user ? <Customers /> : <Navigate to="/login" />} />
+          <Route path="/order" element={user ? <Order /> : <Navigate to="/login" />} />
+          <Route path="/produit" element={user ? <ProductList /> : <Navigate to="/login" />} />
+          <Route path="/add-product" element={user ? <AddProductForm /> : <Navigate to="/login" />} />
+          <Route path="/edit-product" element={user ? <EditProductForm /> : <Navigate to="/login" />} />
+          <Route path="/edit-user/:userId" element={user ? <EditUser /> : <Navigate to="/login" />} />
+  
+          <Route path="/passer" element={user ? <PlaceOrder /> : <Navigate to="/login" />} />
+          <Route path="/review" element={user ? <ProductReview /> : <Navigate to="/login" />} />
+          <Route path="/*" element={<h1>404</h1>} />
         </Routes>
         <ToastContainer
           position='top-center'
@@ -92,9 +80,8 @@ const App: React.FC = () => {
           theme='colored'
         />
       </div>
-      
+    </UserContext.Provider>
   );
 };
-
 
 export default App;

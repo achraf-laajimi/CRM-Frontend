@@ -1,27 +1,33 @@
-import { Field, Form, Formik } from 'formik';
+import { Field, Form, Formik, FormikHelpers } from 'formik';
 import Cookies from 'js-cookie';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { signupUser } from '../../api/auth';
+import { signupUser } from '../../api/auth'; // Adjust the import path if necessary
 import img1 from '../../assets/Signup.svg';
 import img2 from '../../assets/google.png';
-import addUserSchema from '../validation/SignupShema';
+import addUserSchema from '../validation/SignupShema'; // Adjust the import path if necessary
 import './signup.css';
+import { SignupFormValues, UserData, SignupResponse } from './types';
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleSubmit = async (values: any, { setSubmitting }: any) => {
+  const handleSubmit = async (
+    values: SignupFormValues,
+    { setSubmitting }: FormikHelpers<SignupFormValues>
+  ): Promise<void> => {
     try {
-      const { token } = await signupUser(values);
+      // Adjust the function signature of signupUser if necessary
+      const response: SignupResponse = await signupUser(values);
+      const { token } = response;
       Cookies.set('token', token, { expires: 7 });
       toast.success('Signup successful!');
-      navigate('/profile', { state: { user: values } }); // Passing user data to profile
-    } catch (error: any) {
+      navigate('/login', { state: { user: values } });
+    } catch (error) {
       console.error('Signup error:', error);
-      if (error.response && error.response.data.msg === 'User already exists') {
+      if (error instanceof Error && error.message.includes('User already exists')) {
         toast.error('Email already in use');
       } else {
         toast.error('An error occurred during signup');
@@ -32,10 +38,7 @@ const Signup: React.FC = () => {
   };
 
   const googleAuth = (): void => {
-    window.open(
-      `http://localhost:3000/auth/google/callback`,
-      '_self'
-    );
+    window.open(`http://localhost:3000/auth/google/callback`, '_self');
   };
 
   return (
@@ -155,44 +158,46 @@ const Signup: React.FC = () => {
                   )}
                 </div>
                 <div className="input_group">
-                <div className="mb-4">
-                  <label htmlFor="adresse" className="block text-sm font-medium text-gray-700">Adresse</label>
-                  <Field
-                    type="text"
-                    id="adresse"
-                    name="adresse"
-                    placeholder="Adresse"
-                    className="w-full p-2 border border-gray-300 rounded"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.adresse}
-                  />
-                  {touched.adresse && errors.adresse && (
-                    <div className="text-red-500 text-sm mt-1">{errors.adresse}</div>
-                  )}
+                  <div className="mb-4">
+                    <label htmlFor="adresse" className="block text-sm font-medium text-gray-700">Adresse</label>
+                    <Field
+                      type="text"
+                      id="adresse"
+                      name="adresse"
+                      placeholder="Adresse"
+                      className="w-full p-2 border border-gray-300 rounded"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.adresse}
+                    />
+                    {touched.adresse && errors.adresse && (
+                      <div className="text-red-500 text-sm mt-1">{errors.adresse}</div>
+                    )}
+                  </div>
+                  <div className="mb-4">
+                    <label htmlFor="telephone" className="block text-sm font-medium text-gray-700">Telephone</label>
+                    <Field
+                      type="text"
+                      id="telephone"
+                      name="telephone"
+                      placeholder="Telephone"
+                      className="w-full p-2 border border-gray-300 rounded"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.telephone}
+                    />
+                    {touched.telephone && errors.telephone && (
+                      <div className="text-red-500 text-sm mt-1">{errors.telephone}</div>
+                    )}
+                  </div>
                 </div>
-                <div className="mb-4">
-                  <label htmlFor="telephone" className="block text-sm font-medium text-gray-700">Telephone</label>
-                  <Field
-                    type="text"
-                    id="telephone"
-                    name="telephone"
-                    placeholder="Telephone"
-                    className="w-full p-2 border border-gray-300 rounded"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.telephone}
-                  />
-                  {touched.telephone && errors.telephone && (
-                    <div className="text-red-500 text-sm mt-1">{errors.telephone}</div>
-                  )}
-                </div></div>
                 <div className="mb-4">
                   <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
                   <Field as="select" id="role" name="role" className="w-full p-2 border border-gray-300 rounded">
                     <option value="">Select Role</option>
                     <option value="client">Client</option>
-                    <option value="rep_commerciale">Rep Commerciale</option>
+                    <option value="Rep commerciale">Rep Commerciale</option>
+                    <option value="admin">Admin</option>
                   </Field>
                   {touched.role && errors.role && (
                     <div className="text-red-500 text-sm mt-1">{errors.role}</div>
@@ -223,7 +228,7 @@ const Signup: React.FC = () => {
             <span>Sign up with Google</span>
           </button>
           <p className="text1">
-            Already Have Account? <Link to="/login" className='log'>Log In</Link>
+            Already Have Account? <Link to="/login" className="log">Log In</Link>
           </p>
         </div>
       </div>

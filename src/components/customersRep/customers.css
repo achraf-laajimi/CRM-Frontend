@@ -324,7 +324,7 @@
     color: #529FF9;
     cursor: pointer;
     width: 41px;
-    height: 7px;
+    height: 10px;
     text-align: center;
   }
   
@@ -456,4 +456,12 @@ color: #ff5722;
     left: 29px;
     cursor: pointer;
   }
- 
+/*   .status.pending {
+    background-color: #F8D8FD;
+    color: #D550EB;
+    cursor: pointer;
+    width: 42px;
+    height: 15px;
+    text-align: center;
+  }
+   */

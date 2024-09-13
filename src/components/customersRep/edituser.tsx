@@ -63,30 +63,34 @@ const EditUser: React.FC = () => {
   if (!user) return <div>Loading...</div>;
 
   return (
-    <div className="edit-user-container">
-      {error && <p className="error-message">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          placeholder="First Name"
-        />
-        <input
-          type="text"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          placeholder="Last Name"
-        />
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-        />
-        <button type="submit">Update</button>
-      </form>
-    </div>
+    <>
+      <div className="edit-user-overlay"></div>
+      <div className="edit-user-container">
+        {error && <p className="error-message">{error}</p>}
+        <h2>Edit User</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="First Name"
+          />
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder="Last Name"
+          />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+          />
+          <button type="submit">Update</button>
+        </form>
+      </div>
+    </>
   );
 };
 

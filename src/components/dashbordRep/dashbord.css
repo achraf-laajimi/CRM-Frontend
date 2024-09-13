@@ -1,597 +1,596 @@
 body {
-    font-family: Arial, sans-serif;
-  }
-  
-  .dash {
-    position: relative;
-    overflow-x: hidden;
-    overflow-y: hidden;
-  }
-  .unde1{
-    position: absolute;
-    left: -260px;
-    top: 101px;
-    width: 2px;
-    height: 43px;
-    background-color: #FC410C;
+  font-family: Arial, sans-serif;
+}
 
-  }
-  .dashboard {
-    padding: 33px;
-    /* position: absolute; */
-    /* top: 12px;
-    left: 260px; */
-    width: calc(100% - 268px);
-    border-radius: 24px;
-    background-color: #f4f5f7;
-    margin-top: -32px;
-    margin-left: 258px;
-  }
-  
-  .dashboard-header {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .dashboard-header h1 {
-    color: #FF5733;
-    font-size: 24px;
-    margin-left: -1100px;
-  }
-  .dashboard-header p{
-    color: #8A8B9F;
-    margin-left: -964px;
-    margin-top: -13px;
-    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
-  }
-  
-  .dashboard-cards {
-    display: flex;
-   /*  justify-content: space-around; */
-    margin-bottom: 20px;
-    margin-left: 20px;
-  }
-  
-  .card {
-    background-color: #FEFEFD;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    gap: 10px;
-    margin: 0 10px;
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    justify-content: center;
+.dash {
+  position: relative;
+  overflow-x: hidden;
+/*   overflow-y: hidden; */
+}
+.unde1{
+  position: absolute;
+  left: -260px;
+  top: 101px;
+  width: 2px;
+  height: 43px;
+  background-color: #FC410C;
+
+}
+.dashboard {
+  padding: 33px;
+  /* position: absolute; */
+  /* top: 12px;
+  left: 260px; */
+  width: calc(100% - 268px);
+  border-radius: 24px;
+  background-color: #f4f5f7;
+  margin-top: -32px;
+  margin-left: 258px;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.dashboard-header h1 {
+  color: #FF5733;
+  font-size: 24px;
+  margin-left: -1100px;
+}
+.dashboard-header p{
+  color: #8A8B9F;
+  margin-left: -964px;
+  margin-top: -13px;
+  filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+}
+
+.dashboard-cards {
+  display: flex;
+ /*  justify-content: space-around; */
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+.card {
+  background-color: #FEFEFD;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  gap: 10px;
+  margin: 0 10px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
 margin-top: -8px;
 width: 260px;
 
-  }
-  .img{
-    width: 50px;
-    height: 50px;
-    background-color: #00b07430;
-    border-radius: 50%;
-  }
-  .card img {
-    width: 30px;
-    height: 30px;
-    margin-top: 10px;
-  }
-  
-  .card-content {
-    text-align: left;
-    display: inline-block;
-  }
-  
-  .card-content p:first-child {
-    font-size: 15px;
-    font-weight: bold;
-  }
-  
-  .card-content p:last-child {
-    color: grey;
-    font-size: 11px;
-    margin-top: -15px;
-  }
-  
-  .dashboard-main {
-    display: flex;
-    margin-left: 90px;
-    gap: 15px;
-  }
-  
-  .revenue-chart {
-    background-color: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .revenue-chart {
-    flex: 2;
-    margin-right: 20px;
-  }
-  .piee {
-    background-color: #fff;
-    width: 405px;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    height: 188px;
-    padding-left: 29px;
-    padding-right: 30px;
-    padding-bottom: 25px;
-  }
-  .feddet{
-    margin-left: 99px;
-    margin-top: -15px;
-    display: flex;
-    gap: 20px;
-  }
-  .piee h2{
-    margin-top: -11px;
-    margin-left: -6px;
-    font-size: 20px;
-    font-weight: bold;
-  }
-  .pie-charts {
-    display: flex;
-    gap: 30px;
-    margin-top: 15px;
-    height: 137px;
-    width: 363px;
-    margin-left: 20px;
-  }
-  
-  .pie-chart {
-    text-align: center;
-    margin-bottom: 20px;
-    position: relative;
-
-  }
-  .pall button{
-    padding: 7px 25px;
-    border: none;
-    border-radius: 8px;
-    background-color: #FDF3DF;
-    color: #FEAB00;
-    cursor: pointer;
-    font-size: 10px;
-    margin-top: 12px;
-    margin-left: 400px;
-  }
-  .pie {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-  }
-  
-  .pie::before {
-    content: attr(data-percentage) '%';
-    position: absolute;
-    font-size: 18px;
-    font-weight: bold;
-    color: #fff;
-  }
-  
-  .pie.total-order {
-    background: conic-gradient(#FF5733 81%, #e6e6e6 0);
-  }
-  
-  .pie.customer-growth {
-    background: conic-gradient(#4caf50 22%, #e6e6e6 0);
-  }
-  
-  .pie.total-revenue {
-    background: conic-gradient(#2196f3 62%, #e6e6e6 0);
-  }
-  
-  .pie-chart p {
-    margin: 0;
-    font-size: 12px;
-    color: #333;
-    font-weight: bold;
-  }
-  
-  .show-value {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .show-value input {
-    width: 16px;
-    height: 16px;
-  }
-  
-  .chart-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: black;
-    font-weight: 800;
-  }
-  
-  .chart-controls input[type="radio"] {
-    display: none;
-  }
-  
-  .chart-controls label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    font-size: 16px;
-    color: #4B4B4B;
-  }
-  
-  .chart-controls label:before {
-    content: '';
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 2px solid #B0B0B0;
-    border-radius: 4px;
-    margin-right: 8px;
-    background-color: #fff;
-  }
-  
-  .chart-controls input[type="radio"]:checked + label:before {
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #ff6666;
-    border-color: #ff6666;
-    color: white;
-
-    font-size: 12px;
-  }
-  
-  
-  .dashboard-summary {
-    display: flex;
-    gap: 10px;
-    margin-left: -10px;
-    width: 1170px;
-  }
-  .orders-summary, .trending-products {
-    background-color: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    flex: 1;
-    width: 300px;  /* Modifier la largeur de 400px à 350px */
-    height: 170px;
-  }
-  
-  .summary-controls {
-    display: flex;
-    gap: 8px;
-    /* margin-bottom: 10px; */
-    /* width: 35px; */
-    margin-top: -37px;
-    margin-left: 353px;
-  }
-  .orders-summary h2{
-    font-size: 13px;
-    margin-top: -9px;
-    margin-left: -4px;
-    font-weight: bold;
-  }
-  .p22{
-    font-size: 10px;
-    color: #6666667a;
-    margin-top: -10px;
-    text-decoration-line: -49px;
-    margin-left: -3px;
-    font-weight: 800;
-  }
-  .summary-controls button {
-    padding: 2px 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #FDF3DF;
-    cursor: pointer;
-    font-size: 10px;
-  }
-  
-  .summary-controls button.active {
-    background-color: #f4c542;
-    color: white;
-    font-size: 10px;
-  }
-  
-  .summary-content {
-    display: flex;
-    margin-top: 20px;
-    gap: 90px;
-    margin-left: 78px;
-  }
-  
- 
-    .percentage {
-      width: 80px;
-      height: 80px;
-      position: relative;
-      /* margin: 0 auto;*/
-      
-  }
-  
-  .circular-chart {
-    display: block;
-    max-width: 80px;
-    max-height: 80px;
-  }
-  
-  .circle-bg {
-    fill: none;
-    stroke: #eee;
-    stroke-width: 3.8;
-  }
-  
-  .circle {
-    fill: none;
-    stroke-width: 2.8;
-    stroke-linecap: round;
-    stroke: #ff9933;
-  }
-  
-  .percentage-text {
-    fill: #333;
-    font-size: 12px;
-    text-anchor: middle;
-  }
-  
-  .details {
-    text-align: center;
-    width: 227px;
-
-  }
-  
-  .details p:first-child {
-    font-size: 12px;
-    font-weight: 900;
-  }
-  
-  .details p:nth-child(2) {
-
-    font-size: 10px;
-    margin-top: -8px;
-  }
-  
-  .details p:nth-child(3) {
-    color: #777;
-    font-size: 10px;
-    font-weight: bold;
-    margin-top: -10px;
-  }
-  
-  .details button {
-    padding: 7px 9px;
-    border: none;
-    border-radius: 8px;
-    background-color: #FDF3DF;
-    color: #FEAB00;
-    cursor: pointer;
-    font-size: 10px;
-    margin-top: -8px;
-  }
-  
-  .orders-status {
-    display: flex;
-    gap: 16px;
-    margin-top: -5px;
-  }
-  
-  .status {
-    background-color: #f8f8f8;
-    border-radius: 10px;
-    padding: 10px;
-    width: 90px;
-    text-align: center;
-  }
-  
-  .status p:first-child {
-    font-size: 12px;
-    font-weight: bold;
-    margin: 0;
-  }
-  
-  .status p:nth-child(2) {
-    color: grey;
-    margin: 0;
-    font-size: 10px;
-    font-weight: bold;
-  }
-  
-  
-  
-  .orders-status {
-    display: flex;
- gap: 10px;
-  }
-  
-  .status {
-    display: inline-block;
-    border-radius: 5px;
-    font-weight: bold;
-    width: 59px;
-    height: 29px;
-    text-align: left;
-  }
-  
-  .trending-products .product {
-    display: flex;
-   /*  justify-content: space-between;
-    margin-bottom: 10px; */
-  }
-/*   .revenue-chart {
- /*    flex: 2 1;
-    margin-right: 20px;
-    height: 200px; 
-    width: 200px;
-}*/
-.svg{
-  margin-top: 4px;
 }
-    .active1{
-        background-color: #D0EAEF;
-    border: none;
-    width: 80px;
-    height: 28px;
-    border-radius: 10px;
-    color: #00B8D9;
-  margin-top: -24px;
-cursor: pointer;}
- 
- .revenue-chart-container {
-  width: 520px; /* Ajustez cette valeur selon vos besoins */
-  height: 250px; /* Ajustez cette valeur selon vos besoins */
+.img{
+  width: 50px;
+  height: 50px;
+  background-color: #00b07430;
+  border-radius: 50%;
+}
+.card img {
+  width: 30px;
+  height: 30px;
+  margin-top: 10px;
+}
+
+.card-content {
+  text-align: left;
+  display: inline-block;
+}
+
+.card-content p:first-child {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.card-content p:last-child {
+  color: grey;
+  font-size: 11px;
+  margin-top: -15px;
+}
+
+.dashboard-main {
   display: flex;
-  justify-content: center;
-  align-items: center;
- 
+  margin-left: 90px;
+  gap: 15px;
 }
 
 .revenue-chart {
-  flex: 2 1;
-  margin: 0;
-  height: 150px;
-  width: 300px;
-  padding-bottom: 60px;
-  margin-top: -23px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.revenue-chart .lezem {
+.revenue-chart {
+  flex: 2;
+  margin-right: 20px;
+}
+.piee {
+  background-color: #fff;
+  width: 405px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: 188px;
+  padding-left: 29px;
+  padding-right: 30px;
+  padding-bottom: 25px;
+}
+.feddet{
+  margin-left: 99px;
+  margin-top: -15px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+  gap: 20px;
+}
+.piee h2{
+  margin-top: -11px;
+  margin-left: -6px;
+  font-size: 20px;
+  font-weight: bold;
+}
+.pie-charts {
+  display: flex;
+  gap: 30px;
+  margin-top: 15px;
+  height: 137px;
+  width: 363px;
+  margin-left: 20px;
 }
 
-  
-  .revenue-chart h2 {
-    color: #333;
-    font-size: 16px;
-    margin-top: -5px;
-    margin-left: -6px;
-  }
-/*   .lezem {
-    display: flex;
-    gap: 120px;
-  } */
-  .revenue-chart p {
-    color: #6666667a;
-    font-size: 11px;
-    font-weight: bold;
-    margin-top: -11px;
-    margin-left: -4px;
-  }
+.pie-chart {
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+
+}
+.pall button{
+  padding: 7px 25px;
+  border: none;
+  border-radius: 8px;
+  background-color: #FDF3DF;
+  color: #FEAB00;
+  cursor: pointer;
+  font-size: 10px;
+  margin-top: 12px;
+  margin-left: 400px;
+}
+.pie {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.pie::before {
+  content: attr(data-percentage) '%';
+  position: absolute;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.pie.total-order {
+  background: conic-gradient(#FF5733 81%, #e6e6e6 0);
+}
+
+.pie.customer-growth {
+  background: conic-gradient(#4caf50 22%, #e6e6e6 0);
+}
+
+.pie.total-revenue {
+  background: conic-gradient(#2196f3 62%, #e6e6e6 0);
+}
+
+.pie-chart p {
+  margin: 0;
+  font-size: 12px;
+  color: #333;
+  font-weight: bold;
+}
+
+.show-value {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.show-value input {
+  width: 16px;
+  height: 16px;
+}
+
+.chart-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: black;
+  font-weight: 800;
+}
+
+.chart-controls input[type="radio"] {
+  display: none;
+}
+
+.chart-controls label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: #4B4B4B;
+}
+
+.chart-controls label:before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #B0B0B0;
+  border-radius: 4px;
+  margin-right: 8px;
+  background-color: #fff;
+}
+
+.chart-controls input[type="radio"]:checked + label:before {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ff6666;
+  border-color: #ff6666;
+  color: white;
+
+  font-size: 12px;
+}
+
+
+.dashboard-summary {
+  display: flex;
+  gap: 10px;
+  margin-left: -10px;
+  width: 1170px;
+}
+.orders-summary, .trending-products {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  width: 300px;  /* Modifier la largeur de 400px à 350px */
+  height: 170px;
+}
+
+.summary-controls {
+  display: flex;
+  gap: 8px;
+  /* margin-bottom: 10px; */
+  /* width: 35px; */
+  margin-top: -37px;
+  margin-left: 353px;
+}
+.orders-summary h2{
+  font-size: 13px;
+  margin-top: -9px;
+  margin-left: -4px;
+  font-weight: bold;
+}
+.p22{
+  font-size: 10px;
+  color: #6666667a;
+  margin-top: -10px;
+  text-decoration-line: -49px;
+  margin-left: -3px;
+  font-weight: 800;
+}
+.summary-controls button {
+  padding: 2px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #FDF3DF;
+  cursor: pointer;
+  font-size: 10px;
+}
+
+.summary-controls button.active {
+  background-color: #f4c542;
+  color: white;
+  font-size: 10px;
+}
+
+.summary-content {
+  display: flex;
+  margin-top: 20px;
+  gap: 90px;
+  margin-left: 78px;
+}
+
+
   .percentage {
     width: 80px;
     height: 80px;
     position: relative;
+    /* margin: 0 auto;*/
+    
+}
 
+.circular-chart {
+  display: block;
+  max-width: 80px;
+  max-height: 80px;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 3.8;
+}
+
+.circle {
+  fill: none;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke: #ff9933;
+}
+
+.percentage-text {
+  fill: #333;
+  font-size: 12px;
+  text-anchor: middle;
+}
+
+.details {
+  text-align: center;
+  width: 227px;
+
+}
+
+.details p:first-child {
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.details p:nth-child(2) {
+
+  font-size: 10px;
+  margin-top: -8px;
+}
+
+.details p:nth-child(3) {
+  color: #777;
+  font-size: 10px;
+  font-weight: bold;
+  margin-top: -10px;
+}
+
+.details button {
+  padding: 7px 9px;
+  border: none;
+  border-radius: 8px;
+  background-color: #FDF3DF;
+  color: #FEAB00;
+  cursor: pointer;
+  font-size: 10px;
+  margin-top: -8px;
+}
+
+.orders-status {
+  display: flex;
+  gap: 16px;
+  margin-top: -19px;
+}
+
+.status {
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  padding: 10px;
+  width: 90px;
+  text-align: center;
+}
+
+.status p:first-child {
+  font-size: 12px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.status p:nth-child(2) {
+  color: grey;
+  margin: 0;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+
+
+.orders-status {
+  display: flex;
+gap: 10px;
+}
+
+.status {
+  display: inline-block;
+  border-radius: 5px;
+  font-weight: bold;
+  width: 59px;
+  height: 29px;
+  text-align: left;
+}
+
+.trending-products .product {
+  display: flex;
+ /*  justify-content: space-between;
+  margin-bottom: 10px; */
+}
+/*   .revenue-chart {
+/*    flex: 2 1;
+  margin-right: 20px;
+  height: 200px; 
+  width: 200px;
+}*/
+.svg{
+margin-top: 4px;
+}
+  .active1{
+      background-color: #D0EAEF;
+  border: none;
+  width: 80px;
+  height: 28px;
+  border-radius: 10px;
+  color: #00B8D9;
+margin-top: -24px;
+cursor: pointer;}
+
+.revenue-chart-container {
+width: 520px; /* Ajustez cette valeur selon vos besoins */
+height: 250px; /* Ajustez cette valeur selon vos besoins */
+display: flex;
+justify-content: center;
+align-items: center;
+
+}
+
+.revenue-chart {
+flex: 2 1;
+margin: 0;
+height: 150px;
+width: 300px;
+padding-bottom: 60px;
+margin-top: -23px;
+}
+
+.revenue-chart .lezem {
+display: flex;
+justify-content: space-between;
+align-items: center;
+width: 100%;
+}
+
+
+.revenue-chart h2 {
+  color: #333;
+  font-size: 16px;
+  margin-top: -5px;
+  margin-left: -6px;
+}
+/*   .lezem {
+  display: flex;
+  gap: 120px;
+} */
+.revenue-chart p {
+  color: #6666667a;
+  font-size: 11px;
+  font-weight: bold;
+  margin-top: -11px;
+  margin-left: -4px;
+}
+.percentage {
+  width: 80px;
+  height: 80px;
+  position: relative;
+
+}
+
+.circular-chart {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 3.8;
+}
+
+.circle {
+  fill: none;
+  stroke-width: 3.8;
+  stroke-linecap: round;
+  stroke: #ff9933;
+  animation: progress 1s ease-out forwards;
+}
+
+@keyframes progress {
+  0% {
+    stroke-dasharray: 0, 100;
   }
-  
-  .circular-chart {
-    display: block;
-    max-width: 100%;
-    max-height: 100%;
-  }
-  
-  .circle-bg {
-    fill: none;
-    stroke: #eee;
-    stroke-width: 3.8;
-  }
-  
-  .circle {
-    fill: none;
-    stroke-width: 3.8;
-    stroke-linecap: round;
-    stroke: #ff9933;
-    animation: progress 1s ease-out forwards;
-  }
-  
-  @keyframes progress {
-    0% {
-      stroke-dasharray: 0, 100;
-    }
-  }
-  
-  .percentage-text {
-    fill: #333;
-    font-size: 0.5em;
-    text-anchor: middle;
-    font-weight: bold;
-  }
-  .trending-products {
-    background-color: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 350px;
-  }
-  
-  .trending-products h2 {
-    margin: 0;
-    font-size: 13px;
-    font-weight: bold;
-    margin-top: -8px;
-    margin-left: -5px;
-  }
-  
-  .trending-products p {
-    color: #6666667a;
-    /* margin: 10px 0; */
-    font-size: 10px;
-    font-weight: 800;
-    margin-top: 2px;
-    margin-left: -4px;
-  }
-  
-  .product {
-    display: flex;
-    align-items: center;
-    padding: 5px 0;
-    border-bottom: 1px solid #e6e6e6;
-  }
-  
-  .product:last-child {
-    border-bottom: none;
-  }
-  
-  .product-image {
-    width: 43px;
-    height: 43px;
-    border-radius: 5px;
-    margin-right: 10px;
-  }
-  .pall{margin-top: -8px;}
-  
-  .product-details {
-    flex-grow: 1;
-  }
-  
-  .product-details p:first-child {
-    margin: 0;
-    font-weight: bold;
-  }
-  
-  .product-details p:last-child {
-    margin: 0;
-    color: #333;
-  }
-  
-  .order-count {
-    font-weight: bold;
-    color: grey;
-  }
-  
+}
+
+.percentage-text {
+  fill: #333;
+  font-size: 0.5em;
+  text-anchor: middle;
+  font-weight: bold;
+}
+.trending-products {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 350px;
+}
+
+.trending-products h2 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: bold;
+  margin-top: -8px;
+  margin-left: -5px;
+}
+
+.trending-products p {
+  color: #6666667a;
+  /* margin: 10px 0; */
+  font-size: 10px;
+  font-weight: 800;
+  margin-top: 2px;
+  margin-left: -4px;
+}
+
+.product {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.product:last-child {
+  border-bottom: none;
+}
+
+.product-image {
+  width: 43px;
+  height: 43px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+.pall{margin-top: -8px;}
+
+.product-details {
+  flex-grow: 1;
+}
+
+.product-details p:first-child {
+  margin: 0;
+  font-weight: bold;
+}
+
+.product-details p:last-child {
+  margin: 0;
+  color: #333;
+}
+
+.order-count {
+  font-weight: bold;
+  color: grey;
+}

@@ -1,54 +1,83 @@
-import { Form, Formik } from 'formik';
+import { Form, Formik, FormikHelpers } from 'formik';
 import Cookies from 'js-cookie';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { loginUser } from "../../api/auth";
-import { UserContext } from "../../App";
+import loginUser from '../../api/auth' // Ensure this function is correctly typed
+import { UserContext } from '../../App';
 import img2 from '../../assets/google.png';
 import img3 from '../../assets/login.svg';
-import loginSchema from '../validation/loginShema';
+import loginSchema from '../validation/loginShema'; // Ensure this schema is correctly typed
 import './login.css';
 
+// Define types for form values
+interface LoginValues {
+  email: string;
+  password: string;
+}
+
+// Define types for login response
+interface LoginResponse {
+  token: string;
+  role: string;
+  user: any; // Replace 'any' with the actual user type if known
+}
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  useContext(UserContext);
+  const { setUser } = useContext(UserContext); // Correctly use UserContext
   const [error, setError] = useState<string>('');
-  const initialValues = {
+
+  const initialValues: LoginValues = {
     email: '',
     password: '',
   };
 
-  const googleAuth = (): void => {
-    window.open(
-      `http://localhost:3000/auth/google/callback`,
-      "_self"
-    );
+  useEffect(() => {
+    Cookies.remove("token");
+  }, []);
+
+  const googleAuth = () => {
+    window.open('http://localhost:3000/auth/google/callback', '_self');
   };
 
-  const handleSubmit = async (values: { email: string; password: string }, { setSubmitting }: any) => {
+  const handleSubmit = async (values: LoginValues, { setSubmitting }: FormikHelpers<LoginValues>) => {
+    console.log('Handle submit called with values:', values); // Show form values on submit
+    setError('');
     try {
-      console.log('Submitting values:', values);
-      const { token, role } = await loginUser(values);
-      Cookies.set('token', token, { expires: 7 });
-      Cookies.set('role', role);
-      toast.success('Connexion réussie !');
-      navigate('/dashbord');
-    } catch (error: any) {
-      if (error.response) {
-        console.error("Server response data:", error.response.data);
-        const { data } = error.response;
-        Object.keys(data).forEach((key) => {
-          setError(data[key]);
-        });
+      console.log('Attempting to log in with:', values); // Show values being sent for login
+      const response = await loginUser(values) as LoginResponse;
+      console.log('Login response:', response); // Show full login response
+      console.log('Login response data:', response.token); // Show extracted token
+      if (response && response.token) {
+        const { token, role } = response;
+        console.log('Extracted token:', token); // Show extracted token
+        console.log('Extracted role:', role); // Show extracted role
+        Cookies.set('token', token, { expires: 7 });
+        Cookies.set('role', role);
+        console.log('Token and role set in cookies'); // Confirm token and role set
+        toast.success('Login successful!');
+        setUser(response.user);
+        console.log('User set:', response.user); // Show user details
+        navigate('/dashbord');
+        console.log('Navigating to home page'); // Confirm navigation
       } else {
-        setError('Identifiants invalides. Veuillez réessayer.');
+        console.log('Login response did not contain token'); // Show error if token is not present
+        toast.error('Login failed!');
+      }
+    } catch (error) {
+      console.error('Login error:', (error as any).response ? (error as any).response.data : (error as Error).message); // Show error details
+      if ((error as any).response) {
+        setError((error as any).response.data.message || 'Login failed. Please try again.');
+        console.log('Error message from server:', (error as any).response.data.message); // Show server error message
+      } else {
+        setError('An unexpected error occurred.');
+        console.log('Unexpected error:', (error as Error).message); // Show unexpected error
       }
     } finally {
       setSubmitting(false);
+      console.log('Submitting state set to false'); // Confirm submission state reset
     }
   };
 

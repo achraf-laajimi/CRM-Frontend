@@ -4,6 +4,10 @@ import { RiUserFollowLine, RiNotification3Line, RiMessage3Line } from "react-ico
 import { useNavigate, useLocation } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { getUser} from '../User api/UserMethods';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Cookies from 'js-cookie';
+import { logoutUser } from '../User api/auth';
 
 const Navbar = ({ filter, setFilter }) => {
   const [searchTerm, setSearchTerm] = useState(filter || '');
@@ -63,6 +67,20 @@ const Navbar = ({ filter, setFilter }) => {
   const goToWish = () => {
     navigate('/wishliste');
   };
+  const handleLogout = async ()=> {
+    try {
+      console.log('Attempting to log out...');
+      await logoutUser(); // Cette fonction appelle le backend et nettoie le cookie
+      Cookies.remove('token');
+      toast.success('Logout successful!');
+      window.location.href = '/login';
+   
+      console.log('Logout successful, navigating to login...');
+  
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
 
   // Affiche la barre de recherche uniquement sur la page des produits
   const showSearch = location.pathname === '/' || location.pathname === '/promote';
@@ -106,7 +124,7 @@ const Navbar = ({ filter, setFilter }) => {
               <li className="px-6 py-2 text-gray-700 cursor-pointer hover:bg-slate-100" onClick={goToMsg}>
                 Vos messages
               </li>
-              <li className="px-12 py-2 text-orange-500 cursor-pointer border-t">Déconnexion</li>
+              <li className="px-12 py-2 text-orange-500 cursor-pointer border-t" onClick={handleLogout}>Déconnexion</li>
             </ul>
           </div>
         )}

@@ -5,8 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { signupUser } from '../User api/auth';
-import img1 from '../assets/Signup.svg';
-import img2 from '../assets/google.png';
+/* import img1 from '../assets/Signup.svg';
+import img2 from '../assets/google.png'; */
 import addUserSchema from '../validation/SignupSchema';
 import './signup.css'; 
 

@@ -3,6 +3,7 @@ import axios from 'axios';
 const API_LOGIN_URL = 'http://localhost:3000/auth/login'; 
 const API_SIGNUP_URL = 'http://localhost:3000/auth/signup';
 // utils/auth.js
+const API_BASE_URL = 'http://localhost:3000/auth'; 
 
 
 
@@ -43,14 +44,23 @@ export const signupUser = async (userData) => {
     throw error;
   }
 };
-export const logoutUser = async () => {
-    try {
-        await axios.post('http://localhost:3000/auth/logout', {}, { withCredentials: true });
-        removeToken();
-        // Handle post-logout UI changes or redirection
-    } catch (error) {
-        console.error('Error logging out:', error);
-        throw error;
-    }
+
+const clearCookie = (name)=> {
+  document.cookie = `${name}=; path=/login; expires=Thu, 01 Jan 1970 00:00:00 GMT;`;
+
 };
+
+export const logoutUser = async () => {
+  try {
+    // Call the backend to perform logout if needed
+    await axios.post(`${API_BASE_URL}/logout`);
+    
+  } catch (error) {
+    console.error('Failed to log out from backend:', error);
+  } finally {
+    // Clear the token cookie
+    clearCookie('token'); // Ensure 'token' matches the name of your cookie exactly
+  }
+};
+
 export default loginUser;

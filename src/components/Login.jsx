@@ -95,7 +95,7 @@ const Login = () => {
                     id="email"
                     name="email"
                     placeholder="Email"
-                    className="input w-full max-w-md h-10 p-2 border border-[#2c444e] rounded mt-1"
+                    className="input w-full max-w-md h-10 p-2 border border-[#2c444e] rounded mt-1 text-black bg-white"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.email}
@@ -115,7 +115,7 @@ const Login = () => {
                     id="password"
                     name="password"
                     placeholder="Password"
-                    className="input w-full max-w-md h-10 p-2 border border-[#2c444e] rounded mt-1"
+                    className="input w-full max-w-md h-10 p-2 border border-[#2c444e] rounded mt-1 text-black"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.password}

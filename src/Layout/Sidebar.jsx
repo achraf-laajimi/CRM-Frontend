@@ -115,8 +115,8 @@ const Sidebar = ({ setSelectedItem }) => {
           <span>Notifications</span>
         </NavLink>
       </div>
-      <div className="flex flex-col gap-0.5 pt-2 border-t border-gray-200 mt-auto">
-      <button onClick={handleLogout} className="logout-btn">
+      <div className="flex flex-col gap-0.5 pt-2 border-t border-gray-200 mt-auto ">
+      <button onClick={handleLogout} className='bg-white flex items-center gap-2 px-2 py-1 text-neutral-400 hover:text-orange-500'>
         <CiLogout /> Logout
       </button>
       </div>

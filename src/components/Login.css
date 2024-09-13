@@ -50,7 +50,7 @@ body{
     margin-bottom: 20px;
     color: #FD693F;
 }
-.bhy h1::after {
+/* .bhy h1::after {
     content: "";
     width: 352px;
     height: 4px;
@@ -60,7 +60,7 @@ body{
     position: absolute;
     top: 147px;
     left: 583px;
-  }
+  } */
 .or{
     margin-top: 3px;
     margin-bottom: 21px;

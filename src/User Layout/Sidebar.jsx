@@ -111,14 +111,14 @@ const Sidebar = () => {
           <span>Help</span>
         </NavLink>
       </div>
-      <div className="flex items-center gap-2 px-2 py-1 text-neutral-400 mt-auto">
+     {/*  <div className="flex items-center gap-2 px-2 py-1 text-neutral-400 mt-auto">
         <img
           src={userImage}
           alt="User"
           className="w-8 h-8 rounded-full border border-gray-300"
         />
         <span className='text-neutral-800 text-lg font-semibold'>{userName}</span>
-      </div>
+      </div> */}
     </div>
   );
 };

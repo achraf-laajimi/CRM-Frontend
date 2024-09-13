@@ -45,7 +45,7 @@ const ProductReview = () => {
   }
 
   return (
-    <div className='max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg'>
+    <div className='w-[900px] mx-auto p-6 bg-white rounded-lg shadow-lg'>
       <div className='flex items-center'>
         <img className='w-64 h-60 rounded-lg mr-4' src={product.imageUrl} alt={product.name} />
         <div className='space-y-3.5 mx-5'>

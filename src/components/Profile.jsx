@@ -1,26 +1,115 @@
-import React, { useState } from 'react';
-import { FaEdit } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { FaEdit, FaEye, FaEyeSlash } from 'react-icons/fa';
+import {  jwtDecode} from 'jwt-decode';
+import { getUser, updateUser } from '../api/UserMethods'; // Replace with your actual API functions
 
 const Profile = () => {
+  const [userId, setUserId] = useState('');
   const [profile, setProfile] = useState({
-    name: '',
-    address: '',
+    firstName: '',
+    lastName: '',
+    userName: '',
+    profileImage: '',
     email: '',
-    city: '',
-    password: ''
+    phoneNumber: '',
+    role: '',
+    adresse: '',
+    currentPassword: '',
+    newPassword: '',
+    confirmNewPassword: '',
   });
+
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
+
+  useEffect(() => {
+    const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setUserId(decodedToken.id);
+      } catch (error) {
+        console.error('Error decoding token:', error);
+      }
+    }
+
+    const fetchProfile = async () => {
+      if (userId && token) {
+        try {
+          const userData = await getUser(userId);
+          setProfile({
+            firstName: userData.firstName || '',
+            lastName: userData.lastName || '',
+            userName: userData.username || '',
+            email: userData.email || '',
+            phoneNumber: userData.telephone || '',
+            profileImage: userData.imageUrl,
+            role: userData.role || '',
+            adresse: userData.adresse || '',
+            currentPassword: '',
+            newPassword: '',
+            confirmNewPassword: '',
+          });
+        } catch (error) {
+          console.error('Error fetching profile:', error.response ? error.response.data : error.message);
+        }
+      }
+    };
+    fetchProfile();
+  }, [userId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProfile((prevProfile) => ({
       ...prevProfile,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleSave = () => {
-    // Save profile logic here
-    console.log('Profile saved', profile);
+  const handleSave = async () => {
+    try {
+      if (profile.newPassword !== profile.confirmNewPassword) {
+        alert('New passwords do not match');
+        return;
+      }
+
+      const updateData = {
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        username: profile.userName,
+        email: profile.email,
+        telephone: profile.phoneNumber,
+        adresse: profile.adresse,
+        ...(profile.newPassword && { password: profile.newPassword }),
+        ...(profile.profileImage !== 'https://via.placeholder.com/150' && { imageUrl: profile.profileImage }),
+      };
+
+      const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
+      if (token) {
+        const response = await updateUser(userId, updateData);
+
+        if (response._id === userId) {
+          alert('Profile updated successfully');
+        } else {
+          alert('Failed to update profile');
+        }
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('Error updating profile');
+    }
+  };
+
+  const togglePasswordVisibility = (field) => {
+    if (field === 'currentPassword') {
+      setShowCurrentPassword(!showCurrentPassword);
+    } else if (field === 'newPassword') {
+      setShowNewPassword(!showNewPassword);
+    } else if (field === 'confirmNewPassword') {
+      setShowConfirmNewPassword(!showConfirmNewPassword);
+    }
   };
 
   return (
@@ -29,78 +118,120 @@ const Profile = () => {
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-orange-500">Edit Profile</h2>
         </div>
-        <div className="flex flex-col md:flex-row items-center">
+        <div className="flex flex-col md:flex-row items-start gap-8">
           <div className="relative mb-6 md:mb-0">
-            <img 
-              src="https://via.placeholder.com/150" 
-              alt="Profile" 
+          {/*   <img
+              src={profile.profileImage}
+              alt="Profile"
               className="w-44 h-40 rounded-full object-cover"
-            />
+            /> */}
             <div className="absolute bottom-2 right-2 bg-gray-200 p-1 rounded-full cursor-pointer">
               <FaEdit className="text-gray-700" />
             </div>
           </div>
-          <div className="md:ml-10 w-full flex flex-wrap">
-            <div className="w-full md:w-1/2 md:pr-4 mb-4">
-              <label htmlFor="name" className="block text-gray-700">Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                className="mt-1 p-2 w-full border border-gray-300 bg-white rounded text-cyan-700"
-                value={profile.name}
-                onChange={handleChange}
-              />
+          <form className="flex-1 space-y-4">
+            <div className="flex gap-8">
+              <div className="w-full">
+                <label htmlFor="firstName" className="block font-bold mb-1 text-black">First Name</label>
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  value={profile.firstName}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-black"
+                />
+              </div>
+              <div className="w-full">
+                <label htmlFor="lastName" className="block font-bold mb-1 text-black">Last Name</label>
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  value={profile.lastName}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-black"
+                />
+              </div>
             </div>
-            <div className="w-full md:w-1/2 md:pl-4 mb-4">
-              <label htmlFor="address" className="block text-gray-700">Address</label>
-              <input
-                type="text"
-                id="address"
-                name="address"
-                className="mt-1 p-2 w-full border border-gray-300 bg-white rounded text-cyan-700"
-                value={profile.address}
-                onChange={handleChange}
-              />
+            <div className="flex gap-8">
+              <div className="w-full">
+                <label htmlFor="userName" className="block font-bold mb-1 text-black">User Name</label>
+                <input
+                  type="text"
+                  id="userName"
+                  name="userName"
+                  value={profile.userName}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-black"
+                />
+              </div>
+              <div className="w-full">
+                <label htmlFor="email" className="block font-bold mb-1 text-black">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={profile.email}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-black"
+                />
+              </div>
             </div>
-            <div className="w-full md:w-1/2 md:pr-4 mb-4">
-              <label htmlFor="email" className="block text-gray-700">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className="mt-1 p-2 w-full border border-gray-300 bg-white rounded text-cyan-700"
-                value={profile.email}
-                onChange={handleChange}
-              />
+            <div className="flex gap-8">
+              <div className="w-full">
+                <label htmlFor="phoneNumber" className="block font-bold mb-1 text-black">Phone Number</label>
+                <input
+                  type="tel"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  value={profile.phoneNumber}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-black"
+                />
+              </div>
             </div>
-            <div className="w-full md:w-1/2 md:pl-4 mb-4">
-              <label htmlFor="city" className="block text-gray-700">City</label>
-              <input
-                type="text"
-                id="city"
-                name="city"
-                className="mt-1 p-2 w-full border border-gray-300 bg-white rounded text-cyan-700"
-                value={profile.city}
-                onChange={handleChange}
-              />
+            <div className="flex gap-8">
+              <div className="w-full relative">
+                <label htmlFor="newPassword" className="block font-bold mb-1 text-black">New Password</label>
+                <input
+                  type={showNewPassword ? 'text' : 'password'}
+                  id="newPassword"
+                  name="newPassword"
+                  value={profile.newPassword}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-black"
+                />
+                <div
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer mt-6"
+                  onClick={() => togglePasswordVisibility('newPassword')}
+                >
+                  {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+                </div>
+              </div>
+              <div className="w-full relative">
+                <label htmlFor="confirmNewPassword" className="block font-bold mb-1 text-black">Confirm New Password</label>
+                <input
+                  type={showConfirmNewPassword ? 'text' : 'password'}
+                  id="confirmNewPassword"
+                  name="confirmNewPassword"
+                  value={profile.confirmNewPassword}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-black"
+                />
+                <div
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer mt-6"
+                  onClick={() => togglePasswordVisibility('confirmNewPassword')}
+                >
+                  {showConfirmNewPassword ? <FaEyeSlash /> : <FaEye />}
+                </div>
+              </div>
             </div>
-            <div className="w-full md:w-1/2 md:pr-4 mb-4">
-              <label htmlFor="password" className="block text-gray-700">Password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="mt-1 p-2 w-full border border-gray-300 bg-white rounded text-cyan-700"
-                value={profile.password}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
+          </form>
         </div>
         <div className="flex justify-end mt-4">
-          <button 
-            onClick={handleSave} 
+          <button
+            onClick={handleSave}
             className="bg-orange-500 text-white py-2 px-6 rounded hover:bg-orange-600"
           >
             Save

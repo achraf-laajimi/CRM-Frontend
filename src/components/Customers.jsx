@@ -10,7 +10,7 @@ function CustomerReview({ customer, onDetails }) {
       <div className="text-center text-gray-700 font-semibold mb-2">ID: {customer.id}</div>
       <div className="flex justify-center mb-4">
         <img
-          src="https://via.placeholder.com/100"
+          src={customer.imageUrl}
           alt="Customer Profile"
           className="w-24 h-24 rounded-full object-cover" />
       </div>
@@ -88,7 +88,7 @@ const Customers = () => {
           <label htmlFor="roleFilter" className="form-label block text-gray-700">Filter by Role:</label>
           <select
             id="roleFilter"
-            className="form-select block w-full mt-1 rounded border-gray-300"
+            className="form-select block w-full mt-1 rounded border-gray-300 text-gray-600"
             value={roleFilter}
             onChange={handleRoleFilterChange}
           >

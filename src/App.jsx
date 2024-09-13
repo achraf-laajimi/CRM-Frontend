@@ -44,7 +44,7 @@ const App = () => {
       <Router>
       {user && <Sidebar setSelectedItem={setSelectedItem} />}
         <div className={user ? "flex-1 flex flex-col ml-60" : "flex-1 flex flex-col"}>
-          {user && <Navbar/>}
+          {user && <Navbar selectedItem={selectedItem} />}
           <div className={user ? "flex-1 p-5 overflow-auto mt-20 ml-5" : "flex-1"}>
               <Routes>
                 <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
@@ -53,7 +53,7 @@ const App = () => {
                   <Route index element={<Dashboard />} />
                   <Route path="products" element={user ? <Products /> : <Navigate to="/login" />} />
                   <Route path="customers" element={user ? <Customers /> : <Navigate to="/login" />} />
-                  <Route path="orders" eelement={user ? <Orders /> : <Navigate to="/login" />} />
+                  <Route path="orders" element={user ? <Orders /> : <Navigate to="/login" />} />
                   <Route path="profile" element={<Profile />} />
                   <Route path="notifications" element={user ? <Notifications /> : <Navigate to="/login" />} />
                   <Route path="products/:id" element={user ? <ProductReview /> : <Navigate to="/login" />} />

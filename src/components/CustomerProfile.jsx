@@ -1,14 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { blockUser } from '../api/UserMethods';
+import { getComments } from '../api/ProductMethods';
 
 const CustomerProfile = () => {
   const location = useLocation();
   const customer = location.state?.customer;
+  const [customerComments, setCustomerComments] = useState([]);
 
   if (!customer) {
     return <p>Customer does not exist</p>;
   }
+
+  useEffect(() => {
+    const fetchCustomerComments = async () => {
+      if (customer && customer._id) {
+        try {
+          const reviews = await getComments(customer._id);
+          console.log('Fetched reviews:', reviews);
+          // Assuming reviews contain product information
+          setCustomerComments(reviews);
+        } catch (error) {
+          console.error('Error fetching customer comments:', error);
+        }
+      }
+    };
+
+    fetchCustomerComments();
+  }, [customer]);
 
   const block = async () => {
     try {
@@ -19,19 +38,12 @@ const CustomerProfile = () => {
       alert('Failed to block the customer.');
     }
   };
-  
-  const customerComments = [
-    { productId: 1, productName: 'Product A', productImage: 'https://via.placeholder.com/80', comment: 'Great product, highly recommend!' },
-    { productId: 2, productName: 'Product B', productImage: 'https://via.placeholder.com/80', comment: 'Not satisfied with the quality.' },
-    { productId: 3, productName: 'Product C', productImage: 'https://via.placeholder.com/80', comment: 'Excellent value for money.' },
-    // Add more comments as needed
-  ];
 
   return (
     <div className="w-full md:w-[75%] bg-white rounded-lg shadow-md p-6">
       <div className="flex items-center mb-6">
         <img 
-          src="https://via.placeholder.com/150" 
+          src={customer.imageUrl} 
           alt="Profile" 
           className="w-24 h-24 rounded-full object-cover"
         />
@@ -49,10 +61,10 @@ const CustomerProfile = () => {
         <h3 className="text-lg font-semibold mb-4 text-gray-700">Comments</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {customerComments.map((comment) => (
-            <div key={comment.productId} className="bg-gray-50 p-4 rounded-lg shadow-sm flex flex-col items-center">
+            <div key={comment._id} className="bg-gray-50 p-4 rounded-lg shadow-sm flex flex-col items-center">
               <div className="flex items-start mb-2">
                 <img 
-                  src="https://via.placeholder.com/50" 
+                  src={customer.imageUrl} 
                   alt="Customer" 
                   className="w-12 h-12 rounded-full object-cover mr-4"
                 />
@@ -63,9 +75,9 @@ const CustomerProfile = () => {
                 <img 
                   src={comment.productImage} 
                   alt={comment.productName} 
-                  className="w-[75%] h-20 rounded object-cover mx-4 mt-5"
+                  className="w-[75%] h-24 rounded  mx-4 mt-5"
                 />
-              <p className="text-gray-700">{comment.productName}</p>
+                <p className="text-gray-700">{comment.productName}</p>
             </div>
           ))}
         </div>

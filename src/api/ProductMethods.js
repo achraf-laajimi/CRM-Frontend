@@ -46,3 +46,13 @@ export const getProduct = async (id) => {
     }
 };
 
+export const getComments = async (id) => {
+  try {
+      const res = await axios.get(`${API_BASE_URL}/reviews/user/${id}`, getAuthHeaders());
+      return res.data;
+  } catch (err) {
+      console.error(err);
+      throw err;
+  }
+};
+
